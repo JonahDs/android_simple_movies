@@ -81,5 +81,10 @@ dependencies {
     //Material
     implementation "com.google.android.material:material:$material_version"
 
+    //Multidex
     implementation "androidx.multidex:multidex:$multidex_version"
+
+    //Room
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 }
