@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.simplemovies.domain.PopularMovies
 import com.example.simplemovies.network.APIStatus
 import com.example.simplemovies.network.TmdbApi
+import com.example.simplemovies.repositories.MovieRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -31,15 +32,18 @@ class HomescreenViewModel : ViewModel() {
 
     val navSelected: LiveData<Int> get() = _navSelected
 
+    private lateinit var movieRepo: MovieRepository
+
     init {
         getPopularMovies()
+        movieRepo = MovieRepository()
     }
 
     private fun getPopularMovies() {
         scope.launch {
             try {
                 _apiStatus.value = APIStatus.LOADING
-                _response.value = TmdbApi.retrofitService.getPopularMovies("eebddf3c28edf2691214c6ece5688e32")
+                _response.value = movieRepo.getMovies()
                 _apiStatus.value = APIStatus.DONE
             }catch (e: Exception) {
                 _apiStatus.value = APIStatus.ERROR
