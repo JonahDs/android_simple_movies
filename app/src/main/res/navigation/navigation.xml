@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/navigation"
+    app:startDestination="@id/homescreen">
+
+    <fragment
+        android:id="@+id/homescreen"
+        android:name="com.example.simplemovies.homescreen.Homescreen"
+        android:label="Homescreen" >
+        <action
+            android:id="@+id/action_homescreen_to_detailscreen"
+            app:destination="@id/detailscreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailscreen"
+        android:name="com.example.simplemovies.detailscreen.Detailscreen"
+        android:label="Detailscreen" >
+        <argument
+            android:name="movie_id"
+            app:argType="integer" />
+    </fragment>
+</navigation>
