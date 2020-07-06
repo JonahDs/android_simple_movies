@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.example.simplemovies.domain.Cast
 import com.example.simplemovies.domain.MovieResult
 import com.example.simplemovies.network.TmdbApi
+import com.example.simplemovies.repositories.MovieRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -30,27 +31,24 @@ class DetailscreenViewModel(private val movieId: Int) : ViewModel() {
 
     val navSelected: LiveData<Int> get() = _navSelected
 
+    private lateinit var movieRepo: MovieRepository
+
     init {
         getMovieDetails(movieId)
+        movieRepo = MovieRepository()
     }
 
     private fun getMovieDetails(movieId: Int) {
         scope.launch {
             try {
-                _result.value = TmdbApi.retrofitService.getMovieDetails(
-                    movieId,
-                    "eebddf3c28edf2691214c6ece5688e32"
-                )
+                _result.value = movieRepo.getMovieDetails(movieId)
             } catch (e: Exception) {
                 Log.i("API_ERROR", e.message)
             }
         }
         scope.launch {
             try {
-                _movieCast.value = TmdbApi.retrofitService.getMovieCredits(
-                    movieId,
-                    "eebddf3c28edf2691214c6ece5688e32"
-                )
+                _movieCast.value = movieRepo.getMovieCast(movieId)
             } catch (e: Exception) {
 
             }
