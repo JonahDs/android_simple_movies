@@ -5,13 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.simplemovies.domain.PopularMovies
 import com.example.simplemovies.network.APIStatus
-import com.example.simplemovies.network.TmdbApi
 import com.example.simplemovies.repositories.MovieRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 class HomescreenViewModel : ViewModel() {
 
@@ -45,7 +43,7 @@ class HomescreenViewModel : ViewModel() {
                 _apiStatus.value = APIStatus.LOADING
                 _response.value = movieRepo.getMovies()
                 _apiStatus.value = APIStatus.DONE
-            }catch (e: Exception) {
+            } catch (e: Exception) {
                 _apiStatus.value = APIStatus.ERROR
                 _response.value = PopularMovies(ArrayList())
             }
