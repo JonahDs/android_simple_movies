@@ -3,6 +3,7 @@ package com.example.simplemovies.homescreen
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.simplemovies.database.MovieDao
 import com.example.simplemovies.domain.PopularMovies
 import com.example.simplemovies.network.APIStatus
 import com.example.simplemovies.repositories.MovieRepository
@@ -11,7 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class HomescreenViewModel : ViewModel() {
+class HomescreenViewModel(movieDao: MovieDao) : ViewModel() {
 
     private var viewModelJob = Job()
 
@@ -30,11 +31,11 @@ class HomescreenViewModel : ViewModel() {
 
     val navSelected: LiveData<Int> get() = _navSelected
 
-    private lateinit var movieRepo: MovieRepository
+    private var movieRepo: MovieRepository
 
     init {
         getPopularMovies()
-        movieRepo = MovieRepository()
+        movieRepo = MovieRepository(movieDao)
     }
 
     private fun getPopularMovies() {

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.simplemovies.database.MovieDao
 import com.example.simplemovies.domain.Cast
 import com.example.simplemovies.domain.MovieResult
 import com.example.simplemovies.network.TmdbApi
@@ -13,7 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class DetailscreenViewModel(private val movieId: Int) : ViewModel() {
+class DetailscreenViewModel(private val movieId: Int, private val movieDao: MovieDao) : ViewModel() {
 
     private var viewModelJob = Job()
 
@@ -35,7 +36,7 @@ class DetailscreenViewModel(private val movieId: Int) : ViewModel() {
 
     init {
         getMovieDetails(movieId)
-        movieRepo = MovieRepository()
+        movieRepo = MovieRepository(movieDao)
     }
 
     private fun getMovieDetails(movieId: Int) {

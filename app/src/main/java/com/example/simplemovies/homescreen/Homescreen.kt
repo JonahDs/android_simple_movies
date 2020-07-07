@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.simplemovies.database.MovieDao
+import com.example.simplemovies.database.SimpleMovieDatabase
 import com.example.simplemovies.databinding.FragmentHomescreenBinding
 
 /**
@@ -17,6 +19,7 @@ import com.example.simplemovies.databinding.FragmentHomescreenBinding
 class Homescreen : Fragment() {
 
     private lateinit var homescreenViewModel: HomescreenViewModel
+    private lateinit var homescreenViewModelFactory: HomescreenViewModelFactory
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,10 +28,10 @@ class Homescreen : Fragment() {
 
         //Create databinding object and inflate the layout
         val binding = FragmentHomescreenBinding.inflate(inflater)
-
-
+        val movieDao: MovieDao = SimpleMovieDatabase.getInstance(requireContext()).MovieDao
+        homescreenViewModelFactory = HomescreenViewModelFactory(movieDao)
         //Create instance of homescreenviewmodel
-        homescreenViewModel = ViewModelProvider(this).get(HomescreenViewModel::class.java)
+        homescreenViewModel = ViewModelProvider(this, homescreenViewModelFactory).get(HomescreenViewModel::class.java)
 
         //Add viewmodel to databinding
         binding.viewmodel = homescreenViewModel
