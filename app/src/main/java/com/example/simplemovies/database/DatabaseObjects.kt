@@ -1,7 +1,9 @@
 package com.example.simplemovies.database
 
+import androidx.lifecycle.LiveData
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.simplemovies.domain.Result
 
 @Entity(tableName = "movies")
 data class MovieDb(
@@ -15,3 +17,17 @@ data class MovieDb(
     val vote_average: Double,
     val vote_count: Int
 )
+
+fun List<MovieDb>.asDomainObject(): List<Result> {
+    return map {
+        Result(
+            id = it.id,
+            vote_count = it.vote_count,
+            vote_average = it.vote_average,
+            title = it.title,
+            release_date = it.release_date,
+            poster_path = it.poster_path,
+            overview = it.overview
+        )
+    }
+}

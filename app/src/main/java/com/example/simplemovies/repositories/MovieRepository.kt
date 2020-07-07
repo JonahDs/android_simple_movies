@@ -1,9 +1,12 @@
 package com.example.simplemovies.repositories
 
+import androidx.lifecycle.LiveData
 import com.example.simplemovies.database.MovieDao
+import com.example.simplemovies.database.MovieDb
+import com.example.simplemovies.database.asDomainObject
 import com.example.simplemovies.domain.Cast
 import com.example.simplemovies.domain.MovieResult
-import com.example.simplemovies.domain.PopularMovies
+import com.example.simplemovies.domain.Result
 import com.example.simplemovies.domain.asDatabaseObject
 import com.example.simplemovies.network.TmdbApi
 import kotlinx.coroutines.CoroutineScope
@@ -19,9 +22,9 @@ class MovieRepository(private val movieDao: MovieDao) {
 
     private val API_KEY = "eebddf3c28edf2691214c6ece5688e32"
 
-    suspend fun getMovies(): PopularMovies {
+    fun getMovies(): List<MovieDb> {
         syncData()
-        return TmdbApi.retrofitService.getPopularMovies(API_KEY)
+        return movieDao.getAll()
     }
 
     suspend fun getMovieDetails(movieId: Int): MovieResult {
@@ -34,10 +37,10 @@ class MovieRepository(private val movieDao: MovieDao) {
 
     private fun syncData() {
         scope.launch {
-            TmdbApi.retrofitService.getPopularMovies(API_KEY).results.asDatabaseObject().forEach {
-                movie -> movieDao.insert(movie)
-            }
-
+            TmdbApi.retrofitService.getPopularMovies(API_KEY).results.asDatabaseObject()
+                .forEach { movie ->
+                    movieDao.insert(movie)
+                }
         }
     }
 
