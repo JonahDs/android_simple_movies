@@ -6,25 +6,25 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.simplemovies.databinding.GridViewItemBinding
-import com.example.simplemovies.domain.Result
+import com.example.simplemovies.domain.MovieNetwork
 
-class PhotoGridAdapter(val click: OnClickListener) : ListAdapter<Result, PhotoGridAdapter.MovieViewHolder>(DiffCallback) {
+class PhotoGridAdapter(val click: OnClickListener) : ListAdapter<MovieNetwork, PhotoGridAdapter.MovieViewHolder>(DiffCallback) {
     class MovieViewHolder(private var binding: GridViewItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
-            movieProp: Result
+            movieProp: MovieNetwork
         ) {
             binding.movieProp = movieProp
             binding.executePendingBindings()
         }
     }
 
-    companion object DiffCallback : DiffUtil.ItemCallback<Result>() {
-        override fun areItemsTheSame(oldItem: Result, newItem: Result): Boolean {
+    companion object DiffCallback : DiffUtil.ItemCallback<MovieNetwork>() {
+        override fun areItemsTheSame(oldItem: MovieNetwork, newItem: MovieNetwork): Boolean {
             return oldItem === newItem
         }
 
-        override fun areContentsTheSame(oldItem: Result, newItem: Result): Boolean {
+        override fun areContentsTheSame(oldItem: MovieNetwork, newItem: MovieNetwork): Boolean {
             return oldItem.id === newItem.id
         }
     }

@@ -27,7 +27,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="2"
-            app:listData="@{viewmodel.response}"
+            app:listData="@{viewmodel.displayableMovies}"
             tools:itemCount="16"
             tools:listitem="@layout/grid_view_item"
             />

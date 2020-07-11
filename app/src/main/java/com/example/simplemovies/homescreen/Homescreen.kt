@@ -2,6 +2,7 @@ package com.example.simplemovies.homescreen
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,8 +29,11 @@ class Homescreen : Fragment() {
 
         //Create databinding object and inflate the layout
         val binding = FragmentHomescreenBinding.inflate(inflater)
+
         val movieDao: MovieDao = SimpleMovieDatabase.getInstance(requireContext()).MovieDao
+
         homescreenViewModelFactory = HomescreenViewModelFactory(movieDao)
+
         //Create instance of homescreenviewmodel
         homescreenViewModel = ViewModelProvider(this, homescreenViewModelFactory).get(HomescreenViewModel::class.java)
 
@@ -50,6 +54,16 @@ class Homescreen : Fragment() {
                     .navigate(HomescreenDirections.actionHomescreenToDetailscreen(it))
                 //Reset to null to prevent unwanted navigation
                 homescreenViewModel.displayMovieCompleted()
+            }
+        })
+
+        //Observe movies and API state
+        homescreenViewModel.fetchMovies().observe(viewLifecycleOwner, Observer {
+            if(it.status != null) {
+                homescreenViewModel.setState(it.status)
+            }
+            if(it.data != null) {
+                homescreenViewModel.displayMovies(it.data.results)
             }
         })
 

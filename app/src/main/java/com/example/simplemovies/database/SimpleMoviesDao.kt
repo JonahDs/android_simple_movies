@@ -1,19 +1,17 @@
 package com.example.simplemovies.database
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.lifecycle.LiveData
+import androidx.room.*
 
 @Dao
 interface MovieDao {
-    @Insert
-    fun insert(movie: MovieDb)
+    @Insert(onConflict =  OnConflictStrategy.REPLACE)
+    fun insert(movies: List<MovieDb>)
 
-    @Update
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(movie: MovieDb)
 
     @Query("select * from movies")
-    fun getAll(): List<MovieDb>
+    fun getAll(): LiveData<List<MovieDb>>
 
 }

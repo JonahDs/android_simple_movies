@@ -1,25 +1,20 @@
 package com.example.simplemovies.homescreen
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.simplemovies.database.MovieDao
-import com.example.simplemovies.database.asDomainObject
-import com.example.simplemovies.domain.Result
+import com.example.simplemovies.domain.PopularMovies
+import com.example.simplemovies.domain.MovieNetwork
 import com.example.simplemovies.network.APIStatus
+import com.example.simplemovies.network.Resource
 import com.example.simplemovies.repositories.MovieRepository
-import kotlinx.coroutines.*
 
 class HomescreenViewModel(movieDao: MovieDao) : ViewModel() {
 
-    private var viewModelJob = Job()
+    private val _displayableMovies = MutableLiveData<List<MovieNetwork>>()
 
-    private val scope = CoroutineScope(viewModelJob + Dispatchers.Main)
-
-    private val _response = MutableLiveData<List<Result>>()
-
-    val response: LiveData<List<Result>> get() = _response
+    val displayableMovies: LiveData<List<MovieNetwork>> get() = _displayableMovies
 
     private val _apiStatus = MutableLiveData<APIStatus>()
 
@@ -30,37 +25,31 @@ class HomescreenViewModel(movieDao: MovieDao) : ViewModel() {
 
     val navSelected: LiveData<Int> get() = _navSelected
 
-    private var movieRepo: MovieRepository
+    private val movieRepo: MovieRepository = MovieRepository(movieDao)
 
-    init {
-        getPopularMovies()
-        movieRepo = MovieRepository(movieDao)
+    //Set navigation property
+    fun displayMovieDetails(movieId: Int) {
+        _navSelected.value = movieId
     }
 
-    private fun getPopularMovies() {
-        scope.launch {
-            try {
-                _apiStatus.postValue(APIStatus.LOADING)
-                _response.value = withContext(Dispatchers.IO) {
-                    movieRepo.getMovies()
-                }.asDomainObject()
-
-                _apiStatus.postValue(APIStatus.DONE)
-
-            } catch (e: Exception) {
-                Log.i("VIEWMODEL_ERROR", e.message.toString())
-                _apiStatus.postValue(APIStatus.ERROR)
-            }
-
-        }
+    //Clear navigation to make 'random' navigation impossible
+    fun displayMovieCompleted() {
+        _navSelected.value = null
     }
 
-fun displayMovieDetails(movieId: Int) {
-    _navSelected.value = movieId
-}
+    //Set movies
+    fun displayMovies(movies: List<MovieNetwork>) {
+        _displayableMovies.value = movies
+    }
 
-fun displayMovieCompleted() {
-    _navSelected.value = null
-}
+    //Set API/App status
+    fun setState(state: APIStatus) {
+        _apiStatus.value = state
+    }
+
+    //Pass repo function to attach observer in fragment
+    fun fetchMovies(): LiveData<Resource<PopularMovies>> {
+        return movieRepo.getMovies()
+    }
 
 }
