@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simplemovies.R.color.colorBackground
+import com.example.simplemovies.database.MovieDao
+import com.example.simplemovies.database.SimpleMovieDatabase
 import com.example.simplemovies.databinding.FragmentDetailScreenBinding
 import com.example.simplemovies.homescreen.OnClickListener
 
@@ -30,8 +32,8 @@ class Detailscreen : Fragment() {
         val binding: FragmentDetailScreenBinding = FragmentDetailScreenBinding.inflate(inflater)
 
         binding.lifecycleOwner = this
-
-        detailViewmodelFactory = DetailscreenViewModelFactory(DetailscreenArgs.fromBundle(requireArguments()).movieId)
+        val moviedao: MovieDao = SimpleMovieDatabase.getInstance(requireContext()).MovieDao
+        detailViewmodelFactory = DetailscreenViewModelFactory(DetailscreenArgs.fromBundle(requireArguments()).movieId, moviedao)
 
         detailViewModel = ViewModelProvider(this, detailViewmodelFactory).get(DetailscreenViewModel::class.java)
 
@@ -42,9 +44,6 @@ class Detailscreen : Fragment() {
         binding.cast.adapter = CastAdapter(OnClickListener {
             detailViewModel.displayCastDetails(it)
         })
-
-
-
 
         binding.root.setBackgroundColor(ContextCompat.getColor(this!!.requireContext()!!, colorBackground))
 

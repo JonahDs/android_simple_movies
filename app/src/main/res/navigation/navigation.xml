@@ -9,7 +9,7 @@
         android:label="Homescreen" >
         <action
             android:id="@+id/action_homescreen_to_detailscreen"
-            app:destination="@id/detailscreen" />
+            app:destination="@+id/detailscreen" />
     </fragment>
     <fragment
         android:id="@+id/detailscreen"

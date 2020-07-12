@@ -10,7 +10,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.simplemovies.detailscreen.CastAdapter
 import com.example.simplemovies.domain.Cast
-import com.example.simplemovies.domain.PopularMovies
+import com.example.simplemovies.domain.MovieNetwork
 import com.example.simplemovies.homescreen.PhotoGridAdapter
 import com.example.simplemovies.network.APIStatus
 
@@ -56,9 +56,9 @@ fun BindCastPicture(imgView: ImageView, cast_profile: String?) {
 }
 
 @BindingAdapter("listData")
-fun bindRecyclerView(recyclerView: RecyclerView, data: PopularMovies?) {
+fun bindRecyclerView(recyclerView: RecyclerView, data: List<MovieNetwork>?) {
     val adapter = recyclerView.adapter as PhotoGridAdapter
-    adapter.submitList(data?.results)
+    adapter.submitList(data)
 }
 
 @BindingAdapter("castData")

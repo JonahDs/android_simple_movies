@@ -6,7 +6,7 @@
 
         <variable
             name="movieProp"
-            type="com.example.simplemovies.domain.Result" />
+            type="com.example.simplemovies.domain.MovieNetwork" />
 
     </data>
 

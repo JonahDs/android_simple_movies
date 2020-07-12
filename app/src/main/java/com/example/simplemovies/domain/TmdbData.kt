@@ -1,10 +1,12 @@
 package com.example.simplemovies.domain
 
+import com.example.simplemovies.database.MovieDb
+
 data class PopularMovies(
-    val results: List<Result>
+    val results: List<MovieNetwork>
 )
 
-data class Result(
+data class MovieNetwork(
     val id: Int,
     val overview: String,
     val poster_path: String,
@@ -47,3 +49,17 @@ data class CrewMemeber(
     val name: String,
     val profile_path: String?
 )
+
+fun List<MovieNetwork>.asDatabaseObject(): List<MovieDb> {
+    return map {
+        MovieDb(
+            id = it.id,
+            overview =  it.overview,
+            poster_path = it.poster_path,
+            release_date = it.release_date,
+            title = it.title,
+            vote_average = it.vote_average,
+            vote_count = it.vote_count
+        )
+    }
+}
