@@ -78,6 +78,7 @@ class MovieRepository(private val movieDao: MovieDao) {
     }
 
 
+    //No need for these methods to implement our networkbounding since it will always be fetched from remote
     suspend fun getMovieDetails(movieId: Int): MovieResult {
         return TmdbApi.retrofitService.getMovieDetails(movieId, API_KEY)
     }

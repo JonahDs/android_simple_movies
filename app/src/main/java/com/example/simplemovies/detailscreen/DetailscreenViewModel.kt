@@ -43,15 +43,9 @@ class DetailscreenViewModel(private val movieId: Int, private val movieDao: Movi
         scope.launch {
             try {
                 _result.value = movieRepo.getMovieDetails(movieId)
-            } catch (e: Exception) {
-                Log.i("API_ERROR", e.message)
-            }
-        }
-        scope.launch {
-            try {
                 _movieCast.value = movieRepo.getMovieCast(movieId)
             } catch (e: Exception) {
-
+                Log.i("API_ERROR", e.message)
             }
         }
     }
