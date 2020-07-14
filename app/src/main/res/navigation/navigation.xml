@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/homescreen"
-        android:name="com.example.simplemovies.homescreen.Homescreen"
+        android:name="com.example.simplemovies.homescreen.HomescreenFragment"
         android:label="Homescreen" >
         <action
             android:id="@+id/action_homescreen_to_detailscreen"
@@ -13,7 +13,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailscreen"
-        android:name="com.example.simplemovies.detailscreen.Detailscreen"
+        android:name="com.example.simplemovies.detailscreen.DetailscreenFragment"
         android:label="Detailscreen" >
         <argument
             android:name="movie_id"

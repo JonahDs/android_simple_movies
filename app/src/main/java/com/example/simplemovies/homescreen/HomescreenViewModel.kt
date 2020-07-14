@@ -9,8 +9,10 @@ import com.example.simplemovies.domain.MovieNetwork
 import com.example.simplemovies.network.APIStatus
 import com.example.simplemovies.network.Resource
 import com.example.simplemovies.repositories.MovieRepository
+import javax.inject.Inject
 
-class HomescreenViewModel(movieDao: MovieDao) : ViewModel() {
+//constructor inject a movieRepository
+class HomescreenViewModel @Inject constructor(private val movieRepo: MovieRepository) : ViewModel() {
 
     private val _displayableMovies = MutableLiveData<List<MovieNetwork>>()
 
@@ -24,8 +26,6 @@ class HomescreenViewModel(movieDao: MovieDao) : ViewModel() {
     private val _navSelected = MutableLiveData<Int>()
 
     val navSelected: LiveData<Int> get() = _navSelected
-
-    private val movieRepo: MovieRepository = MovieRepository(movieDao)
 
     //Set navigation property
     fun displayMovieDetails(movieId: Int) {
@@ -51,5 +51,4 @@ class HomescreenViewModel(movieDao: MovieDao) : ViewModel() {
     fun fetchMovies(): LiveData<Resource<PopularMovies>> {
         return movieRepo.getMovies()
     }
-
 }

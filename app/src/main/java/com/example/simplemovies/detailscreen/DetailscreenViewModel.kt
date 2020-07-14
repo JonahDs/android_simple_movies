@@ -7,14 +7,14 @@ import androidx.lifecycle.ViewModel
 import com.example.simplemovies.database.MovieDao
 import com.example.simplemovies.domain.Cast
 import com.example.simplemovies.domain.MovieResult
-import com.example.simplemovies.network.TmdbApi
 import com.example.simplemovies.repositories.MovieRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class DetailscreenViewModel(private val movieId: Int, private val movieDao: MovieDao) : ViewModel() {
+class DetailscreenViewModel @Inject constructor(private val movieRepo: MovieRepository) : ViewModel() {
 
     private var viewModelJob = Job()
 
@@ -32,14 +32,7 @@ class DetailscreenViewModel(private val movieId: Int, private val movieDao: Movi
 
     val navSelected: LiveData<Int> get() = _navSelected
 
-    private lateinit var movieRepo: MovieRepository
-
-    init {
-        getMovieDetails(movieId)
-        movieRepo = MovieRepository(movieDao)
-    }
-
-    private fun getMovieDetails(movieId: Int) {
+    fun getMovieDetails(movieId: Int) {
         scope.launch {
             try {
                 _result.value = movieRepo.getMovieDetails(movieId)
