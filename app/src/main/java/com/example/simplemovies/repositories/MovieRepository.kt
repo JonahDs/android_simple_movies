@@ -4,9 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import com.example.simplemovies.database.MovieDao
-import com.example.simplemovies.database.MovieDb
 import com.example.simplemovies.database.asDomainObject
 import com.example.simplemovies.domain.Cast
 import com.example.simplemovies.domain.MovieResult
@@ -14,7 +12,7 @@ import com.example.simplemovies.domain.PopularMovies
 import com.example.simplemovies.domain.asDatabaseObject
 import com.example.simplemovies.network.NetworkBounding
 import com.example.simplemovies.network.Resource
-import com.example.simplemovies.network.TmdbApi
+import com.example.simplemovies.network.TmdbApiService
 import com.example.simplemovies.utils.DataManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
@@ -23,8 +21,12 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class MovieRepository(private val movieDao: MovieDao) {
+class MovieRepository @Inject constructor(
+    private val tmdbApi: TmdbApiService,
+    private val movieDao: MovieDao
+) {
 
     private var repositoryJob = Job()
 
@@ -47,7 +49,9 @@ class MovieRepository(private val movieDao: MovieDao) {
             }
 
             override fun shouldFetch(data: PopularMovies?): Boolean {
-                return data == null || data.results.isEmpty() || data.results == null || dataManager.shouldRefresh("MAIN")
+                return data == null || data.results.isEmpty() || data.results == null || dataManager.shouldRefresh(
+                    "MAIN"
+                )
             }
 
             override fun fetchFromDb(): LiveData<PopularMovies> {
@@ -67,8 +71,10 @@ class MovieRepository(private val movieDao: MovieDao) {
                 val test = MutableLiveData<PopularMovies>()
                 scope.launch {
                     try {
-                        test.value = TmdbApi.retrofitService.getPopularMovies(API_KEY)
+                        test.value = tmdbApi.getPopularMovies(API_KEY)
                     } catch (e: Exception) {
+                        Log.i("API_STATE", e.message.toString())
+
                         test.value = null
                     }
                 }
@@ -80,10 +86,10 @@ class MovieRepository(private val movieDao: MovieDao) {
 
     //No need for these methods to implement our networkbounding since it will always be fetched from remote
     suspend fun getMovieDetails(movieId: Int): MovieResult {
-        return TmdbApi.retrofitService.getMovieDetails(movieId, API_KEY)
+        return tmdbApi.getMovieDetails(movieId, API_KEY)
     }
 
     suspend fun getMovieCast(movieId: Int): Cast {
-        return TmdbApi.retrofitService.getMovieCredits(movieId, API_KEY)
+        return tmdbApi.getMovieCredits(movieId, API_KEY)
     }
 }
