@@ -23,7 +23,7 @@ interface TmdbApiService {
     ): Cast
 
     @GET("/3/genre/movie/list")
-    suspend fun getAllMovieGenres(@Query("api_key") key: String): GenresWrapper
+    suspend fun getAllMovieGenres(): GenresWrapper
 }
 
 enum class APIStatus { LOADING, ERROR, DONE }

@@ -6,10 +6,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.simplemovies.database.MovieDao
 import com.example.simplemovies.database.asDomainObject
-import com.example.simplemovies.domain.Cast
-import com.example.simplemovies.domain.MovieResult
-import com.example.simplemovies.domain.PopularMoviesWrapper
-import com.example.simplemovies.domain.asDatabaseObject
+import com.example.simplemovies.domain.*
 import com.example.simplemovies.network.NetworkBounding
 import com.example.simplemovies.network.Resource
 import com.example.simplemovies.network.TmdbApiService
@@ -34,9 +31,6 @@ class MovieRepository @Inject constructor(
 
     //Reload local movies with API results after 30 seconds
     private val dataManager = DataManager(30, TimeUnit.SECONDS)
-
-    private val API_KEY = "eebddf3c28edf2691214c6ece5688e32"
-
 
     fun getMovies(): LiveData<Resource<PopularMoviesWrapper>> {
         return object : NetworkBounding<PopularMoviesWrapper, PopularMoviesWrapper>() {
@@ -91,5 +85,9 @@ class MovieRepository @Inject constructor(
 
     suspend fun getMovieCast(movieId: Int): Cast {
         return tmdbApi.getMovieCredits(movieId)
+    }
+
+    suspend fun getAllMovieGenres(): GenresWrapper {
+        return tmdbApi.getAllMovieGenres()
     }
 }
