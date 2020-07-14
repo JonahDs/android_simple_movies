@@ -11,6 +11,7 @@ import kotlin.reflect.KClass
 
 
 //Generic viewmodel factory that will be used to create our viewmodels
+//@JvmSuprressWildcards needed for the application to compile
 class GenericViewModelFactory @Inject constructor(private val creators:  @JvmSuppressWildcards  Map<Class<out ViewModel>, Provider<ViewModel>>) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

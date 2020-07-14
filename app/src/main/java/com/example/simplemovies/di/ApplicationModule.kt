@@ -7,18 +7,23 @@ import com.example.simplemovies.network.TmdbApiService
 import com.example.simplemovies.repositories.MovieRepository
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 @Module
-class ApplicationModule {
+object ApplicationModule {
 
     //Provide our movieRepo
+    @Singleton
+    @JvmStatic
     @Provides
     fun provideRepo(service: TmdbApiService, database: SimpleMovieDatabase): MovieRepository {
         return MovieRepository(service, database.MovieDao)
     }
 
     //Provide our database
+    @JvmStatic
     @Provides
+    @Singleton
     fun provideDatabas(context: Context): SimpleMovieDatabase {
         return Room.databaseBuilder(
             context.applicationContext,
