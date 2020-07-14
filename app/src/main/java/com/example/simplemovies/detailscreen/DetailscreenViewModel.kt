@@ -32,13 +32,6 @@ class DetailscreenViewModel @Inject constructor(private val movieRepo: MovieRepo
 
     val navSelected: LiveData<Int> get() = _navSelected
 
-
-    init {
-//        getMovieDetails(movieId)
-    }
-
-
-
     fun getMovieDetails(movieId: Int) {
         scope.launch {
             try {
