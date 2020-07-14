@@ -2,9 +2,26 @@ package com.example.simplemovies.domain
 
 import com.example.simplemovies.database.MovieDb
 
-data class PopularMovies(
+
+//region Wrappers
+
+data class PopularMoviesWrapper(
     val results: List<MovieNetwork>
 )
+
+
+data class GenresWrapper(
+    val genres: List<Genre>
+)
+
+
+data class Cast(
+    val cast: List<CastMember>
+)
+//endregion
+
+
+
 
 data class MovieNetwork(
     val id: Int,
@@ -32,10 +49,6 @@ data class Genre(
     val name: String
 )
 
-data class Cast(
-    val cast: List<CastMember>
-)
-
 data class CastMember(
     val id: Int,
     val character: String,
@@ -50,6 +63,8 @@ data class CrewMemeber(
     val profile_path: String?
 )
 
+//region helper methods
+
 fun List<MovieNetwork>.asDatabaseObject(): List<MovieDb> {
     return map {
         MovieDb(
@@ -63,3 +78,4 @@ fun List<MovieNetwork>.asDatabaseObject(): List<MovieDb> {
         )
     }
 }
+//endregion

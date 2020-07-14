@@ -30,6 +30,11 @@ class NetworkModule {
 
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
-        return OkHttpClient.Builder().build()
+        return OkHttpClient.Builder().addInterceptor {
+            val request = it.request().newBuilder()
+            val url = it.request().url().newBuilder().addQueryParameter("api_key", "eebddf3c28edf2691214c6ece5688e32").build()
+            request.url(url)
+            return@addInterceptor it.proceed(request.build())
+        }.build()
     }
 }

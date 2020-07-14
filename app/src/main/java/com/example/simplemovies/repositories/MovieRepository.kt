@@ -8,7 +8,7 @@ import com.example.simplemovies.database.MovieDao
 import com.example.simplemovies.database.asDomainObject
 import com.example.simplemovies.domain.Cast
 import com.example.simplemovies.domain.MovieResult
-import com.example.simplemovies.domain.PopularMovies
+import com.example.simplemovies.domain.PopularMoviesWrapper
 import com.example.simplemovies.domain.asDatabaseObject
 import com.example.simplemovies.network.NetworkBounding
 import com.example.simplemovies.network.Resource
@@ -38,9 +38,9 @@ class MovieRepository @Inject constructor(
     private val API_KEY = "eebddf3c28edf2691214c6ece5688e32"
 
 
-    fun getMovies(): LiveData<Resource<PopularMovies>> {
-        return object : NetworkBounding<PopularMovies, PopularMovies>() {
-            override fun saveApiResToDb(item: PopularMovies) {
+    fun getMovies(): LiveData<Resource<PopularMoviesWrapper>> {
+        return object : NetworkBounding<PopularMoviesWrapper, PopularMoviesWrapper>() {
+            override fun saveApiResToDb(item: PopularMoviesWrapper) {
                 scope.launch {
                     withContext(IO) {
                         movieDao.insert(item.results.asDatabaseObject())
@@ -48,30 +48,30 @@ class MovieRepository @Inject constructor(
                 }
             }
 
-            override fun shouldFetch(data: PopularMovies?): Boolean {
+            override fun shouldFetch(data: PopularMoviesWrapper?): Boolean {
                 return data == null || data.results.isEmpty() || data.results == null || dataManager.shouldRefresh(
                     "MAIN"
                 )
             }
 
-            override fun fetchFromDb(): LiveData<PopularMovies> {
-                val test = MediatorLiveData<PopularMovies>()
+            override fun fetchFromDb(): LiveData<PopularMoviesWrapper> {
+                val test = MediatorLiveData<PopularMoviesWrapper>()
                 scope.launch {
                     withContext(Main) {
                         test.addSource(movieDao.getAll()) {
                             test.removeSource(movieDao.getAll())
-                            test.value = PopularMovies(it.asDomainObject())
+                            test.value = PopularMoviesWrapper(it.asDomainObject())
                         }
                     }
                 }
                 return test
             }
 
-            override fun makeApiCall(): LiveData<PopularMovies> {
-                val test = MutableLiveData<PopularMovies>()
+            override fun makeApiCall(): LiveData<PopularMoviesWrapper> {
+                val test = MutableLiveData<PopularMoviesWrapper>()
                 scope.launch {
                     try {
-                        test.value = tmdbApi.getPopularMovies(API_KEY)
+                        test.value = tmdbApi.getPopularMovies()
                     } catch (e: Exception) {
                         Log.i("API_STATE", e.message.toString())
 
@@ -86,10 +86,10 @@ class MovieRepository @Inject constructor(
 
     //No need for these methods to implement our networkbounding since it will always be fetched from remote
     suspend fun getMovieDetails(movieId: Int): MovieResult {
-        return tmdbApi.getMovieDetails(movieId, API_KEY)
+        return tmdbApi.getMovieDetails(movieId)
     }
 
     suspend fun getMovieCast(movieId: Int): Cast {
-        return tmdbApi.getMovieCredits(movieId, API_KEY)
+        return tmdbApi.getMovieCredits(movieId)
     }
 }
