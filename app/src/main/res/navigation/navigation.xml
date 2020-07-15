@@ -3,27 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/homescreen">
+    app:startDestination="@id/Movies">
 
     <fragment
-        android:id="@+id/homescreen"
+        android:id="@+id/Movies"
         android:name="com.example.simplemovies.homescreen.HomescreenFragment"
-        android:label="Homescreen" >
+        android:label="Movies">
         <action
             android:id="@+id/action_homescreen_to_detailscreen"
-            app:destination="@+id/detailscreen" />
+            app:destination="@+id/MovieDetails" />
     </fragment>
     <fragment
-        android:id="@+id/detailscreen"
+        android:id="@+id/MovieDetails"
         android:name="com.example.simplemovies.detailscreen.DetailscreenFragment"
-        android:label="Detailscreen" >
+        android:label="Movie Details" >
         <argument
             android:name="movie_id"
             app:argType="integer" />
     </fragment>
     <fragment
-        android:id="@+id/moviePickerFragment"
+        android:id="@+id/PickAMovie"
         android:name="com.example.simplemovies.moviepicker.MoviePickerFragment"
-        android:label="fragment_movie_picker"
+        android:label="Pick A Movie"
         tools:layout="@layout/fragment_movie_picker" />
 </navigation>

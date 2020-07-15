@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.simplemovies.domain.GenresWrapper
+import com.example.simplemovies.domain.MovieNetwork
+import com.example.simplemovies.domain.MoviesWrapper
 import com.example.simplemovies.repositories.MovieRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +25,10 @@ class MoviePickerViewModel @Inject constructor(private val movieRepo: MovieRepos
 
     val movieGenres : LiveData<GenresWrapper> get() = _movieGenres
 
+    private var _moviesWithGenre = MutableLiveData<MovieNetwork>()
+
+    val moviesWithGenre: LiveData<MovieNetwork> get() = _moviesWithGenre
+
     init {
         fetchGenres()
     }
@@ -37,7 +43,14 @@ class MoviePickerViewModel @Inject constructor(private val movieRepo: MovieRepos
         }
     }
 
-    fun fetchMovieById(genreId: Int?) {
+    fun fetchMovieById(genreId: Int) {
+        scope.launch {
+            try {
+                _moviesWithGenre.value =  movieRepo.getMoviesWithGenre(genreId.toString()).results.random()
+            } catch (e: Exception) {
+                Log.i("GENRES_EX_", e.message.toString())
 
+            }
+        }
     }
 }

@@ -51,8 +51,12 @@ class MoviePickerFragment : Fragment() {
 
         (text.editText as? AutoCompleteTextView)?.setOnItemClickListener { parent, _, position, _ ->
             Log.i("CLICKED", (parent.adapter as GenreAdapter).getItem(position)?.id.toString())
-            moviePickerViewModel.fetchMovieById((parent.adapter as GenreAdapter).getItem(position)?.id)
+            moviePickerViewModel.fetchMovieById((parent.adapter as GenreAdapter).getItem(position)?.id!!)
         }
+
+        moviePickerViewModel.moviesWithGenre.observe(viewLifecycleOwner, Observer {
+            Log.i("MOVIE_GENRE", it.toString())
+        })
 
         return binding.root
     }

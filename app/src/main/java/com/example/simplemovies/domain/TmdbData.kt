@@ -5,7 +5,7 @@ import com.example.simplemovies.database.MovieDb
 
 //region Wrappers
 
-data class PopularMoviesWrapper(
+data class MoviesWrapper(
     val results: List<MovieNetwork>
 )
 
@@ -26,7 +26,7 @@ data class Cast(
 data class MovieNetwork(
     val id: Int,
     val overview: String,
-    val poster_path: String,
+    val poster_path: String?,
     val release_date: String,
     val title: String,
     val vote_average: Double,
@@ -35,11 +35,11 @@ data class MovieNetwork(
 
 data class MovieResult(
     val id: Int,
-    val backdrop_path: String,
+    val backdrop_path: String?,
     val genres: List<Genre>,
     val original_title: String,
     val overview: String,
-    val poster_path: String,
+    val poster_path: String?,
     val release_date: String,
     val vote_average: Double
 )
@@ -70,7 +70,7 @@ fun List<MovieNetwork>.asDatabaseObject(): List<MovieDb> {
         MovieDb(
             id = it.id,
             overview =  it.overview,
-            poster_path = it.poster_path,
+            poster_path = it.poster_path?: "",
             release_date = it.release_date,
             title = it.title,
             vote_average = it.vote_average,

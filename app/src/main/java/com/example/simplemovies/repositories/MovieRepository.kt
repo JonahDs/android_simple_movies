@@ -32,9 +32,9 @@ class MovieRepository @Inject constructor(
     //Reload local movies with API results after 30 seconds
     private val dataManager = DataManager(30, TimeUnit.SECONDS)
 
-    fun getMovies(): LiveData<Resource<PopularMoviesWrapper>> {
-        return object : NetworkBounding<PopularMoviesWrapper, PopularMoviesWrapper>() {
-            override fun saveApiResToDb(item: PopularMoviesWrapper) {
+    fun getMovies(): LiveData<Resource<MoviesWrapper>> {
+        return object : NetworkBounding<MoviesWrapper, MoviesWrapper>() {
+            override fun saveApiResToDb(item: MoviesWrapper) {
                 scope.launch {
                     withContext(IO) {
                         movieDao.insert(item.results.asDatabaseObject())
@@ -42,27 +42,27 @@ class MovieRepository @Inject constructor(
                 }
             }
 
-            override fun shouldFetch(data: PopularMoviesWrapper?): Boolean {
+            override fun shouldFetch(data: MoviesWrapper?): Boolean {
                 return data == null || data.results.isEmpty() || data.results == null || dataManager.shouldRefresh(
                     "MAIN"
                 )
             }
 
-            override fun fetchFromDb(): LiveData<PopularMoviesWrapper> {
-                val test = MediatorLiveData<PopularMoviesWrapper>()
+            override fun fetchFromDb(): LiveData<MoviesWrapper> {
+                val test = MediatorLiveData<MoviesWrapper>()
                 scope.launch {
                     withContext(Main) {
                         test.addSource(movieDao.getAll()) {
                             test.removeSource(movieDao.getAll())
-                            test.value = PopularMoviesWrapper(it.asDomainObject())
+                            test.value = MoviesWrapper(it.asDomainObject())
                         }
                     }
                 }
                 return test
             }
 
-            override fun makeApiCall(): LiveData<PopularMoviesWrapper> {
-                val test = MutableLiveData<PopularMoviesWrapper>()
+            override fun makeApiCall(): LiveData<MoviesWrapper> {
+                val test = MutableLiveData<MoviesWrapper>()
                 scope.launch {
                     try {
                         test.value = tmdbApi.getPopularMovies()
@@ -89,5 +89,9 @@ class MovieRepository @Inject constructor(
 
     suspend fun getAllMovieGenres(): GenresWrapper {
         return tmdbApi.getAllMovieGenres()
+    }
+
+    suspend fun getMoviesWithGenre(id: String): MoviesWrapper {
+        return tmdbApi.getMoviesWithGenre(id)
     }
 }
