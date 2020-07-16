@@ -3,8 +3,7 @@ package com.example.simplemovies.homescreen
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.simplemovies.database.MovieDao
-import com.example.simplemovies.domain.PopularMovies
+import com.example.simplemovies.domain.MoviesWrapper
 import com.example.simplemovies.domain.MovieNetwork
 import com.example.simplemovies.network.APIStatus
 import com.example.simplemovies.network.Resource
@@ -48,7 +47,7 @@ class HomescreenViewModel @Inject constructor(private val movieRepo: MovieReposi
     }
 
     //Pass repo function to attach observer in fragment
-    fun fetchMovies(): LiveData<Resource<PopularMovies>> {
+    fun fetchMovies(): LiveData<Resource<MoviesWrapper>> {
         return movieRepo.getMovies()
     }
 }

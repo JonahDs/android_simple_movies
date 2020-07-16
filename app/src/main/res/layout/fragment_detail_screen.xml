@@ -74,6 +74,7 @@
 
             <TextView
                 android:id="@+id/textView"
+                style="@style/movie_detail_leading_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -83,7 +84,6 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@id/imageView3"
                 app:layout_constraintTop_toBottomOf="@+id/imageView3"
-                style="@style/movie_detail_leading_text"
                 tools:text="Some Movie Title" />
 
             <TextView
@@ -111,9 +111,9 @@
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
                 <TextView
+                    style="@style/movie_detail_regular_text"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    style="@style/movie_detail_regular_text"
                     android:text="@{viewmodel.result.overview}"
                     tools:text="Artemis Fowl is a 12-year-old genius and descendant of a long line of criminal masterminds. He soon finds himself in an epic battle against a race of powerful underground fairies who may be behind his father's disappearance.
 Artemis Fowl is a 12-year-old genius and descendant of a long line of criminal masterminds. He soon finds himself in an epic battle against a race of powerful underground fairies who may be behind his father's disappearance.">
