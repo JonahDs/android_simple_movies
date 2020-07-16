@@ -25,5 +25,10 @@
         android:id="@+id/PickAMovie"
         android:name="com.example.simplemovies.moviepicker.MoviePickerFragment"
         android:label="Pick A Movie"
-        tools:layout="@layout/fragment_movie_picker" />
+        tools:layout="@layout/fragment_movie_picker" >
+        <action
+            android:id="@+id/action_PickAMovie_to_MovieDetails"
+            app:destination="@id/MovieDetails"
+            app:popUpTo="@+id/Movies" />
+    </fragment>
 </navigation>

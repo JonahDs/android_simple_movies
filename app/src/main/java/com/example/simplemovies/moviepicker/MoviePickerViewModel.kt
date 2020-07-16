@@ -3,11 +3,8 @@ package com.example.simplemovies.moviepicker
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.example.simplemovies.domain.GenresWrapper
 import com.example.simplemovies.domain.MovieNetwork
-import com.example.simplemovies.domain.MoviesWrapper
 import com.example.simplemovies.repositories.MovieRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,36 +18,36 @@ class MoviePickerViewModel @Inject constructor(private val movieRepo: MovieRepos
 
     private val scope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-    private var _movieGenres = MutableLiveData<GenresWrapper>()
+    private val _randomMovie = MutableLiveData<MovieNetwork>()
 
-    val movieGenres : LiveData<GenresWrapper> get() = _movieGenres
+    val randomMovie: LiveData<MovieNetwork> get() = _randomMovie
 
-    private var _moviesWithGenre = MutableLiveData<MovieNetwork>()
+    private var _navigationProperty = MutableLiveData<Int>()
 
-    val moviesWithGenre: LiveData<MovieNetwork> get() = _moviesWithGenre
+    val navigationProperty get() = _navigationProperty
 
     init {
-        fetchGenres()
+        fetchRandomMovie()
     }
 
-    private fun fetchGenres() {
+    private fun fetchRandomMovie() {
         scope.launch {
             try {
-                _movieGenres.value = movieRepo.getAllMovieGenres()
-            } catch (e: Exception) {
-                Log.i("GENRES_EX", e.message.toString())
-            }
-        }
-    }
-
-    fun fetchMovieById(genreId: Int) {
-        scope.launch {
-            try {
-                _moviesWithGenre.value =  movieRepo.getMoviesWithGenre(genreId.toString()).results.random()
+                _randomMovie.value =  movieRepo.getRandomMovie().results.random()
             } catch (e: Exception) {
                 Log.i("GENRES_EX_", e.message.toString())
 
             }
         }
     }
+
+    fun clicked(movieId: Int) {
+        Log.i("CLICKED", movieId.toString())
+        _navigationProperty.value = movieId
+    }
+
+    fun navigationCompleted() {
+        _navigationProperty.value = null
+    }
+
 }

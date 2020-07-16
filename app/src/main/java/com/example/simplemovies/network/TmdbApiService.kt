@@ -31,6 +31,15 @@ interface TmdbApiService {
         @Query("include_adult") adult: Boolean = false,
         @Query("include_video") vid: Boolean = false
     ): MoviesWrapper
+
+
+    //Get 200 movies with a score >= 0 to then pick a random one
+    @GET("3/discover/movie")
+    suspend fun getRandomMovies(
+        @Query("vote_average.gte") seed: Int = 0,
+        @Query("page") pager: Int = 10,
+        @Query("include_adult") adult: Boolean = false
+    ): MoviesWrapper
 }
 
 enum class APIStatus { LOADING, ERROR, DONE }
