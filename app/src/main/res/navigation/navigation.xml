@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_homescreen_to_detailscreen"
             app:destination="@+id/MovieDetails" />
+        <action
+            android:id="@+id/action_Movies_to_searchLanding"
+            app:destination="@id/SearchLanding" />
     </fragment>
     <fragment
         android:id="@+id/MovieDetails"
@@ -30,5 +33,15 @@
             android:id="@+id/action_PickAMovie_to_MovieDetails"
             app:destination="@id/MovieDetails"
             app:popUpTo="@+id/Movies" />
+    </fragment>
+    <fragment
+        android:id="@+id/SearchLanding"
+        android:name="com.example.simplemovies.search.SearchLanding"
+        android:label="fragment_search_landing"
+        tools:layout="@layout/fragment_search_landing" >
+        <argument
+            android:name="query"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 </navigation>

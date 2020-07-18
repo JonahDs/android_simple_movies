@@ -5,6 +5,7 @@ import com.example.simplemovies.detailscreen.di.DetailScreenComponent
 import com.example.simplemovies.homescreen.di.HomescreenComponent
 import com.example.simplemovies.moviepicker.di.MoviePickerComponent
 import com.example.simplemovies.network.NetworkModule
+import com.example.simplemovies.search.di.SearchLandingComponent
 import dagger.BindsInstance
 import dagger.Component
 import dagger.Module
@@ -22,7 +23,8 @@ interface ApplicationGraph {
     fun homescreenComponent(): HomescreenComponent.Factory
     fun detailscreenComponent(): DetailScreenComponent.Factory
     fun moviepickerComponent(): MoviePickerComponent.Factory
+    fun searchscreenComponent(): SearchLandingComponent.Factory
 }
 
-@Module(subcomponents = [HomescreenComponent::class, DetailScreenComponent::class, MoviePickerComponent::class])
+@Module(subcomponents = [HomescreenComponent::class, DetailScreenComponent::class, MoviePickerComponent::class, SearchLandingComponent::class])
 object SubComponentModule

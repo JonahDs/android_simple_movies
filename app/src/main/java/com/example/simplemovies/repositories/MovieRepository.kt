@@ -98,4 +98,8 @@ class MovieRepository @Inject constructor(
     suspend fun getRandomMovie(): MoviesWrapper {
         return tmdbApi.getRandomMovies()
     }
+
+    suspend fun getMoviesOfQuery(query: String): MoviesWrapper {
+        return tmdbApi.getMoviesOfQuery(query)
+    }
 }

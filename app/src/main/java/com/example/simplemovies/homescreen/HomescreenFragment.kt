@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.simplemovies.MovieApplication
 import com.example.simplemovies.database.MovieDao
 import com.example.simplemovies.database.SimpleMovieDatabase
@@ -29,6 +30,7 @@ class HomescreenFragment : Fragment() {
 
     //create viewmodel using injected property
     private val homescreenViewModel by viewModels<HomescreenViewModel> { viewModelfactory }
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

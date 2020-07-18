@@ -2,8 +2,10 @@ package com.example.simplemovies
 
 import android.app.SearchManager
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.widget.SearchView
 import androidx.databinding.DataBindingUtil
@@ -13,6 +15,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.navigateUp
 import com.example.simplemovies.databinding.ActivityMainBinding
+import com.example.simplemovies.homescreen.HomescreenFragmentDirections
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,10 +33,16 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
 
         val navView = binding.navView.menu
-        navView.findItem(R.id.search).setVisible(false)
+        navView.findItem(R.id.search).isVisible = false
 
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
         NavigationUI.setupWithNavController(binding.navView, navController)
+
+        if(Intent.ACTION_SEARCH === intent.action) {
+            intent.getStringExtra(SearchManager.QUERY)?.also {
+                findNavController(R.id.navhostFragment).navigate(HomescreenFragmentDirections.actionMoviesToSearchLanding(it))
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -46,6 +55,7 @@ class MainActivity : AppCompatActivity() {
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         (menu.findItem(R.id.search).actionView as SearchView).apply {
             setSearchableInfo(searchManager.getSearchableInfo(componentName))
+            queryHint = "Search movies by title"
         }
         return true
     }
