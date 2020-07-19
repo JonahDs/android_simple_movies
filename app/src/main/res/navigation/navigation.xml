@@ -37,8 +37,8 @@
     <fragment
         android:id="@+id/SearchLanding"
         android:name="com.example.simplemovies.search.SearchLanding"
-        android:label="fragment_search_landing"
-        tools:layout="@layout/fragment_search_landing" >
+        android:label="Search results"
+        tools:layout="@layout/fragment_search_landing">
         <argument
             android:name="query"
             app:argType="string"
