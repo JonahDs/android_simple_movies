@@ -41,7 +41,7 @@ class GenreRepository @Inject constructor(
             }
 
             override fun shouldFetch(data: GenresWrapper?): Boolean {
-                return data == null || data.genres.isEmpty() || dataManager.shouldRefresh("MAIN")
+                return data == null || data.genres.isEmpty() || data.genres == null
             }
 
             override fun fetchFromDb(): LiveData<GenresWrapper>  {

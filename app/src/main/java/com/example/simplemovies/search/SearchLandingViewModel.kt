@@ -20,10 +20,6 @@ class SearchLandingViewModel @Inject constructor(private val movierepo: MovieRep
 
     val searchRes: LiveData<MoviesWrapper> get() = _searchRes
 
-    private val _genres = MutableLiveData<List<GenreNetwork>>()
-
-    val genres: LiveData<List<GenreNetwork>> get() = _genres
-
     fun search(query: String) {
         viewModelScope.launch {
             _searchRes.value = movierepo.getMoviesOfQuery(query.toLowerCase())
@@ -34,7 +30,4 @@ class SearchLandingViewModel @Inject constructor(private val movierepo: MovieRep
         return genreRepo.getGenres()
     }
 
-    fun displayGenres(genres: List<GenreNetwork>) {
-        _genres.value = genres
-    }
 }

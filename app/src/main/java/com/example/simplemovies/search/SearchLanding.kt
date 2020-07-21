@@ -82,17 +82,15 @@ class SearchLanding : Fragment() {
         }
 
         searchLandingViewModel.fetchGenres().observe(viewLifecycleOwner, Observer {
-            Log.i("FRAGMENT", it.status.toString())
-            Log.i("FRAGMENT_DATA", it.data.toString())
-
             if(it.data != null) {
+                Log.i("FRAGMENT", it.data.toString())
+                //No recyclerview like pattern can be used: https://github.com/material-components/material-components-android/issues/997
                 val chipGroup = binding.chipsGroup
                 it.data.genres.forEach {genres ->
-                    val chip = Chip(this.requireContext())
+                    val chip = LayoutInflater.from(requireContext()).inflate(R.layout.genre_chip, null) as Chip
                     chip.text = genres.name
                     chipGroup.addView(chip)
                 }
-                searchLandingViewModel.displayGenres(it.data.genres)
             }
         })
 

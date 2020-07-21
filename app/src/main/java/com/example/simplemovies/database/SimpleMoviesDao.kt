@@ -18,7 +18,6 @@ interface MovieDao {
 
 @Dao
 interface GenreDao {
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(genres: List<GenreDb>)
 
