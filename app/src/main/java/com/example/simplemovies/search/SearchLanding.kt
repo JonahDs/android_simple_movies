@@ -4,11 +4,13 @@ package com.example.simplemovies.search
 import android.content.Context
 import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.example.simplemovies.MovieApplication
@@ -16,6 +18,7 @@ import com.example.simplemovies.R
 import com.example.simplemovies.databinding.FragmentSearchLandingBinding
 import com.example.simplemovies.homescreen.OnClickListener
 import com.example.simplemovies.homescreen.PhotoGridAdapter
+import com.google.android.material.chip.Chip
 import javax.inject.Inject
 
 /**
@@ -77,6 +80,21 @@ class SearchLanding : Fragment() {
                 openState = true
             }
         }
+
+        searchLandingViewModel.fetchGenres().observe(viewLifecycleOwner, Observer {
+            Log.i("FRAGMENT", it.status.toString())
+            Log.i("FRAGMENT_DATA", it.data.toString())
+
+            if(it.data != null) {
+                val chipGroup = binding.chipsGroup
+                it.data.genres.forEach {genres ->
+                    val chip = Chip(this.requireContext())
+                    chip.text = genres.name
+                    chipGroup.addView(chip)
+                }
+                searchLandingViewModel.displayGenres(it.data.genres)
+            }
+        })
 
         binding.lifecycleOwner = this
         return binding.root

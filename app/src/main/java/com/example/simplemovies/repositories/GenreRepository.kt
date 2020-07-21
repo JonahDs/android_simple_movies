@@ -1,9 +1,7 @@
 package com.example.simplemovies.repositories
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.liveData
+import androidx.lifecycle.*
 import com.example.simplemovies.database.GenreDao
 import com.example.simplemovies.database.asGenreNetwork
 import com.example.simplemovies.domain.GenresWrapper
@@ -46,12 +44,18 @@ class GenreRepository @Inject constructor(
                 return data == null || data.genres.isEmpty() || dataManager.shouldRefresh("MAIN")
             }
 
-            override fun fetchFromDb(): LiveData<GenresWrapper> =
-                liveData(context = scope.coroutineContext) {
-                    Transformations.map(genreDao.getAll()) {
-                        liveData { emit(GenresWrapper(it.asGenreNetwork())) }
+            override fun fetchFromDb(): LiveData<GenresWrapper>  {
+                val test = MediatorLiveData<GenresWrapper>()
+                scope.launch {
+                    withContext(Main) {
+                        test.addSource(genreDao.getAll()){
+                            test.removeSource(genreDao.getAll())
+                            test.value = GenresWrapper(it.asGenreNetwork())
+                        }
                     }
                 }
+                return test
+            }
 
             override fun makeApiCall(): LiveData<GenresWrapper> = liveData {
                 try {

@@ -21,6 +21,9 @@ object ApplicationModule {
         return MovieRepository(service, database.movieDao)
     }
 
+    @Singleton
+    @JvmStatic
+    @Provides
     fun provideGenreRepo(service: TmdbApiService, database: SimpleMovieDatabase): GenreRepository {
         return GenreRepository(service, database.genreDao)
     }
