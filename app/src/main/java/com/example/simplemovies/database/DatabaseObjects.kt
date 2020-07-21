@@ -2,6 +2,7 @@ package com.example.simplemovies.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.simplemovies.domain.GenreNetwork
 import com.example.simplemovies.domain.MovieNetwork
 
 @Entity(tableName = "movies")
@@ -16,7 +17,17 @@ data class MovieDb(
     val vote_count: Int
 )
 
-fun List<MovieDb>.asDomainObject(): List<MovieNetwork> {
+@Entity(tableName = "genres")
+data class GenreDb(
+    @PrimaryKey
+    val id: Int,
+    val name: String
+)
+
+//region helper function
+
+
+fun List<MovieDb>.asMovieNetwork(): List<MovieNetwork> {
     return map {
         MovieNetwork(
             id = it.id,
@@ -29,3 +40,13 @@ fun List<MovieDb>.asDomainObject(): List<MovieNetwork> {
         )
     }
 }
+
+fun List<GenreDb>.asGenreNetwork(): List<GenreNetwork> {
+    return map {
+        GenreNetwork(
+            id = it.id,
+            name =  it.name
+        )
+    }
+}
+//endregion

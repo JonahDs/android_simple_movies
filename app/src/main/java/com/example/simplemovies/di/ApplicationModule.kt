@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.example.simplemovies.database.SimpleMovieDatabase
 import com.example.simplemovies.network.TmdbApiService
+import com.example.simplemovies.repositories.GenreRepository
 import com.example.simplemovies.repositories.MovieRepository
 import dagger.Module
 import dagger.Provides
@@ -16,8 +17,12 @@ object ApplicationModule {
     @Singleton
     @JvmStatic
     @Provides
-    fun provideRepo(service: TmdbApiService, database: SimpleMovieDatabase): MovieRepository {
-        return MovieRepository(service, database.MovieDao)
+    fun provideMovieRepo(service: TmdbApiService, database: SimpleMovieDatabase): MovieRepository {
+        return MovieRepository(service, database.movieDao)
+    }
+
+    fun provideGenreRepo(service: TmdbApiService, database: SimpleMovieDatabase): GenreRepository {
+        return GenreRepository(service, database.genreDao)
     }
 
     //Provide our database

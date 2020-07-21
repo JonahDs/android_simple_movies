@@ -15,3 +15,14 @@ interface MovieDao {
     fun getAll(): LiveData<List<MovieDb>>
 
 }
+
+@Dao
+interface GenreDao {
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(genres: List<GenreDb>)
+
+    @Query("select * from genres")
+    fun getAll(): LiveData<List<GenreDb>>
+
+}
