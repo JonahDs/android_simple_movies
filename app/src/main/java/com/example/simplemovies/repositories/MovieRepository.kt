@@ -1,11 +1,12 @@
 package com.example.simplemovies.repositories
 
+
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.simplemovies.database.MovieDao
-import com.example.simplemovies.database.asDomainObject
+import com.example.simplemovies.database.asMovieNetwork
 import com.example.simplemovies.domain.*
 import com.example.simplemovies.network.NetworkBounding
 import com.example.simplemovies.network.Resource
@@ -37,7 +38,7 @@ class MovieRepository @Inject constructor(
             override fun saveApiResToDb(item: MoviesWrapper) {
                 scope.launch {
                     withContext(IO) {
-                        movieDao.insert(item.results.asDatabaseObject())
+                        movieDao.insert(item.results.asMovieDatabase())
                     }
                 }
             }
@@ -54,7 +55,7 @@ class MovieRepository @Inject constructor(
                     withContext(Main) {
                         test.addSource(movieDao.getAll()) {
                             test.removeSource(movieDao.getAll())
-                            test.value = MoviesWrapper(it.asDomainObject())
+                            test.value = MoviesWrapper(it.asMovieNetwork())
                         }
                     }
                 }
@@ -97,5 +98,9 @@ class MovieRepository @Inject constructor(
 
     suspend fun getRandomMovie(): MoviesWrapper {
         return tmdbApi.getRandomMovies()
+    }
+
+    suspend fun getMoviesOfQuery(query: String): MoviesWrapper {
+        return tmdbApi.getMoviesOfQuery(query)
     }
 }

@@ -7,19 +7,19 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Filter
 import com.example.simplemovies.databinding.ListItemBinding
-import com.example.simplemovies.domain.Genre
+import com.example.simplemovies.domain.GenreNetwork
 
-class GenreAdapter(context: Context, resource: Int, list: List<Genre>) :
-    ArrayAdapter<Genre>(context, resource, list) {
+class GenreAdapter(context: Context, resource: Int, list: List<GenreNetwork>) :
+    ArrayAdapter<GenreNetwork>(context, resource, list) {
 
     val allItems = list
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var binding = ListItemBinding.inflate(LayoutInflater.from(context))
 
-        val genre: Genre? = getItem(position)
-        if (genre != null) {
-            binding.genreName.text = genre.name
+        val genreNetwork: GenreNetwork? = getItem(position)
+        if (genreNetwork != null) {
+            binding.genreName.text = genreNetwork.name
         }
         return binding.root
     }
@@ -35,12 +35,12 @@ class GenreAdapter(context: Context, resource: Int, list: List<Genre>) :
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
                 clear()
-                addAll(results?.values as List<Genre>)
+                addAll(results?.values as List<GenreNetwork>)
                 notifyDataSetChanged()
             }
 
             override fun convertResultToString(resultValue: Any?): CharSequence {
-                return (resultValue as Genre).name
+                return (resultValue as GenreNetwork).name
             }
         }
     }

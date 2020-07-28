@@ -1,5 +1,6 @@
 package com.example.simplemovies.network
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 
@@ -12,6 +13,7 @@ abstract class NetworkBounding<ResultType, RequestType> {
         results.value = Resource.Loading(null, APIStatus.LOADING)
         val source = fetchFromDb()
         results.addSource(source) { data ->
+            Log.i("NETWORK", data.toString())
             results.removeSource(source)
             if (shouldFetch(data)) {
                 fetchFromNetwork(source)
