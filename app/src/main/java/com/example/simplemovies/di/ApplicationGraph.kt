@@ -25,6 +25,7 @@ interface ApplicationGraph {
     fun detailscreenComponent(): DetailScreenComponent.Factory
     fun moviepickerComponent(): MoviePickerComponent.Factory
     fun searchscreenComponent(): SearchLandingComponent.Factory
+    fun experimentalComponent(): ExperimentalComponent.Factory
 }
 
 @Module(subcomponents = [HomescreenComponent::class, DetailScreenComponent::class, MoviePickerComponent::class, SearchLandingComponent::class, ExperimentalComponent::class])

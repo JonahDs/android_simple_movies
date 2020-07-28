@@ -44,4 +44,13 @@
             app:argType="string"
             app:nullable="true" />
     </fragment>
+    <fragment
+        android:id="@+id/experimental"
+        android:name="com.example.simplemovies.experimental.Experimental"
+        android:label="Experiment with movies"
+        tools:layout="@layout/experimental_fragment">
+        <action
+            android:id="@+id/action_experimental2_to_MovieDetails"
+            app:destination="@id/MovieDetails" />
+    </fragment>
 </navigation>
