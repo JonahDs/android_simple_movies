@@ -1,6 +1,7 @@
 package com.example.simplemovies.search
 
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
@@ -8,6 +9,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -16,6 +21,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.simplemovies.MovieApplication
 import com.example.simplemovies.R
 import com.example.simplemovies.databinding.FragmentSearchLandingBinding
+import com.example.simplemovies.domain.GenreNetwork
 import com.example.simplemovies.homescreen.OnClickListener
 import com.example.simplemovies.homescreen.PhotoGridAdapter
 import com.google.android.material.chip.Chip
@@ -36,6 +42,8 @@ class SearchLanding : Fragment() {
     private val args: SearchLandingArgs by navArgs()
 
     private var openState: Boolean = false
+
+    private val includingStates: List<String> = listOf("Include", "Exclude")
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -60,43 +68,8 @@ class SearchLanding : Fragment() {
 
         searchLandingViewModel.search(args.query ?: "")
 
-        binding.button.setOnClickListener {
-            if (openState) {
-                binding.button.setCompoundDrawablesWithIntrinsicBounds(
-                    R.drawable.ic_font_awesome_plus_box,
-                    0,
-                    0,
-                    0
-                )
-                binding.advancedPanel.visibility = View.GONE
-                openState = false
-            } else {
-                binding.button.setCompoundDrawablesWithIntrinsicBounds(
-                    R.drawable.anim_plus_to_minus, 0 ,0 ,0
-                )
-                advancedAnimation = binding.button.compoundDrawables[0] as AnimationDrawable
-                binding.advancedPanel.visibility = View.VISIBLE
-                advancedAnimation.start()
-                openState = true
-            }
-        }
-
-        searchLandingViewModel.fetchGenres().observe(viewLifecycleOwner, Observer {
-            if(it.data != null) {
-                Log.i("FRAGMENT", it.data.toString())
-                //No recyclerview like pattern can be used: https://github.com/material-components/material-components-android/issues/997
-                val chipGroup = binding.chipsGroup
-                it.data.genres.forEach {genres ->
-                    val chip = LayoutInflater.from(requireContext()).inflate(R.layout.genre_chip, null) as Chip
-                    chip.text = genres.name
-                    chipGroup.addView(chip)
-                }
-            }
-        })
-
         binding.lifecycleOwner = this
         return binding.root
     }
-
 
 }

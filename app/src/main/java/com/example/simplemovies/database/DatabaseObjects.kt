@@ -36,7 +36,8 @@ fun List<MovieDb>.asMovieNetwork(): List<MovieNetwork> {
             title = it.title,
             release_date = it.release_date,
             poster_path = it.poster_path,
-            overview = it.overview
+            overview = it.overview,
+            genres = null
         )
     }
 }

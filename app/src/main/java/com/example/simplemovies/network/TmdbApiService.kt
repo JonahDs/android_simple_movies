@@ -43,6 +43,7 @@ interface TmdbApiService {
 
     @GET("3/search/movie")
     suspend fun getMoviesOfQuery(@Query("query") query: String): MoviesWrapper
+
 }
 
 enum class APIStatus { LOADING, ERROR, DONE }
