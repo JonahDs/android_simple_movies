@@ -12,7 +12,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.simplemovies.MovieApplication
 import com.example.simplemovies.R
-import com.example.simplemovies.databinding.ExperimentalFragmentBinding
+import com.example.simplemovies.databinding.FragmentExperimentalBinding
+import com.example.simplemovies.domain.GenreNetwork
 import com.google.android.material.chip.Chip
 import javax.inject.Inject
 
@@ -34,8 +35,8 @@ class Experimental : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding: ExperimentalFragmentBinding =
-            ExperimentalFragmentBinding.inflate(inflater).apply {
+        val binding: FragmentExperimentalBinding =
+            FragmentExperimentalBinding.inflate(inflater).apply {
                 viewmodel = experimentalViewmodel
             }
 
@@ -44,27 +45,43 @@ class Experimental : Fragment() {
             if (it.data != null) {
                 val chipGroup = binding.chipsGroup
                 it.data.genres.forEach { genre ->
-                    val chip = LayoutInflater.from(requireContext())
-                        .inflate(R.layout.genre_chip, null) as Chip
-                    chip.text = genre.name
-                    chipGroup.addView(chip)
+                    chipGroup.addView(chipFactory(genre))
                 }
             }
         })
 
-        //Setup spinner
-        ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.include_states,
-            android.R.layout.simple_spinner_item
-        )
-            .also { adapter ->
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                binding.includeStates.adapter = adapter
-            }
+        binding.includeStates.adapter = createArrayAdapter(R.array.include_states)
+
+        binding.userScore.adapter = createArrayAdapter(R.array.user_scores)
+
+        binding.type.adapter = createArrayAdapter(R.array.types)
+
+        binding.searchButton.setOnClickListener {
+            experimentalViewmodel.discover(
+                binding.includeStates.selectedItem.toString(),
+                binding.type.selectedItem.toString(),
+                binding.userScore.selectedItem.toString(),
+                requireContext().resources
+            )
+        }
 
         binding.lifecycleOwner = this
         return binding.root
+    }
+
+    private fun createArrayAdapter(arrayRes: Int): ArrayAdapter<CharSequence> {
+        return ArrayAdapter.createFromResource(requireContext(), arrayRes, android.R.layout.simple_spinner_item).also {
+            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
+    }
+
+    private fun chipFactory(genre: GenreNetwork): Chip {
+        return (LayoutInflater.from(requireContext()).inflate(R.layout.genre_chip, null) as Chip).also {
+            it.setOnCheckedChangeListener { _, isChecked ->
+                experimentalViewmodel.manageChips(genre, isChecked)
+            }
+            it.text = genre.name
+        }
     }
 
 }

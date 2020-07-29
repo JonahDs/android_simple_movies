@@ -25,14 +25,6 @@ interface TmdbApiService {
     @GET("/3/genre/movie/list")
     suspend fun getAllMovieGenres(): GenresWrapper
 
-    @GET("3/discover/movie")
-    suspend fun getMoviesWithGenre(
-        @Query("with_genres") id: String,
-        @Query("include_adult") adult: Boolean = false,
-        @Query("include_video") vid: Boolean = false
-    ): MoviesWrapper
-
-
     //Get 200 movies with a score >= 0 to then pick a random one
     @GET("3/discover/movie")
     suspend fun getRandomMovies(
@@ -43,6 +35,13 @@ interface TmdbApiService {
 
     @GET("3/search/movie")
     suspend fun getMoviesOfQuery(@Query("query") query: String): MoviesWrapper
+
+    @GET("3/discover/{type}")
+    suspend fun getDiscover(
+        @Path("type") type: String? = "movie",
+        @Query("with_genres") genreInc: List<String>? = listOf(),
+        @Query("vote_average.gte") score: Int? = 0
+    ): MoviesWrapper
 
 }
 

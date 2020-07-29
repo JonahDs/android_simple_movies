@@ -88,19 +88,15 @@ class MovieRepository @Inject constructor(
         return tmdbApi.getMovieCredits(movieId)
     }
 
-    suspend fun getAllMovieGenres(): GenresWrapper {
-        return tmdbApi.getAllMovieGenres()
-    }
-
-    suspend fun getMoviesWithGenre(id: String): MoviesWrapper {
-        return tmdbApi.getMoviesWithGenre(id)
-    }
-
     suspend fun getRandomMovie(): MoviesWrapper {
         return tmdbApi.getRandomMovies()
     }
 
     suspend fun getMoviesOfQuery(query: String): MoviesWrapper {
         return tmdbApi.getMoviesOfQuery(query)
+    }
+
+    suspend fun getDiscover(type: String? = "movie", genres: List<String> = listOf(), score: Int? = 0): MoviesWrapper {
+        return tmdbApi.getDiscover(type, genres, score)
     }
 }

@@ -48,7 +48,7 @@
         android:id="@+id/experimental"
         android:name="com.example.simplemovies.experimental.Experimental"
         android:label="Experiment with movies"
-        tools:layout="@layout/experimental_fragment">
+        tools:layout="@layout/fragment_experimental">
         <action
             android:id="@+id/action_experimental2_to_MovieDetails"
             app:destination="@id/MovieDetails" />
