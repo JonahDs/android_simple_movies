@@ -80,12 +80,12 @@ class MovieRepository @Inject constructor(
 
 
     //No need for these methods to implement our networkbounding since it will always be fetched from remote
-    suspend fun getMovieDetails(movieId: Int): MovieResult {
-        return tmdbApi.getMovieDetails(movieId)
+    suspend fun getMovieDetails(type: String, id: Int): MovieResult {
+        return tmdbApi.getMovieDetails(type, id)
     }
 
-    suspend fun getMovieCast(movieId: Int): Cast {
-        return tmdbApi.getMovieCredits(movieId)
+    suspend fun getMovieCast(type: String, id: Int): Cast {
+        return tmdbApi.getMovieCredits(type, id)
     }
 
     suspend fun getRandomMovie(): MoviesWrapper {
@@ -96,7 +96,7 @@ class MovieRepository @Inject constructor(
         return tmdbApi.getMoviesOfQuery(query)
     }
 
-    suspend fun getDiscover(type: String? = "movie", genres: List<String> = listOf(), score: Int? = 0): MoviesWrapper {
-        return tmdbApi.getDiscover(type, genres, score)
+    suspend fun getDiscover(type: String? = "movie", genresInc: List<String>, genresExl: List<String>, score: Int = 0): MoviesWrapper {
+        return tmdbApi.getDiscover(type, genresInc , genresExl, score, if(score == 0) null else score +1)
     }
 }

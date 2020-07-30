@@ -58,7 +58,8 @@ class DetailscreenFragment : Fragment() {
 
         binding.root.setBackgroundColor(ContextCompat.getColor(this!!.requireContext()!!, colorBackground))
 
-        detailViewModel.getMovieDetails(args.movieId)
+        detailViewModel.getDetails(args.id, args.type)
+
 
         return binding.root
     }

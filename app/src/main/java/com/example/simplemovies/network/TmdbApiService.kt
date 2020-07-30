@@ -12,14 +12,16 @@ interface TmdbApiService {
     @GET("/3/movie/popular")
     suspend fun getPopularMovies(): MoviesWrapper
 
-    @GET("/3/movie/{movie_id}")
+    @GET("/3/{type}/{movie_id}")
     suspend fun getMovieDetails(
+        @Path("type") type: String = "movies",
         @Path("movie_id") movie_id: Int
     ): MovieResult
 
-    @GET("/3/movie/{movie_id}/credits")
+    @GET("/3/{type}/{id}/credits")
     suspend fun getMovieCredits(
-        @Path("movie_id") movie_id: Int
+        @Path("type") type: String,
+        @Path("id") id: Int
     ): Cast
 
     @GET("/3/genre/movie/list")
@@ -40,7 +42,9 @@ interface TmdbApiService {
     suspend fun getDiscover(
         @Path("type") type: String? = "movie",
         @Query("with_genres") genreInc: List<String>? = listOf(),
-        @Query("vote_average.gte") score: Int? = 0
+        @Query("without_genres") genreExcl: List<String>? = listOf(),
+        @Query("vote_average.gte") score: Int? = 0,
+        @Query("vote_average.lte") cielScore: Int? = 0
     ): MoviesWrapper
 
 }
