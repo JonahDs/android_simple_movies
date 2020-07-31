@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
@@ -57,6 +58,8 @@ class MainActivity : AppCompatActivity() {
             setSearchableInfo(searchManager.getSearchableInfo(componentName))
             queryHint = "Search movies by title"
         }
+        menu.findItem(R.id.PickAMovie).isVisible = false
+        menu.findItem(R.id.Experimental).isVisible = false
         return true
     }
 }
