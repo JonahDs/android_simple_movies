@@ -32,16 +32,17 @@ class DetailscreenViewModel @Inject constructor(private val movieRepo: MovieRepo
 
     val navSelected: LiveData<Int> get() = _navSelected
 
-    fun getMovieDetails(movieId: Int) {
+    fun getDetails(id: Int, type: String) {
         scope.launch {
             try {
-                _result.value = movieRepo.getMovieDetails(movieId)
-                _movieCast.value = movieRepo.getMovieCast(movieId)
+                _result.value = movieRepo.getMovieDetails(type.toLowerCase(), id)
+                _movieCast.value = movieRepo.getMovieCast(type.toLowerCase(), id)
             } catch (e: Exception) {
                 Log.i("API_ERROR", e.message)
             }
         }
     }
+
 
     fun displayCastDetails(castId: Int) {
         _navSelected.value = castId

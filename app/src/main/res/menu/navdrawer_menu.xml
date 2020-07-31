@@ -6,6 +6,9 @@
         android:id="@+id/PickAMovie"
         android:title="Movie Picker" />
     <item
+        android:id="@+id/Experimental"
+        android:title="Discover" />
+    <item
         android:id="@+id/search"
         android:icon="@drawable/ic_search_black_24dp"
         android:title="Search"

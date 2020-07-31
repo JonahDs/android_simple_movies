@@ -21,13 +21,13 @@ data class Cast(
 )
 //endregion
 
-
 data class MovieNetwork(
     val id: Int,
     val overview: String,
     val poster_path: String?,
-    val release_date: String,
-    val title: String,
+    val release_date: String?,
+    val title: String?,
+    val original_name: String?,
     val vote_average: Double,
     val vote_count: Int,
     val genres: List<GenreNetwork>?
@@ -37,11 +37,17 @@ data class MovieResult(
     val id: Int,
     val backdrop_path: String?,
     val genres: List<GenreNetwork>,
-    val original_title: String,
-    val overview: String,
+    val original_title: String?,
+    val overview: String?,
     val poster_path: String?,
-    val release_date: String,
-    val vote_average: Double
+    val release_date: String?,
+    val vote_average: Double,
+
+    //TO BE EXTRACTED
+    val name: String?,
+    val number_of_episodes: Int?,
+    val number_of_seasons: Int?
+
 )
 
 data class GenreNetwork(
@@ -71,8 +77,8 @@ fun List<MovieNetwork>.asMovieDatabase(): List<MovieDb> {
             id = it.id,
             overview = it.overview,
             poster_path = it.poster_path ?: "",
-            release_date = it.release_date,
-            title = it.title,
+            release_date = it.release_date?: "",
+            title = it.title?: "",
             vote_average = it.vote_average,
             vote_count = it.vote_count
         )

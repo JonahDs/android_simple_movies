@@ -7,8 +7,32 @@
     <string name="advanced_search_underline"><u>Advanced search</u></string>
     <string name="search_placeholder">Search Movies/Shows/...</string>
     <string name="search_button_search">Search</string>
+    <string name="experimental_filter">Filters</string>
+    <string name="experimental_score">Score</string>
+    <string name="experimental_type">Type</string>
+
+
     <string-array name="include_states">
         <item>Include genres</item>
         <item>Exclude genres</item>
+    </string-array>
+
+
+    <string-array name="user_scores">
+        <item>Any</item>
+        <item>(1) Horrific</item>
+        <item>(2) Horrible</item>
+        <item>(3) Very bad</item>
+        <item>(4) Bad</item>
+        <item>(5) Average</item>
+        <item>(6) Fine</item>
+        <item>(7) Good</item>
+        <item>(8) Very good</item>
+        <item>(9) Great</item>
+        <item>(10) Masterpiece</item>
+    </string-array>
+    <string-array name="types">
+        <item>Movie</item>
+        <item>Tv</item>
     </string-array>
 </resources>

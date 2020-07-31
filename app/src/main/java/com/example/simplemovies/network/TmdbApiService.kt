@@ -12,26 +12,20 @@ interface TmdbApiService {
     @GET("/3/movie/popular")
     suspend fun getPopularMovies(): MoviesWrapper
 
-    @GET("/3/movie/{movie_id}")
+    @GET("/3/{type}/{movie_id}")
     suspend fun getMovieDetails(
+        @Path("type") type: String = "movies",
         @Path("movie_id") movie_id: Int
     ): MovieResult
 
-    @GET("/3/movie/{movie_id}/credits")
+    @GET("/3/{type}/{id}/credits")
     suspend fun getMovieCredits(
-        @Path("movie_id") movie_id: Int
+        @Path("type") type: String,
+        @Path("id") id: Int
     ): Cast
 
     @GET("/3/genre/movie/list")
     suspend fun getAllMovieGenres(): GenresWrapper
-
-    @GET("3/discover/movie")
-    suspend fun getMoviesWithGenre(
-        @Query("with_genres") id: String,
-        @Query("include_adult") adult: Boolean = false,
-        @Query("include_video") vid: Boolean = false
-    ): MoviesWrapper
-
 
     //Get 200 movies with a score >= 0 to then pick a random one
     @GET("3/discover/movie")
@@ -43,6 +37,15 @@ interface TmdbApiService {
 
     @GET("3/search/movie")
     suspend fun getMoviesOfQuery(@Query("query") query: String): MoviesWrapper
+
+    @GET("3/discover/{type}")
+    suspend fun getDiscover(
+        @Path("type") type: String? = "movie",
+        @Query("with_genres") genreInc: List<String>? = listOf(),
+        @Query("without_genres") genreExcl: List<String>? = listOf(),
+        @Query("vote_average.gte") score: Int? = 0,
+        @Query("vote_average.lte") cielScore: Int? = 0
+    ): MoviesWrapper
 
 }
 
