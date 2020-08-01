@@ -68,12 +68,7 @@ class HomescreenFragment : Fragment() {
 
         //Observe movies and API state
         this.homescreenViewModel.fetchMovies().observe(viewLifecycleOwner, Observer {
-            if (it.status != null) {
-                this.homescreenViewModel.setState(it.status)
-            }
-            if (it.data != null) {
-                this.homescreenViewModel.displayMovies(it.data.results)
-            }
+            homescreenViewModel.manageState(it)
         })
 
 

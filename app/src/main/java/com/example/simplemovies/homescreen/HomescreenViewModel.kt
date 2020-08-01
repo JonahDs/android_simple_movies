@@ -36,18 +36,28 @@ class HomescreenViewModel @Inject constructor(private val movieRepo: MovieReposi
         _navSelected.value = null
     }
 
+    //Pass repo function to attach observer in fragment
+    fun fetchMovies(): LiveData<Resource<MoviesWrapper>> {
+        return movieRepo.getMovies()
+    }
+
+    //Manage fragment state
+    fun manageState(resource: Resource<MoviesWrapper>) {
+        if(resource.status != null) {
+            setState(resource.status)
+        }
+        if(resource.data != null) {
+            displayMovies(resource.data.results)
+        }
+    }
+
     //Set movies
-    fun displayMovies(movies: List<MovieNetwork>) {
+    private fun displayMovies(movies: List<MovieNetwork>) {
         _displayableMovies.value = movies
     }
 
     //Set API/App status
-    fun setState(state: APIStatus) {
+    private fun setState(state: APIStatus) {
         _apiStatus.value = state
-    }
-
-    //Pass repo function to attach observer in fragment
-    fun fetchMovies(): LiveData<Resource<MoviesWrapper>> {
-        return movieRepo.getMovies()
     }
 }
