@@ -13,7 +13,7 @@ abstract class NetworkBounding<ResultType, RequestType> {
         results.value = Resource.Loading(null, APIStatus.LOADING)
         val source = fetchFromDb()
         results.addSource(source) { data ->
-            Log.i("NETWORK", data.toString())
+            Log.i("NETWORK_", data.toString())
             results.removeSource(source)
             if (shouldFetch(data)) {
                 fetchFromNetwork(source)

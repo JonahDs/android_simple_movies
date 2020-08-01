@@ -4,14 +4,17 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.simplemovies.database.MovieDao
 import com.example.simplemovies.domain.Cast
 import com.example.simplemovies.domain.MovieResult
+import com.example.simplemovies.network.Resource
 import com.example.simplemovies.repositories.MovieRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.lang.Exception
 import javax.inject.Inject
 
 class DetailscreenViewModel @Inject constructor(private val movieRepo: MovieRepository) : ViewModel() {
@@ -32,6 +35,7 @@ class DetailscreenViewModel @Inject constructor(private val movieRepo: MovieRepo
 
     val navSelected: LiveData<Int> get() = _navSelected
 
+
     fun getDetails(id: Int, type: String) {
         scope.launch {
             try {
@@ -43,6 +47,10 @@ class DetailscreenViewModel @Inject constructor(private val movieRepo: MovieRepo
         }
     }
 
+
+    fun getDetailsReworked(id: Int, type: String): LiveData<Resource<MovieResult>> {
+        return movieRepo.getMovieDetailsNew(type.toLowerCase(), id)
+    }
 
     fun displayCastDetails(castId: Int) {
         _navSelected.value = castId

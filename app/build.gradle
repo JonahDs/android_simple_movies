@@ -99,6 +99,7 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 
+
     //Unit testing
     testImplementation "junit:junit:$junit_version"
     testImplementation "org.mockito:mockito-inline:$mockito_core_version"

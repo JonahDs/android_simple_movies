@@ -3,12 +3,14 @@ package com.example.simplemovies.detailscreen
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
 import androidx.navigation.fragment.navArgs
@@ -59,6 +61,11 @@ class DetailscreenFragment : Fragment() {
         binding.root.setBackgroundColor(ContextCompat.getColor(this!!.requireContext()!!, colorBackground))
 
         detailViewModel.getDetails(args.id, args.type)
+
+        detailViewModel.getDetailsReworked(args.id, args.type).observe(viewLifecycleOwner, Observer {
+            Log.i("DETAIL_REWORK_", it.status.toString())
+            Log.i("DETAIL_REWORK_T", it.data.toString())
+        })
 
 
         return binding.root

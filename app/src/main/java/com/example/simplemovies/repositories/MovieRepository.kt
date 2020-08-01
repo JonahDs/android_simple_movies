@@ -5,9 +5,14 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
 import com.example.simplemovies.database.MovieDao
 import com.example.simplemovies.database.asMovieNetwork
-import com.example.simplemovies.domain.*
+import com.example.simplemovies.domain.Cast
+import com.example.simplemovies.domain.MovieResult
+import com.example.simplemovies.domain.MoviesWrapper
+import com.example.simplemovies.domain.asMovieDatabase
+import com.example.simplemovies.network.APIStatus
 import com.example.simplemovies.network.NetworkBounding
 import com.example.simplemovies.network.Resource
 import com.example.simplemovies.network.TmdbApiService
@@ -79,6 +84,24 @@ class MovieRepository @Inject constructor(
     }
 
 
+    fun getMovieDetailsNew(type: String, id: Int): LiveData<Resource<MovieResult>> = liveData (scope.coroutineContext) {
+        try {
+            emitSource(invokeFetching(tmdbApi.getMovieDetails(type, id)))
+        } catch (e: Exception) {
+            emit(Resource.Error(null, APIStatus.ERROR))
+        }
+    }
+
+
+    private fun <T> invokeFetching(call: T): LiveData<Resource<T>> = liveData {
+        emit(Resource.Loading<T>(null, APIStatus.LOADING) as Resource<T>)
+        emit(
+            Resource.Success(call, APIStatus.DONE) as Resource<T>
+        )
+
+    }
+
+
     //No need for these methods to implement our networkbounding since it will always be fetched from remote
     suspend fun getMovieDetails(type: String, id: Int): MovieResult {
         return tmdbApi.getMovieDetails(type, id)
@@ -96,7 +119,18 @@ class MovieRepository @Inject constructor(
         return tmdbApi.getMoviesOfQuery(query)
     }
 
-    suspend fun getDiscover(type: String? = "movie", genresInc: List<String>, genresExl: List<String>, score: Int = 0): MoviesWrapper {
-        return tmdbApi.getDiscover(type, genresInc , genresExl, score, if(score == 0) null else score +1)
+    suspend fun getDiscover(
+        type: String? = "movie",
+        genresInc: List<String>,
+        genresExl: List<String>,
+        score: Int = 0
+    ): MoviesWrapper {
+        return tmdbApi.getDiscover(
+            type,
+            genresInc,
+            genresExl,
+            score,
+            if (score == 0) null else score + 1
+        )
     }
 }
