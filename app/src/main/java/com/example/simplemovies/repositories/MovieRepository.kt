@@ -5,14 +5,12 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.liveData
 import com.example.simplemovies.database.MovieDao
 import com.example.simplemovies.database.asMovieNetwork
 import com.example.simplemovies.domain.Cast
 import com.example.simplemovies.domain.MovieResult
 import com.example.simplemovies.domain.MoviesWrapper
 import com.example.simplemovies.domain.asMovieDatabase
-import com.example.simplemovies.network.APIStatus
 import com.example.simplemovies.network.NetworkBounding
 import com.example.simplemovies.network.Resource
 import com.example.simplemovies.network.TmdbApiService
@@ -92,18 +90,15 @@ class MovieRepository @Inject constructor(
     }
 
 
-
-
-
     //No need for these methods to implement our networkbounding since it will always be fetched from remote
 
 
-    suspend fun getRandomMovie(): MoviesWrapper {
-        return tmdbApi.getRandomMovies()
+    suspend fun getRandomMovie() = withContext(IO) {
+        tmdbApi.getRandomMovies()
     }
 
-    suspend fun getMoviesOfQuery(query: String): MoviesWrapper {
-        return tmdbApi.getMoviesOfQuery(query)
+    suspend fun getMoviesOfQuery(query: String) = withContext(IO) {
+        tmdbApi.getMoviesOfQuery(query)
     }
 
     suspend fun getDiscover(
@@ -111,8 +106,8 @@ class MovieRepository @Inject constructor(
         genresInc: List<String>,
         genresExl: List<String>,
         score: Int = 0
-    ): MoviesWrapper {
-        return tmdbApi.getDiscover(
+    ) = withContext(IO) {
+        tmdbApi.getDiscover(
             type,
             genresInc,
             genresExl,

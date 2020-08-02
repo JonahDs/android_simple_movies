@@ -2,7 +2,6 @@ package com.example.simplemovies.experimental
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -56,13 +55,19 @@ class Experimental : Fragment() {
             }
         })
 
+
         binding.discoveredMovies.adapter = PhotoGridAdapter(OnClickListener {
             experimentalViewmodel.navSelected(it)
         })
 
         experimentalViewmodel.navProperty.observe(viewLifecycleOwner, Observer {
-            if(it != null) {
-                findNavController().navigate(ExperimentalDirections.actionExperimentalToMovieDetails(binding.type.selectedItem.toString(), it))
+            if (it != null) {
+                findNavController().navigate(
+                    ExperimentalDirections.actionExperimentalToMovieDetails(
+                        binding.type.selectedItem.toString(),
+                        it
+                    )
+                )
                 experimentalViewmodel.navCompleted()
             }
         })
@@ -74,11 +79,10 @@ class Experimental : Fragment() {
         binding.type.adapter = createArrayAdapter(R.array.types)
 
         binding.searchButton.setOnClickListener {
-            experimentalViewmodel.discover(
+            fetchDiscover(
                 binding.includeStates.selectedItem.toString(),
                 binding.type.selectedItem.toString(),
-                binding.userScore.selectedItem.toString(),
-                requireContext().resources
+                binding.userScore.selectedItem.toString()
             )
             binding.toolbar.visibility = GONE
             binding.retryButton.visibility = VISIBLE
@@ -91,6 +95,14 @@ class Experimental : Fragment() {
 
         binding.lifecycleOwner = this
         return binding.root
+    }
+
+    private fun fetchDiscover(state: String, type: String, score: String) {
+        experimentalViewmodel.fetchDiscover(
+            state, type, score, requireContext().resources
+        ).observe(viewLifecycleOwner, Observer {
+            experimentalViewmodel.manageDiscoverResource(it)
+        })
     }
 
     private fun createArrayAdapter(arrayRes: Int): ArrayAdapter<CharSequence> {

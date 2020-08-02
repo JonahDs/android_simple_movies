@@ -34,7 +34,7 @@ class DetailscreenViewModel @Inject constructor(private val movieRepo: MovieRepo
     val castStatus: LiveData<APIStatus> get() = _castStatus
 
 
-    fun managaDetailResource(resource: Resource<MovieResult>) {
+    fun manageDetailResource(resource: Resource<MovieResult>) {
         resource.status?.let { _detailStatus.value = it }
         resource.data?.let { _result.value = it }
     }

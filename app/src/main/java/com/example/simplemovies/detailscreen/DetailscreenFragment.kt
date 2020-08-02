@@ -66,7 +66,7 @@ class DetailscreenFragment : Fragment() {
 
         detailViewModel.getMovieDetails(args.type.toLowerCase(), args.id)
             .observe(viewLifecycleOwner, Observer {
-                detailViewModel.managaDetailResource(it)
+                detailViewModel.manageDetailResource(it)
             })
 
         detailViewModel.getMovieCast(args.type.toLowerCase(), args.id)

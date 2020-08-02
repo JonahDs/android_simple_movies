@@ -2,13 +2,14 @@ package com.example.simplemovies.experimental
 
 import android.content.res.Resources
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.simplemovies.R
 import com.example.simplemovies.domain.GenreNetwork
 import com.example.simplemovies.domain.MoviesWrapper
+import com.example.simplemovies.network.APIStatus
+import com.example.simplemovies.network.Resource
+import com.example.simplemovies.network.invokeCall
+import com.example.simplemovies.network.invokeError
 import com.example.simplemovies.repositories.GenreRepository
 import com.example.simplemovies.repositories.MovieRepository
 import kotlinx.coroutines.launch
@@ -27,26 +28,40 @@ class ExperimentalViewModel @Inject constructor(
 
     val discover: LiveData<MoviesWrapper> get() = _discover
 
+    private val _apiStatus = MutableLiveData<APIStatus>()
+
+    val apiStatus: LiveData<APIStatus> get() = _apiStatus
+
     private val _navProperty = MutableLiveData<Int>()
 
     val navProperty: LiveData<Int> get() = _navProperty
 
-    fun discover(state: String, type: String, score: String, resource: Resources) {
+    fun fetchDiscover(
+        state: String,
+        type: String,
+        score: String,
+        resource: Resources
+    ): LiveData<Resource<MoviesWrapper>> = liveData(viewModelScope.coroutineContext) {
         val settings = discoverManager(state, type, score, resource)
-        viewModelScope.launch {
-            try {
-                _discover.value = movieRepository.getDiscover(
-                    type = settings.type?.toLowerCase(),
-                    genresInc = if (settings.state == resource.getStringArray(R.array.include_states)[0]) _checkedChips else listOf(),
-                    genresExl = if (settings.state == resource.getStringArray(R.array.include_states)[1]) _checkedChips else listOf(),
-                    score = if (settings.score != null && settings.score != "") settings.score.toInt() else 0
+        try {
+            emitSource(
+                invokeCall(
+                    movieRepository.getDiscover(
+                        type = settings.type?.toLowerCase(),
+                        genresInc = if (settings.state == resource.getStringArray(R.array.include_states)[0]) _checkedChips else listOf(),
+                        genresExl = if (settings.state == resource.getStringArray(R.array.include_states)[1]) _checkedChips else listOf(),
+                        score = if (settings.score != null && settings.score != "") settings.score.toInt() else 0
+                    )
                 )
-                Log.i("EXC_TV", _discover.value.toString())
-
-            } catch (e: Exception) {
-                Log.i("EXP_EXC", e.message.toString())
-            }
+            )
+        } catch (e: Exception) {
+            emitSource(invokeError())
         }
+    }
+
+    fun manageDiscoverResource(resource: Resource<MoviesWrapper>) {
+        resource.status?.let { _apiStatus.value = it }
+        resource.data?.let { _discover.value = it }
     }
 
     fun manageChips(genre: GenreNetwork, isChecked: Boolean) {
@@ -74,7 +89,6 @@ class ExperimentalViewModel @Inject constructor(
             val score = resource.getStringArray(R.array.user_scores).firstOrNull { t -> t == score }
                 ?.filter { it -> it.isDigit() }
         }
-
 
 
 }

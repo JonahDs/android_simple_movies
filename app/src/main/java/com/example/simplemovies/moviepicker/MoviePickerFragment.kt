@@ -49,6 +49,10 @@ class MoviePickerFragment : Fragment() {
             }
         })
 
+        moviePickerViewModel.fetchRandomMovie().observe(viewLifecycleOwner, Observer {
+            moviePickerViewModel.manageMovieResource(it)
+        })
+
         binding.lifecycleOwner = this
 
         return binding.root
