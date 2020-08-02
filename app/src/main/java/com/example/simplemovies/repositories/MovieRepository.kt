@@ -83,33 +83,20 @@ class MovieRepository @Inject constructor(
         }.asLiveData()
     }
 
+    suspend fun getMovieDetails(type: String, id: Int): MovieResult = withContext(IO) {
+        tmdbApi.getMovieDetails(type, id)
+    }
 
-    fun getMovieDetailsNew(type: String, id: Int): LiveData<Resource<MovieResult>> = liveData (scope.coroutineContext) {
-        try {
-            emitSource(invokeFetching(tmdbApi.getMovieDetails(type, id)))
-        } catch (e: Exception) {
-            emit(Resource.Error(null, APIStatus.ERROR))
-        }
+    suspend fun getMovieCast(type: String, id: Int): Cast = withContext(IO) {
+        tmdbApi.getMovieCredits(type, id)
     }
 
 
-    private fun <T> invokeFetching(call: T): LiveData<Resource<T>> = liveData {
-        emit(Resource.Loading<T>(null, APIStatus.LOADING) as Resource<T>)
-        emit(
-            Resource.Success(call, APIStatus.DONE) as Resource<T>
-        )
 
-    }
 
 
     //No need for these methods to implement our networkbounding since it will always be fetched from remote
-    suspend fun getMovieDetails(type: String, id: Int): MovieResult {
-        return tmdbApi.getMovieDetails(type, id)
-    }
 
-    suspend fun getMovieCast(type: String, id: Int): Cast {
-        return tmdbApi.getMovieCredits(type, id)
-    }
 
     suspend fun getRandomMovie(): MoviesWrapper {
         return tmdbApi.getRandomMovies()
