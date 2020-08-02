@@ -1,13 +1,17 @@
 package com.example.simplemovies.homescreen
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.util.Log
+import androidx.lifecycle.*
 import com.example.simplemovies.domain.MoviesWrapper
 import com.example.simplemovies.domain.MovieNetwork
 import com.example.simplemovies.network.APIStatus
 import com.example.simplemovies.network.Resource
 import com.example.simplemovies.repositories.MovieRepository
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.lang.Exception
 import javax.inject.Inject
 
 //constructor inject a movieRepository
@@ -26,6 +30,7 @@ class HomescreenViewModel @Inject constructor(private val movieRepo: MovieReposi
 
     val navSelected: LiveData<Int> get() = _navSelected
 
+
     //Set navigation property
     fun displayMovieDetails(movieId: Int) {
         _navSelected.value = movieId
@@ -37,8 +42,12 @@ class HomescreenViewModel @Inject constructor(private val movieRepo: MovieReposi
     }
 
     //Pass repo function to attach observer in fragment
-    fun fetchMovies(): LiveData<Resource<MoviesWrapper>> {
-        return movieRepo.getMovies()
+    fun fetchMovies(): LiveData<Resource<MoviesWrapper>> = liveData (viewModelScope.coroutineContext) {
+        try {
+            emitSource(movieRepo.getMoviesOfFlow())
+        }catch (e: Exception) {
+
+        }
     }
 
     //Manage fragment state
