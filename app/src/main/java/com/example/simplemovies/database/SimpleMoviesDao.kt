@@ -1,27 +1,33 @@
 package com.example.simplemovies.database
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.distinctUntilChanged
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 @Dao
-interface MovieDao {
-    @Insert(onConflict =  OnConflictStrategy.REPLACE)
-    fun insert(movies: List<MovieDb>)
+abstract class MovieDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun insert(movies: List<MovieDb>)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun update(movie: MovieDb)
+    abstract fun update(movie: MovieDb)
 
     @Query("select * from movies")
-    fun getAll(): LiveData<List<MovieDb>>
+    abstract fun getAll(): Flow<List<MovieDb>>
+
+    fun getAllFlowDistinct() = getAll().distinctUntilChanged()
 
 }
 
 @Dao
-interface GenreDao {
+abstract class GenreDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(genres: List<GenreDb>)
+    abstract fun insert(genres: List<GenreDb>)
 
     @Query("select * from genres")
-    fun getAll(): LiveData<List<GenreDb>>
+    abstract fun getAll(): Flow<List<GenreDb>>
 
+    fun getAllFlowDistinct() = getAll().distinctUntilChanged()
 }

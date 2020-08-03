@@ -9,14 +9,12 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStore
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simplemovies.MovieApplication
 import com.example.simplemovies.R.color.colorBackground
-import com.example.simplemovies.database.MovieDao
-import com.example.simplemovies.database.SimpleMovieDatabase
 import com.example.simplemovies.databinding.FragmentDetailScreenBinding
 import com.example.simplemovies.homescreen.OnClickListener
 import javax.inject.Inject
@@ -36,7 +34,8 @@ class DetailscreenFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        (requireActivity().application as MovieApplication).graph.detailscreenComponent().create().inject(this)
+        (requireActivity().application as MovieApplication).graph.detailscreenComponent().create()
+            .inject(this)
     }
 
     override fun onCreateView(
@@ -44,21 +43,36 @@ class DetailscreenFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val binding: FragmentDetailScreenBinding = FragmentDetailScreenBinding.inflate(inflater).apply {
-            viewmodel = detailViewModel
-        }
+        val binding: FragmentDetailScreenBinding =
+            FragmentDetailScreenBinding.inflate(inflater).apply {
+                viewmodel = detailViewModel
+            }
 
         binding.lifecycleOwner = this
 
-        binding.cast.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.cast.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
         binding.cast.adapter = CastAdapter(OnClickListener {
             detailViewModel.displayCastDetails(it)
         })
 
-        binding.root.setBackgroundColor(ContextCompat.getColor(this!!.requireContext()!!, colorBackground))
+        binding.root.setBackgroundColor(
+            ContextCompat.getColor(
+                this!!.requireContext()!!,
+                colorBackground
+            )
+        )
 
-        detailViewModel.getDetails(args.id, args.type)
+        detailViewModel.getMovieDetails(args.type.toLowerCase(), args.id)
+            .observe(viewLifecycleOwner, Observer {
+                detailViewModel.manageDetailResource(it)
+            })
+
+        detailViewModel.getMovieCast(args.type.toLowerCase(), args.id)
+            .observe(viewLifecycleOwner, Observer {
+                detailViewModel.manageCastResource(it)
+            })
 
 
         return binding.root

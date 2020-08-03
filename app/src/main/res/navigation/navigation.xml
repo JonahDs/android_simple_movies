@@ -47,6 +47,9 @@
             android:name="query"
             app:argType="string"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_SearchLanding_to_MovieDetails"
+            app:destination="@id/MovieDetails" />
     </fragment>
     <fragment
         android:id="@+id/Experimental"

@@ -49,4 +49,4 @@ interface TmdbApiService {
 
 }
 
-enum class APIStatus { LOADING, ERROR, DONE }
+enum class APIStatus { LOADING, ERROR, INTERMEDIATE, DONE }

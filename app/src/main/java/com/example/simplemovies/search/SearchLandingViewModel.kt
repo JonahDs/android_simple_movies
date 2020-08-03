@@ -1,14 +1,13 @@
 package com.example.simplemovies.search
 
-import android.util.Log
 import androidx.lifecycle.*
-import com.example.simplemovies.domain.GenreNetwork
-import com.example.simplemovies.domain.GenresWrapper
 import com.example.simplemovies.domain.MoviesWrapper
+import com.example.simplemovies.network.APIStatus
 import com.example.simplemovies.network.Resource
+import com.example.simplemovies.network.invokeCall
+import com.example.simplemovies.network.invokeError
 import com.example.simplemovies.repositories.GenreRepository
 import com.example.simplemovies.repositories.MovieRepository
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SearchLandingViewModel @Inject constructor(
@@ -21,48 +20,33 @@ class SearchLandingViewModel @Inject constructor(
 
     val searchRes: LiveData<MoviesWrapper> get() = _searchRes
 
-    private val genres: MutableList<GenreNetwork> = arrayListOf()
+    private val _apiStatus = MutableLiveData<APIStatus>()
 
-    fun search(query: String) {
-        viewModelScope.launch {
-            _searchRes.value = movierepo.getMoviesOfQuery(query.toLowerCase())
-        }
-    }
+    val apiStatus: LiveData<APIStatus> get() = _apiStatus
 
-    fun fetchGenres(): LiveData<Resource<GenresWrapper>> {
-        return genreRepo.getGenres()
-    }
+    private val _navigation = MutableLiveData<Int>()
 
-    fun append(genre: GenreNetwork) {
-        genres.add(genre)
-    }
+    val navigation: LiveData<Int> get() = _navigation
 
-    fun pop(genre: GenreNetwork) {
-        genres.remove(genre)
-    }
-
-    fun advancedSearch(query: String) = liveData {
-        emit(movierepo.getMoviesOfQuery(query))
-    }
-
-    fun filterMovies(movies: MoviesWrapper, state: String) {
-        val filteredList = MoviesWrapper(results = arrayListOf())
-        if (state == "Include genres") {
-            movies.results.forEach {
-                if (it.genres!!.any(genres::contains)) {
-                    filteredList.results.toMutableList().add(it)
-                }
+    fun fetchFromQuery(query: String): LiveData<Resource<MoviesWrapper>> =
+        liveData(viewModelScope.coroutineContext) {
+            try {
+                emitSource(invokeCall(movierepo.getMoviesOfQuery(query)))
+            } catch (e: Exception) {
+                emitSource((invokeError()))
             }
         }
-        if (state == "Exclude genres") {
-            movies.results.forEach {
-                if (!it.genres!!.any(genres::contains)) {
-                    filteredList.results.toMutableList().add(it)
-                }
-            }
-        }
-        Log.i("TEST", filteredList.toString())
-        _searchRes.value = filteredList
+
+    fun manageMovieResource(resource: Resource<MoviesWrapper>) {
+        resource.status?.let { _apiStatus.value = it }
+        resource.data?.let { _searchRes.value = it }
     }
 
+    fun navigateToDetail(id: Int) {
+        _navigation.value = id
+    }
+
+    fun navigationCompleted() {
+        _navigation.value = null
+    }
 }

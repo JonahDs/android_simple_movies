@@ -1,71 +1,44 @@
 package com.example.simplemovies.network
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 
-abstract class NetworkBounding<ResultType, RequestType> {
+abstract class NetworkBoundingNew<T> {
 
-    private val results =
-        MediatorLiveData<Resource<ResultType>>()
+    private val flow = flow<Resource<T>> {
+        val local = fetchFromDb().first()
 
-    init {
-        results.value = Resource.Loading(null, APIStatus.LOADING)
-        val source = fetchFromDb()
-        results.addSource(source) { data ->
-            Log.i("NETWORK", data.toString())
-            results.removeSource(source)
-            if (shouldFetch(data)) {
-                fetchFromNetwork(source)
-            } else {
-                results.addSource(source) { data ->
-                    setValue(
-                        Resource.Success(
-                            data,
-                            APIStatus.DONE
-                        )
-                    )
-                }
+        emit(Resource.Loading(null, APIStatus.LOADING))
+        if (shouldFetch(local)) {
+            try {
+                val data = makeApiCall()
+                emit(Resource.Loading(data, APIStatus.INTERMEDIATE))
+                saveApiResToDb(data)
+                fetchFromDb().map { dbRes -> emit(Resource.Success(dbRes, APIStatus.DONE)) }
+            } catch (e: Exception) {
+                emit(Resource.Error(null, APIStatus.ERROR))
             }
+
+        } else {
+            emit(Resource.Success(local, APIStatus.DONE))
         }
     }
 
-    private fun setValue(newValue: Resource<ResultType>) {
-        if (results.value != newValue) {
-            results.value = newValue
-        }
-    }
 
-    private fun fetchFromNetwork(source: LiveData<ResultType>) {
-        val response = makeApiCall()
-        results.addSource(source) { data ->
-            setValue(Resource.Loading(data, APIStatus.LOADING))
-        }
-        results.addSource(response) { data ->
-            results.removeSource(source)
-            results.removeSource(response)
-            when (data) {
-                null -> setValue(Resource.Error(data, APIStatus.ERROR))
-                is RequestType -> {
-                    saveApiResToDb(data)
-                    results.addSource(fetchFromDb()) {
-                        setValue(Resource.Success(it, APIStatus.DONE))
-                    }
-                }
-            }
-        }
-    }
+    protected abstract fun saveApiResToDb(item: T)
 
-    protected abstract fun saveApiResToDb(item: RequestType)
+    protected abstract fun shouldFetch(data: T?): Boolean
 
-    protected abstract fun shouldFetch(data: ResultType?): Boolean
+    protected abstract fun fetchFromDb(): Flow<T>
 
-    protected abstract fun fetchFromDb(): LiveData<ResultType>
+    protected abstract suspend fun makeApiCall(): T
 
-    protected abstract fun makeApiCall(): LiveData<RequestType>
+    fun asFlow() = flow
 
-    fun asLiveData(): LiveData<Resource<ResultType>> = results
 }
+
 
 sealed class Resource<T>(val data: T? = null, val status: APIStatus? = null) {
     class Success<T>(data: T, status: APIStatus) : Resource<T>(data, status)

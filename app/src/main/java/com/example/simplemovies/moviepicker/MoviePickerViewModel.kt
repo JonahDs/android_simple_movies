@@ -1,53 +1,60 @@
 package com.example.simplemovies.moviepicker
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.example.simplemovies.domain.MovieNetwork
+import com.example.simplemovies.domain.MoviesWrapper
+import com.example.simplemovies.network.APIStatus
+import com.example.simplemovies.network.Resource
+import com.example.simplemovies.network.invokeCall
+import com.example.simplemovies.network.invokeError
 import com.example.simplemovies.repositories.MovieRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class MoviePickerViewModel @Inject constructor(private val movieRepo: MovieRepository) : ViewModel() {
-
-    private val viewModelJob = Job()
-
-    private val scope = CoroutineScope(viewModelJob + Dispatchers.Main)
+class MoviePickerViewModel @Inject constructor(private val movieRepo: MovieRepository) :
+    ViewModel() {
 
     private val _randomMovie = MutableLiveData<MovieNetwork>()
 
     val randomMovie: LiveData<MovieNetwork> get() = _randomMovie
 
-    private var _navigationProperty = MutableLiveData<Int>()
+    private val _navigationProperty = MutableLiveData<Int>()
 
     val navigationProperty get() = _navigationProperty
+
+    private val _apiStatus = MutableLiveData<APIStatus>()
+
+    val apiStatus: LiveData<APIStatus> get() = _apiStatus
 
     init {
         fetchRandomMovie()
     }
 
     private fun fetchRandomMovie() {
-        scope.launch {
+        viewModelScope.launch {
             try {
-                _randomMovie.value =  movieRepo.getRandomMovie().results.random()
+                manageMovieResource(Resource.Loading(null, APIStatus.LOADING))
+                manageMovieResource(Resource.Success(movieRepo.getRandomMovie(), APIStatus.DONE))
             } catch (e: Exception) {
-                Log.i("GENRES_EX_", e.message.toString())
-
+                manageMovieResource(Resource.Error(null, APIStatus.ERROR))
             }
         }
     }
 
-    fun clicked(movieId: Int) {
-        Log.i("CLICKED", movieId.toString())
+    private fun manageMovieResource(resource: Resource<MoviesWrapper>) {
+        resource.data?.let {
+            _randomMovie.value = it.results.random()
+        }
+        resource.status?.let {
+            _apiStatus.value = it
+        }
+    }
+
+    fun navigateToDetail(movieId: Int) {
         _navigationProperty.value = movieId
     }
 
     fun navigationCompleted() {
         _navigationProperty.value = null
     }
-
 }
