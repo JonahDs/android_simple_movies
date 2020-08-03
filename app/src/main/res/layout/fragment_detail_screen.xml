@@ -24,14 +24,13 @@
             <TextView
                 android:id="@+id/textView2"
                 style="@style/movie_detail_leading_text"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="@string/user_score"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="@+id/progressBar"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/progressBar"
                 app:layout_constraintTop_toTopOf="@+id/progressBar"
                 tools:text="User Score" />
@@ -45,7 +44,6 @@
                 android:progress="@{(int) (viewmodel.result.vote_average * 10)}"
                 android:progressDrawable="@drawable/score_circle"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -90,7 +88,7 @@
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="68%"
+                android:text="@{`` + (int)(viewmodel.result.vote_average * 10) + `%`}"
                 app:layout_constraintBottom_toBottomOf="@+id/progressBar"
                 app:layout_constraintEnd_toEndOf="@+id/progressBar"
                 app:layout_constraintStart_toStartOf="@+id/progressBar"
@@ -115,10 +113,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="@{viewmodel.result.overview}"
-                    tools:text="Artemis Fowl is a 12-year-old genius and descendant of a long line of criminal masterminds. He soon finds himself in an epic battle against a race of powerful underground fairies who may be behind his father's disappearance.
-Artemis Fowl is a 12-year-old genius and descendant of a long line of criminal masterminds. He soon finds himself in an epic battle against a race of powerful underground fairies who may be behind his father's disappearance.">
-
-                </TextView>
+                    android:textAlignment="textStart" />
 
             </LinearLayout>
 
@@ -130,7 +125,7 @@ Artemis Fowl is a 12-year-old genius and descendant of a long line of criminal m
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -140,8 +135,8 @@ Artemis Fowl is a 12-year-old genius and descendant of a long line of criminal m
                     style="@style/movie_detail_regular_text"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Adventure, Fantasy, Science Fiction, Family"
-                    android:textAlignment="textStart"
+                    android:textAlignment="center"
+                    app:listGenres="@{viewmodel.result.genres}"
                     tools:text="Adventure, Fantasy, Science Fiction, Family" />
             </LinearLayout>
 
