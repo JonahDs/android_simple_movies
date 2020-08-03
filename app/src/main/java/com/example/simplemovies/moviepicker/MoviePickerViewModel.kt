@@ -1,6 +1,5 @@
 package com.example.simplemovies.moviepicker
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.simplemovies.domain.MovieNetwork
 import com.example.simplemovies.domain.MoviesWrapper
@@ -9,6 +8,7 @@ import com.example.simplemovies.network.Resource
 import com.example.simplemovies.network.invokeCall
 import com.example.simplemovies.network.invokeError
 import com.example.simplemovies.repositories.MovieRepository
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MoviePickerViewModel @Inject constructor(private val movieRepo: MovieRepository) :
@@ -26,17 +26,22 @@ class MoviePickerViewModel @Inject constructor(private val movieRepo: MovieRepos
 
     val apiStatus: LiveData<APIStatus> get() = _apiStatus
 
+    init {
+        fetchRandomMovie()
+    }
 
-    fun fetchRandomMovie(): LiveData<Resource<MoviesWrapper>> =
-        liveData(viewModelScope.coroutineContext) {
+    private fun fetchRandomMovie() {
+        viewModelScope.launch {
             try {
-                emitSource(invokeCall(movieRepo.getRandomMovie()))
+                manageMovieResource(Resource.Loading(null, APIStatus.LOADING))
+                manageMovieResource(Resource.Success(movieRepo.getRandomMovie(), APIStatus.DONE))
             } catch (e: Exception) {
-                emitSource(invokeError())
+                manageMovieResource(Resource.Error(null, APIStatus.ERROR))
             }
         }
+    }
 
-    fun manageMovieResource(resource: Resource<MoviesWrapper>) {
+    private fun manageMovieResource(resource: Resource<MoviesWrapper>) {
         resource.data?.let {
             _randomMovie.value = it.results.random()
         }
@@ -52,5 +57,4 @@ class MoviePickerViewModel @Inject constructor(private val movieRepo: MovieRepos
     fun navigationCompleted() {
         _navigationProperty.value = null
     }
-
 }

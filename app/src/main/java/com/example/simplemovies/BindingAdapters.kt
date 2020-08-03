@@ -1,6 +1,8 @@
 package com.example.simplemovies
 
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.ImageView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
@@ -13,6 +15,7 @@ import com.example.simplemovies.domain.Cast
 import com.example.simplemovies.domain.MovieNetwork
 import com.example.simplemovies.homescreen.PhotoGridAdapter
 import com.example.simplemovies.network.APIStatus
+import kotlinx.android.synthetic.main.fragment_homescreen.view.*
 
 private val IMAGEBASE: String = "https://image.tmdb.org/t/p/w500"
 
@@ -66,20 +69,43 @@ fun bindCastRecycleView(recyclerView: RecyclerView, data: Cast?) {
     val adapter = recyclerView.adapter as CastAdapter
     adapter.submitList(data?.cast)
 }
-
+//
+//@BindingAdapter("apiStatus")
+//fun bindStatus(statusImageView: ImageView, status: APIStatus?) {
+//    when (status) {
+//        APIStatus.LOADING -> {
+//            statusImageView.visibility = View.VISIBLE
+//            statusImageView.setImageResource(R.drawable.loading_animation)
+//        }
+//        APIStatus.ERROR -> {
+//            statusImageView.visibility = View.VISIBLE
+//            statusImageView.setImageResource(R.drawable.ic_connection_error)
+//        }
+//        APIStatus.DONE -> {
+//            statusImageView.visibility = View.GONE
+//        }
+//    }
+//}
 @BindingAdapter("apiStatus")
-fun bindStatus(statusImageView: ImageView, status: APIStatus?) {
-    when (status) {
+fun bindApiState(view: View, status: APIStatus?) {
+    when(status) {
         APIStatus.LOADING -> {
-            statusImageView.visibility = View.VISIBLE
-            statusImageView.setImageResource(R.drawable.loading_animation)
+            view.visibility = VISIBLE
+            view.api_state_image.setImageResource(R.drawable.loading_animation)
+            view.api_state_text.text = "We are fetching your data"
+        }
+        APIStatus.INTERMEDIATE -> {
+            view.visibility = VISIBLE
+            view.api_state_image.setImageResource(R.drawable.loading_animation)
+            view.api_state_text.text = "Almost there..."
         }
         APIStatus.ERROR -> {
-            statusImageView.visibility = View.VISIBLE
-            statusImageView.setImageResource(R.drawable.ic_connection_error)
+            view.visibility = VISIBLE
+            view.api_state_image.setImageResource(R.drawable.ic_connection_error)
+            view.api_state_text.text = "Something went wrong, check your internet connection and try again!"
         }
         APIStatus.DONE -> {
-            statusImageView.visibility = View.GONE
+            view.visibility = GONE
         }
     }
 }

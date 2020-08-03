@@ -1,7 +1,6 @@
 package com.example.simplemovies.repositories
 
 
-import androidx.lifecycle.LiveData
 import com.example.simplemovies.database.MovieDao
 import com.example.simplemovies.database.asMovieNetwork
 import com.example.simplemovies.domain.Cast
@@ -17,6 +16,7 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
@@ -36,24 +36,24 @@ class MovieRepository @Inject constructor(
 
 
     /**
-        return a Flow since Room call returns a flow
-        networkbounding will trigger each time our database gets updated
+    return a Flow since Room call returns a flow
+    networkbounding will trigger each time our database gets updated
      */
-    suspend fun getMoviesOfFlow(): LiveData<Resource<MoviesWrapper>> {
+    fun getMoviesOfFlow(): Flow<Resource<MoviesWrapper>> {
         return object : NetworkBoundingNew<MoviesWrapper>() {
-            override suspend fun saveApiResToDb(item: MoviesWrapper) = withContext(IO) {
+            override fun saveApiResToDb(item: MoviesWrapper)  {
                 movieDao.insert(item.results.asMovieDatabase())
             }
 
             override fun shouldFetch(data: MoviesWrapper?) = data == null || data.results.isEmpty()
 
             override fun fetchFromDb(): Flow<MoviesWrapper> =
-                movieDao.getAllFlowDistinc().map { MoviesWrapper(it.asMovieNetwork()) }
+                movieDao.getAllFlowDistinct().map { MoviesWrapper(it.asMovieNetwork()) }
 
             override suspend fun makeApiCall() = withContext(IO) {
                 tmdbApi.getPopularMovies()
             }
-    }.asLiveData()
+        }.asFlow().flowOn(IO)
     }
 
     suspend fun getMovieDetails(type: String, id: Int): MovieResult = withContext(IO) {

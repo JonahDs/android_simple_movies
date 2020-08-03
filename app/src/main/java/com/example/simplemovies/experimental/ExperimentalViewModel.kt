@@ -1,5 +1,6 @@
 package com.example.simplemovies.experimental
 
+
 import android.content.res.Resources
 import android.util.Log
 import androidx.lifecycle.*
@@ -12,7 +13,6 @@ import com.example.simplemovies.network.invokeCall
 import com.example.simplemovies.network.invokeError
 import com.example.simplemovies.repositories.GenreRepository
 import com.example.simplemovies.repositories.MovieRepository
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ExperimentalViewModel @Inject constructor(
@@ -20,7 +20,7 @@ class ExperimentalViewModel @Inject constructor(
     private val genreRepository: GenreRepository
 ) : ViewModel() {
 
-    val fetchedGenres = genreRepository.getGenres()
+    val fetchedGenres = genreRepository.getGenres().asLiveData(viewModelScope.coroutineContext)
 
     private val _checkedChips: MutableList<String> = arrayListOf()
 

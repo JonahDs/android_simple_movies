@@ -3,13 +3,13 @@ package com.example.simplemovies.moviepicker
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import androidx.navigation.fragment.findNavController
 import com.example.simplemovies.MovieApplication
 import com.example.simplemovies.databinding.FragmentMoviePickerBinding
@@ -36,9 +36,9 @@ class MoviePickerFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentMoviePickerBinding.inflate(inflater).apply {
-            viewmodel = moviePickerViewModel
-        }
+        val binding = FragmentMoviePickerBinding.inflate(inflater)
+
+        binding.viewmodel = moviePickerViewModel
 
         moviePickerViewModel.navigationProperty.observe(viewLifecycleOwner, Observer {
             if (it != null) {
@@ -49,14 +49,8 @@ class MoviePickerFragment : Fragment() {
             }
         })
 
-        moviePickerViewModel.fetchRandomMovie().observe(viewLifecycleOwner, Observer {
-            moviePickerViewModel.manageMovieResource(it)
-        })
-
         binding.lifecycleOwner = this
 
         return binding.root
     }
-
-
 }

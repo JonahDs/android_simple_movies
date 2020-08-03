@@ -18,6 +18,7 @@ import com.example.simplemovies.database.MovieDao
 import com.example.simplemovies.database.SimpleMovieDatabase
 import com.example.simplemovies.databinding.FragmentHomescreenBinding
 import javax.inject.Inject
+import kotlin.math.log
 
 /**
  * A simple [Fragment] subclass.
@@ -49,28 +50,31 @@ class HomescreenFragment : Fragment() {
             viewmodel = homescreenViewModel
         }
 
+        binding.refreshLayout.setOnRefreshListener {
+            binding.refreshLayout.isRefreshing = true
+            homescreenViewModel.clearMovies()
+            fetchMovies()
+            binding.refreshLayout.isRefreshing = false
+        }
+
         //Set recyclerview adapter
         binding.photoGrid.adapter = PhotoGridAdapter(OnClickListener {
             //Set the movie id inside of viewmodel
-            this.homescreenViewModel.displayMovieDetails(it)
+            homescreenViewModel.displayMovieDetails(it)
         })
 
         //Observe nav property to start navigating when changed
         this.homescreenViewModel.navSelected.observe(viewLifecycleOwner, Observer {
             if (null != it) {
                 //Navigate with previously set movie id
-                this.findNavController()
+                findNavController()
                     .navigate(HomescreenFragmentDirections.actionHomescreenToDetailscreen(it))
                 //Reset to null to prevent unwanted navigation
-                this.homescreenViewModel.displayMovieCompleted()
+                homescreenViewModel.displayMovieCompleted()
             }
         })
 
-        //Observe movies and API state
-        this.homescreenViewModel.fetchMovies().observe(viewLifecycleOwner, Observer {
-            homescreenViewModel.manageState(it)
-        })
-
+        fetchMovies()
 
         //Enable live data updates
         binding.lifecycleOwner = this
@@ -78,5 +82,10 @@ class HomescreenFragment : Fragment() {
         return binding.root
     }
 
+    private fun fetchMovies() {
+        homescreenViewModel.fetchMovies().observe(viewLifecycleOwner, Observer {
+            homescreenViewModel.manageState(it)
+        })
+    }
 
 }
