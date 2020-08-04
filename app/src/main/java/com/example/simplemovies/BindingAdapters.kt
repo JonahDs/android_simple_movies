@@ -71,7 +71,7 @@ fun bindRecyclerView(recyclerView: RecyclerView, data: List<MovieNetwork>?) {
 @BindingAdapter("castData")
 fun bindCastRecycleView(recyclerView: RecyclerView, data: Cast?) {
     val adapter = recyclerView.adapter as CastAdapter
-    adapter.submitList(data?.cast)
+    adapter.submitList(data?.cast?.take(8))
 }
 
 @BindingAdapter("listGenres")
@@ -86,6 +86,15 @@ fun bindGenres(view: TextView, list: List<GenreNetwork>?) {
             }
         }
         view.text = builder.toString()
+    }
+}
+
+@BindingAdapter("minute_converter")
+fun bindMinutes(view: TextView, time: Int?) {
+    time?.let {
+        val hours = it / 60
+        val min = it % 60
+        view.text = "| $hours h $min min"
     }
 }
 

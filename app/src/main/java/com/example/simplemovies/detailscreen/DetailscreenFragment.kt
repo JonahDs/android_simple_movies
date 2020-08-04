@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simplemovies.MovieApplication
-import com.example.simplemovies.R.color.colorBackground
+import com.example.simplemovies.R.color.detailBackground
 import com.example.simplemovies.databinding.FragmentDetailScreenBinding
 import com.example.simplemovies.homescreen.OnClickListener
 import javax.inject.Inject
@@ -50,17 +50,17 @@ class DetailscreenFragment : Fragment() {
 
         binding.lifecycleOwner = this
 
-        binding.cast.layoutManager =
+        binding.movieCast.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-        binding.cast.adapter = CastAdapter(OnClickListener {
+        binding.movieCast.adapter = CastAdapter(OnClickListener {
             detailViewModel.displayCastDetails(it)
         })
 
         binding.root.setBackgroundColor(
             ContextCompat.getColor(
                 this!!.requireContext()!!,
-                colorBackground
+                detailBackground
             )
         )
 
