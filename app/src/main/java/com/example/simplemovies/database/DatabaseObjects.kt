@@ -14,7 +14,8 @@ data class MovieDb(
     val release_date: String,
     val title: String,
     val vote_average: Double,
-    val vote_count: Int
+    val vote_count: Int,
+    val runtime: Int?
 )
 
 @Entity(tableName = "genres")
@@ -38,7 +39,8 @@ fun List<MovieDb>.asMovieNetwork(): List<MovieNetwork> {
             poster_path = it.poster_path,
             overview = it.overview,
             genres = null,
-            original_name = null
+            original_name = null,
+            runtime = it.runtime
         )
     }
 }

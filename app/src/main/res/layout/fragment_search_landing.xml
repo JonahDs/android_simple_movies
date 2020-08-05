@@ -10,13 +10,12 @@
             name="viewmodel"
             type="com.example.simplemovies.search.SearchLandingViewModel" />
     </data>
-    <!-- TODO: Update blank fragment layout -->
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true"
         android:focusableInTouchMode="true">
-
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/photo_grid"
@@ -33,6 +32,30 @@
             app:spanCount="2"
             tools:itemCount="16"
             tools:listitem="@layout/grid_view_item" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:gravity="center"
+            app:apiStatus="@{viewmodel.apiStatus}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/api_state_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/api_state_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                tools:text="Something went wrong, check your connection and try again!" />
+        </LinearLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

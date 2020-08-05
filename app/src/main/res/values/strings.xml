@@ -10,6 +10,11 @@
     <string name="experimental_filter">Filters</string>
     <string name="experimental_score">Score</string>
     <string name="experimental_type">Type</string>
+    <string name="movie_detail_backdrop_contentdescription">Movie Backdrop</string>
+    <string name="movie_detail_poster">Movie Poster</string>
+    <string name="movie_detail_description">Overview</string>
+    <string name="movie_detail_protagonist">Protagonists</string>
+    <string name="detail_screen_cast_button">Show complete cast and crew</string>
 
 
     <string-array name="include_states">

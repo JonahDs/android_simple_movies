@@ -30,7 +30,9 @@ data class MovieNetwork(
     val original_name: String?,
     val vote_average: Double,
     val vote_count: Int,
-    val genres: List<GenreNetwork>?
+    val genres: List<GenreNetwork>?,
+    val runtime: Int?
+
 )
 
 data class MovieResult(
@@ -42,6 +44,8 @@ data class MovieResult(
     val poster_path: String?,
     val release_date: String?,
     val vote_average: Double,
+    val runtime: Int?,
+    val tagline: String?,
 
     //TO BE EXTRACTED
     val name: String?,
@@ -80,7 +84,8 @@ fun List<MovieNetwork>.asMovieDatabase(): List<MovieDb> {
             release_date = it.release_date?: "",
             title = it.title?: "",
             vote_average = it.vote_average,
-            vote_count = it.vote_count
+            vote_count = it.vote_count,
+            runtime = it.runtime
         )
     }
 }

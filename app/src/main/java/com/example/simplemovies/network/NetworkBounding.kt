@@ -1,9 +1,9 @@
 package com.example.simplemovies.network
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 
 abstract class NetworkBoundingNew<T> {
 
@@ -14,13 +14,14 @@ abstract class NetworkBoundingNew<T> {
         if (shouldFetch(local)) {
             try {
                 val data = makeApiCall()
-                emit(Resource.Loading(data, APIStatus.INTERMEDIATE))
+                emit(Resource.Loading(null, APIStatus.INTERMEDIATE))
                 saveApiResToDb(data)
-                fetchFromDb().map { dbRes -> emit(Resource.Success(dbRes, APIStatus.DONE)) }
+                fetchFromDb().collect { dbRes ->
+                    emit(Resource.Success(dbRes, APIStatus.DONE))
+                }
             } catch (e: Exception) {
                 emit(Resource.Error(null, APIStatus.ERROR))
             }
-
         } else {
             emit(Resource.Success(local, APIStatus.DONE))
         }

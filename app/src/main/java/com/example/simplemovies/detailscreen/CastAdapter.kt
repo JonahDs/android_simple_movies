@@ -27,6 +27,7 @@ class CastAdapter(val click: OnClickListener) : ListAdapter<CastMember, CastAdap
         override fun areContentsTheSame(oldItem: CastMember, newItem: CastMember): Boolean {
             return oldItem == newItem
         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CastViewHolder {

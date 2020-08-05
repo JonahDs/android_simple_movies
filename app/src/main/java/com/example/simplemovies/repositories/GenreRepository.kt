@@ -10,6 +10,7 @@ import com.example.simplemovies.network.TmdbApiService
 import com.example.simplemovies.utils.DataManager
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
@@ -27,18 +28,18 @@ class GenreRepository @Inject constructor(
                 genreDao.insert(item.genres.asGenreDatabase())
             }
 
-            override fun shouldFetch(data: GenresWrapper?): Boolean {
-                return data == null || data.genres.isEmpty()
-            }
+            override fun shouldFetch(data: GenresWrapper?) =
+                data == null || data.genres.isEmpty()
 
-            override fun fetchFromDb(): Flow<GenresWrapper> {
-                return genreDao.getAllFlowDistinct().map { GenresWrapper(it.asGenreNetwork()) }
-            }
+
+            override fun fetchFromDb(): Flow<GenresWrapper> =
+                genreDao.getAllFlowDistinct().map { GenresWrapper(it.asGenreNetwork()) }
+
 
             override suspend fun makeApiCall(): GenresWrapper = withContext(IO) {
                 tmdbApiService.getAllMovieGenres()
             }
-        }.asFlow()
+        }.asFlow().flowOn(IO)
     }
 
 }

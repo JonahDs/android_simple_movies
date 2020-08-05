@@ -2,6 +2,7 @@ package com.example.simplemovies.experimental
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -46,10 +47,14 @@ class Experimental : Fragment() {
             }
 
         //Setup genres chip
-        experimentalViewmodel.fetchedGenres.observe(viewLifecycleOwner, Observer {
-            if (it.data != null) {
+        experimentalViewmodel.fetchGenres().observe(viewLifecycleOwner, Observer {
+            experimentalViewmodel.manageApiState(it)
+        })
+
+        experimentalViewmodel.genres.observe(viewLifecycleOwner, Observer {
+            if (it.genres.isNotEmpty()) {
                 val chipGroup = binding.chipsGroup
-                it.data.genres.forEach { genre ->
+                it.genres.forEach { genre ->
                     chipGroup.addView(chipFactory(genre))
                 }
             }

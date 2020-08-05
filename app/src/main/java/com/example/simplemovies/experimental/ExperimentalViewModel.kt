@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.example.simplemovies.R
 import com.example.simplemovies.domain.GenreNetwork
+import com.example.simplemovies.domain.GenresWrapper
 import com.example.simplemovies.domain.MoviesWrapper
 import com.example.simplemovies.network.APIStatus
 import com.example.simplemovies.network.Resource
@@ -19,14 +20,15 @@ class ExperimentalViewModel @Inject constructor(
     private val movieRepository: MovieRepository,
     private val genreRepository: GenreRepository
 ) : ViewModel() {
-
-    val fetchedGenres = genreRepository.getGenres().asLiveData(viewModelScope.coroutineContext)
-
     private val _checkedChips: MutableList<String> = arrayListOf()
 
     private val _discover = MutableLiveData<MoviesWrapper>()
 
     val discover: LiveData<MoviesWrapper> get() = _discover
+
+    private val _genres = MutableLiveData<GenresWrapper>()
+
+    val genres: LiveData<GenresWrapper> get() = _genres
 
     private val _apiStatus = MutableLiveData<APIStatus>()
 
@@ -35,6 +37,9 @@ class ExperimentalViewModel @Inject constructor(
     private val _navProperty = MutableLiveData<Int>()
 
     val navProperty: LiveData<Int> get() = _navProperty
+
+    fun fetchGenres(): LiveData<Resource<GenresWrapper>> =
+        genreRepository.getGenres().asLiveData(viewModelScope.coroutineContext)
 
     fun fetchDiscover(
         state: String,
@@ -59,6 +64,11 @@ class ExperimentalViewModel @Inject constructor(
         }
     }
 
+    fun manageApiState(resources: Resource<GenresWrapper>) {
+        resources.data?.let { _genres.value = it }
+        resources.status?.let { _apiStatus.value = it }
+    }
+
     fun manageDiscoverResource(resource: Resource<MoviesWrapper>) {
         resource.status?.let { _apiStatus.value = it }
         resource.data?.let { _discover.value = it }
@@ -74,7 +84,6 @@ class ExperimentalViewModel @Inject constructor(
 
     fun navSelected(id: Int) {
         _navProperty.value = id
-        Log.i("NAV_PROP", id.toString())
     }
 
     fun navCompleted() {

@@ -25,22 +25,17 @@ class DetailscreenViewModel @Inject constructor(private val movieRepo: MovieRepo
 
     val navSelected: LiveData<Int> get() = _navSelected
 
-    private val _detailStatus = MutableLiveData<APIStatus>()
+    private val _apiStatus = MutableLiveData<APIStatus>()
 
-    val detailStatus: LiveData<APIStatus> get() = _detailStatus
-
-    private val _castStatus = MutableLiveData<APIStatus>()
-
-    val castStatus: LiveData<APIStatus> get() = _castStatus
+    val apiStatus: LiveData<APIStatus> get() = _apiStatus
 
 
     fun manageDetailResource(resource: Resource<MovieResult>) {
-        resource.status?.let { _detailStatus.value = it }
+        resource.status?.let { _apiStatus.value = it }
         resource.data?.let { _result.value = it }
     }
 
     fun manageCastResource(resource: Resource<Cast>) {
-        resource.status?.let { _castStatus.value = it }
         resource.data?.let { _movieCast.value = it }
     }
 
