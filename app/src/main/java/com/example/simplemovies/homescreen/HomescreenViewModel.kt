@@ -1,5 +1,6 @@
 package com.example.simplemovies.homescreen
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.example.simplemovies.domain.MovieNetwork
 import com.example.simplemovies.domain.MoviesWrapper
@@ -41,6 +42,7 @@ class HomescreenViewModel @Inject constructor(private val movieRepo: MovieReposi
                     _displayableMovies.value = wrapper.results
                 }
                 it.status?.let { state ->
+                    Log.i("API_STATE", state.toString())
                     _apiStatus.value = state
                 }
 

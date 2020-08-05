@@ -6,8 +6,6 @@ import com.example.simplemovies.domain.Cast
 import com.example.simplemovies.domain.MovieResult
 import com.example.simplemovies.network.APIStatus
 import com.example.simplemovies.network.Resource
-import com.example.simplemovies.network.invokeCall
-import com.example.simplemovies.network.invokeError
 import com.example.simplemovies.repositories.MovieRepository
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

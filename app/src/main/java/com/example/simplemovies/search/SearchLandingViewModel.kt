@@ -1,12 +1,12 @@
 package com.example.simplemovies.search
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.simplemovies.domain.MoviesWrapper
 import com.example.simplemovies.network.APIStatus
 import com.example.simplemovies.network.Resource
-import com.example.simplemovies.network.invokeCall
-import com.example.simplemovies.network.invokeError
-import com.example.simplemovies.repositories.GenreRepository
 import com.example.simplemovies.repositories.MovieRepository
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -32,7 +32,7 @@ class SearchLandingViewModel @Inject constructor(
     private var query: String = ""
 
     fun setQuery(query: String) {
-        if(this.query == "") {
+        if (this.query == "") {
             this.query = query
             fetchFromQuery(query)
         }

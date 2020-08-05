@@ -8,6 +8,7 @@ class DataManager(timeout: Int, timeUnit: TimeUnit) {
     private val recordedMoments = ArrayMap<String, Long>()
     private val timeout = timeUnit.toMillis(timeout.toLong())
 
+    @Synchronized
     fun shouldRefresh(key: String): Boolean {
         val lastFetched = recordedMoments[key]
         val now = SystemClock.uptimeMillis()

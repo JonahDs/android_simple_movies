@@ -33,7 +33,7 @@ class MovieRepository @Inject constructor(
     private val scope = CoroutineScope(repositoryJob + Main)
 
     //Reload local movies with API results after 30 seconds
-    private val dataManager = DataManager(30, TimeUnit.SECONDS)
+    private val dataManager = DataManager(1, TimeUnit.MINUTES)
 
 
     /**
@@ -46,7 +46,7 @@ class MovieRepository @Inject constructor(
                 movieDao.insert(item.results.asMovieDatabase())
             }
 
-            override fun shouldFetch(data: MoviesWrapper?) = data == null || data.results.isEmpty()
+            override fun shouldFetch(data: MoviesWrapper?) = data == null || data.results.isEmpty() || dataManager.shouldRefresh("movies")
 
             override fun fetchFromDb(): Flow<MoviesWrapper> =
                 movieDao.getAllFlowDistinct().map { MoviesWrapper(it.asMovieNetwork()) }
