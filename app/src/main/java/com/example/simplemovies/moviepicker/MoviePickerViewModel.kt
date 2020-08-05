@@ -8,6 +8,7 @@ import com.example.simplemovies.network.Resource
 import com.example.simplemovies.network.invokeCall
 import com.example.simplemovies.network.invokeError
 import com.example.simplemovies.repositories.MovieRepository
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -32,11 +33,8 @@ class MoviePickerViewModel @Inject constructor(private val movieRepo: MovieRepos
 
     private fun fetchRandomMovie() {
         viewModelScope.launch {
-            try {
-                manageMovieResource(Resource.Loading(null, APIStatus.LOADING))
-                manageMovieResource(Resource.Success(movieRepo.getRandomMovie(), APIStatus.DONE))
-            } catch (e: Exception) {
-                manageMovieResource(Resource.Error(null, APIStatus.ERROR))
+            movieRepo.getRandomMovie().collect {
+                manageMovieResource(it)
             }
         }
     }

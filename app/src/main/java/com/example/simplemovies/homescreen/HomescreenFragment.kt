@@ -53,7 +53,7 @@ class HomescreenFragment : Fragment() {
         binding.refreshLayout.setOnRefreshListener {
             binding.refreshLayout.isRefreshing = true
             homescreenViewModel.clearMovies()
-            fetchMovies()
+            homescreenViewModel.getMoviesStatic()
             binding.refreshLayout.isRefreshing = false
         }
 
@@ -74,18 +74,10 @@ class HomescreenFragment : Fragment() {
             }
         })
 
-        fetchMovies()
-
         //Enable live data updates
         binding.lifecycleOwner = this
 
         return binding.root
-    }
-
-    private fun fetchMovies() {
-        homescreenViewModel.fetchMovies().observe(viewLifecycleOwner, Observer {
-            homescreenViewModel.manageState(it)
-        })
     }
 
 }

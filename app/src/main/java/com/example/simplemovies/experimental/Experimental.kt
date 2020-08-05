@@ -2,7 +2,6 @@ package com.example.simplemovies.experimental
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -46,11 +45,6 @@ class Experimental : Fragment() {
                 viewmodel = experimentalViewmodel
             }
 
-        //Setup genres chip
-        experimentalViewmodel.fetchGenres().observe(viewLifecycleOwner, Observer {
-            experimentalViewmodel.manageApiState(it)
-        })
-
         experimentalViewmodel.genres.observe(viewLifecycleOwner, Observer {
             if (it.genres.isNotEmpty()) {
                 val chipGroup = binding.chipsGroup
@@ -59,6 +53,14 @@ class Experimental : Fragment() {
                 }
             }
         })
+
+        binding.discoveredMovies.setOnClickListener {
+            experimentalViewmodel.fetchDiscover(
+                binding.includeStates.selectedItem.toString(),
+                binding.type.selectedItem.toString(),
+                binding.userScore.selectedItem.toString(), requireContext().resources
+            )
+        }
 
 
         binding.discoveredMovies.adapter = PhotoGridAdapter(OnClickListener {
@@ -83,15 +85,7 @@ class Experimental : Fragment() {
 
         binding.type.adapter = createArrayAdapter(R.array.types)
 
-        binding.searchButton.setOnClickListener {
-            fetchDiscover(
-                binding.includeStates.selectedItem.toString(),
-                binding.type.selectedItem.toString(),
-                binding.userScore.selectedItem.toString()
-            )
-            binding.toolbar.visibility = GONE
-            binding.retryButton.visibility = VISIBLE
-        }
+
 
         binding.retryButton.setOnClickListener {
             binding.toolbar.visibility = VISIBLE
@@ -100,14 +94,6 @@ class Experimental : Fragment() {
 
         binding.lifecycleOwner = this
         return binding.root
-    }
-
-    private fun fetchDiscover(state: String, type: String, score: String) {
-        experimentalViewmodel.fetchDiscover(
-            state, type, score, requireContext().resources
-        ).observe(viewLifecycleOwner, Observer {
-            experimentalViewmodel.manageDiscoverResource(it)
-        })
     }
 
     private fun createArrayAdapter(arrayRes: Int): ArrayAdapter<CharSequence> {

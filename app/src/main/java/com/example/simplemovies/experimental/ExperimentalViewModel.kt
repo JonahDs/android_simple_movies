@@ -2,7 +2,6 @@ package com.example.simplemovies.experimental
 
 
 import android.content.res.Resources
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.simplemovies.R
 import com.example.simplemovies.domain.GenreNetwork
@@ -10,10 +9,10 @@ import com.example.simplemovies.domain.GenresWrapper
 import com.example.simplemovies.domain.MoviesWrapper
 import com.example.simplemovies.network.APIStatus
 import com.example.simplemovies.network.Resource
-import com.example.simplemovies.network.invokeCall
-import com.example.simplemovies.network.invokeError
 import com.example.simplemovies.repositories.GenreRepository
 import com.example.simplemovies.repositories.MovieRepository
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ExperimentalViewModel @Inject constructor(
@@ -38,33 +37,39 @@ class ExperimentalViewModel @Inject constructor(
 
     val navProperty: LiveData<Int> get() = _navProperty
 
-    fun fetchGenres(): LiveData<Resource<GenresWrapper>> =
-        genreRepository.getGenres().asLiveData(viewModelScope.coroutineContext)
+
+    init {
+        fetchGenres()
+    }
+
+    private fun fetchGenres() {
+        viewModelScope.launch {
+            genreRepository.getGenres().collect {
+                manageGenreResources(it)
+            }
+        }
+    }
 
     fun fetchDiscover(
         state: String,
         type: String,
         score: String,
         resource: Resources
-    ): LiveData<Resource<MoviesWrapper>> = liveData(viewModelScope.coroutineContext) {
+    ) {
         val settings = discoverManager(state, type, score, resource)
-        try {
-            emitSource(
-                invokeCall(
-                    movieRepository.getDiscover(
-                        type = settings.type?.toLowerCase(),
-                        genresInc = if (settings.state == resource.getStringArray(R.array.include_states)[0]) _checkedChips else listOf(),
-                        genresExl = if (settings.state == resource.getStringArray(R.array.include_states)[1]) _checkedChips else listOf(),
-                        score = if (settings.score != null && settings.score != "") settings.score.toInt() else 0
-                    )
-                )
-            )
-        } catch (e: Exception) {
-            emitSource(invokeError())
+        viewModelScope.launch {
+            movieRepository.getDiscover(
+                type = settings.type?.toLowerCase(),
+                genresInc = if (settings.state == resource.getStringArray(R.array.include_states)[0]) _checkedChips else listOf(),
+                genresExl = if (settings.state == resource.getStringArray(R.array.include_states)[1]) _checkedChips else listOf(),
+                score = if (settings.score != null && settings.score != "") settings.score.toInt() else 0
+            ).collect {
+                manageDiscoverResource(it)
+            }
         }
     }
 
-    fun manageApiState(resources: Resource<GenresWrapper>) {
+    fun manageGenreResources(resources: Resource<GenresWrapper>) {
         resources.data?.let { _genres.value = it }
         resources.status?.let { _apiStatus.value = it }
     }

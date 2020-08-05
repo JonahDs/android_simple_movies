@@ -1,5 +1,6 @@
 package com.example.simplemovies.detailscreen
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.example.simplemovies.domain.Cast
 import com.example.simplemovies.domain.MovieResult
@@ -8,6 +9,8 @@ import com.example.simplemovies.network.Resource
 import com.example.simplemovies.network.invokeCall
 import com.example.simplemovies.network.invokeError
 import com.example.simplemovies.repositories.MovieRepository
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class DetailscreenViewModel @Inject constructor(private val movieRepo: MovieRepository) :
@@ -29,35 +32,43 @@ class DetailscreenViewModel @Inject constructor(private val movieRepo: MovieRepo
 
     val apiStatus: LiveData<APIStatus> get() = _apiStatus
 
+    private var state: String = ""
 
-    fun manageDetailResource(resource: Resource<MovieResult>) {
+    private var id: Int = 0
+
+    fun setState(state: String, id: Int) {
+        if(this.state == "" && this.id == 0) {
+            this.state = state
+            this.id = id
+            fetchMovieDetails(state, id)
+            fetchMovieCredits(state, id)
+        }
+    }
+
+    private fun fetchMovieDetails(type: String, id: Int) {
+        viewModelScope.launch {
+            movieRepo.getMovieDetails(type, id).collect {
+                manageDetailResource(it)
+            }
+        }
+    }
+
+    private fun fetchMovieCredits(type: String, id: Int) {
+        viewModelScope.launch {
+            movieRepo.getMovieCast(type, id).collect {
+                manageCastResource(it)
+            }
+        }
+    }
+
+    private fun manageDetailResource(resource: Resource<MovieResult>) {
         resource.status?.let { _apiStatus.value = it }
         resource.data?.let { _result.value = it }
     }
 
-    fun manageCastResource(resource: Resource<Cast>) {
+    private fun manageCastResource(resource: Resource<Cast>) {
         resource.data?.let { _movieCast.value = it }
     }
-
-
-    fun getMovieDetails(type: String, id: Int): LiveData<Resource<MovieResult>> =
-        liveData(viewModelScope.coroutineContext) {
-            try {
-                emitSource(invokeCall(movieRepo.getMovieDetails(type, id)))
-            } catch (e: Exception) {
-                emitSource(invokeError())
-            }
-        }
-
-    fun getMovieCast(type: String, id: Int): LiveData<Resource<Cast>> =
-        liveData(viewModelScope.coroutineContext) {
-            try {
-                emitSource(invokeCall(movieRepo.getMovieCast(type, id)))
-            } catch (e: Exception) {
-                emitSource(invokeError())
-            }
-        }
-
 
     fun displayCastDetails(castId: Int) {
         _navSelected.value = castId

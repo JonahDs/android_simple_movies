@@ -57,10 +57,7 @@ class SearchLanding : Fragment() {
             }
         })
 
-        searchLandingViewModel.fetchFromQuery(args.query ?: "")
-            .observe(viewLifecycleOwner, Observer {
-                searchLandingViewModel.manageMovieResource(it)
-            })
+        searchLandingViewModel.setQuery(args.query?: "undefined")
 
         binding.lifecycleOwner = this
         return binding.root

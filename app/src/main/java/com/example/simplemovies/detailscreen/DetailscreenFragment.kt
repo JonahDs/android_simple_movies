@@ -17,6 +17,8 @@ import com.example.simplemovies.MovieApplication
 import com.example.simplemovies.R.color.detailBackground
 import com.example.simplemovies.databinding.FragmentDetailScreenBinding
 import com.example.simplemovies.homescreen.OnClickListener
+import java.util.*
+import java.util.Locale.GERMAN
 import javax.inject.Inject
 
 /**
@@ -64,16 +66,7 @@ class DetailscreenFragment : Fragment() {
             )
         )
 
-        detailViewModel.getMovieDetails(args.type.toLowerCase(), args.id)
-            .observe(viewLifecycleOwner, Observer {
-                detailViewModel.manageDetailResource(it)
-            })
-
-        detailViewModel.getMovieCast(args.type.toLowerCase(), args.id)
-            .observe(viewLifecycleOwner, Observer {
-                detailViewModel.manageCastResource(it)
-            })
-
+        detailViewModel.setState(args.type.toLowerCase(Locale.ROOT), args.id)
 
         return binding.root
     }
