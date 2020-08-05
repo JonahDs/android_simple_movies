@@ -26,6 +26,10 @@ class ExperimentalViewModel @Inject constructor(
 
     val discover: LiveData<MoviesWrapper> get() = _discover
 
+    private val _genres = MutableLiveData<GenresWrapper>()
+
+    val genres: LiveData<GenresWrapper> get() = _genres
+
     private val _apiStatus = MutableLiveData<APIStatus>()
 
     val apiStatus: LiveData<APIStatus> get() = _apiStatus
@@ -34,7 +38,7 @@ class ExperimentalViewModel @Inject constructor(
 
     val navProperty: LiveData<Int> get() = _navProperty
 
-    fun getGenres(): LiveData<Resource<GenresWrapper>> =
+    fun fetchGenres(): LiveData<Resource<GenresWrapper>> =
         genreRepository.getGenres().asLiveData(viewModelScope.coroutineContext)
 
     fun fetchDiscover(
@@ -58,6 +62,11 @@ class ExperimentalViewModel @Inject constructor(
         } catch (e: Exception) {
             emitSource(invokeError())
         }
+    }
+
+    fun manageApiState(resources: Resource<GenresWrapper>) {
+        resources.data?.let { _genres.value = it }
+        resources.status?.let { _apiStatus.value = it }
     }
 
     fun manageDiscoverResource(resource: Resource<MoviesWrapper>) {

@@ -47,10 +47,14 @@ class Experimental : Fragment() {
             }
 
         //Setup genres chip
-        experimentalViewmodel.getGenres().observe(viewLifecycleOwner, Observer {
-            if (it.data != null) {
+        experimentalViewmodel.fetchGenres().observe(viewLifecycleOwner, Observer {
+            experimentalViewmodel.manageApiState(it)
+        })
+
+        experimentalViewmodel.genres.observe(viewLifecycleOwner, Observer {
+            if (it.genres.isNotEmpty()) {
                 val chipGroup = binding.chipsGroup
-                it.data.genres.forEach { genre ->
+                it.genres.forEach { genre ->
                     chipGroup.addView(chipFactory(genre))
                 }
             }
