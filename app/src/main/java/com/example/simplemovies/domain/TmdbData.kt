@@ -32,7 +32,6 @@ data class MovieNetwork(
     val vote_count: Int,
     val genres: List<GenreNetwork>?,
     val runtime: Int?
-
 )
 
 data class MovieResult(

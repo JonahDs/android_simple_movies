@@ -3,12 +3,10 @@ package com.example.simplemovies
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.widget.SearchView
-import androidx.core.view.isVisible
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
@@ -25,7 +23,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        val binding =
+            DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
 
         drawerLayout = binding.drawerLayout
 
@@ -39,10 +38,16 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
         NavigationUI.setupWithNavController(binding.navView, navController)
 
-        if(Intent.ACTION_SEARCH === intent.action) {
+
+        if (Intent.ACTION_SEARCH === intent.action) {
             intent.getStringExtra(SearchManager.QUERY)?.also {
-                findNavController(R.id.navhostFragment).navigate(HomescreenFragmentDirections.actionMoviesToSearchLanding(it))
+                findNavController(R.id.navhostFragment).navigate(
+                    HomescreenFragmentDirections.actionMoviesToSearchLanding(
+                        it
+                    )
+                )
             }
+            intent.action = ""
         }
     }
 

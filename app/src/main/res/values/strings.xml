@@ -15,6 +15,7 @@
     <string name="movie_detail_description">Overview</string>
     <string name="movie_detail_protagonist">Protagonists</string>
     <string name="detail_screen_cast_button">Show complete cast and crew</string>
+    <string name="movie_picker_findout_button">Find out more</string>
 
 
     <string-array name="include_states">
