@@ -1,7 +1,9 @@
 package com.example.simplemovies.moviepicker
 
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -45,6 +47,22 @@ class MoviePickerFragment : Fragment() {
                findNavController().navigate(MoviePickerFragmentDirections.actionPickAMovieToMovieDetails(it))
                moviePickerViewModel.navigationCompleted()
            }
+        }
+
+        binding.refreshLayout?.setOnRefreshListener {
+            val builder = AlertDialog.Builder(requireActivity())
+            builder.setMessage("Sure you want to refresh?")
+                .setPositiveButton("Yes"
+                ) { _, _ ->
+                    moviePickerViewModel.fetchRandomMovie()
+                }
+                .setNegativeButton("Cancel"
+                ) { _, _ ->
+
+                }
+            // Create the AlertDialog object and return it
+            builder.create().show()
+            binding.refreshLayout.isRefreshing = false
         }
 
         binding.lifecycleOwner = this

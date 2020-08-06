@@ -16,7 +16,12 @@
     <string name="movie_detail_protagonist">Protagonists</string>
     <string name="detail_screen_cast_button">Show complete cast and crew</string>
     <string name="movie_picker_findout_button">Find out more</string>
-
+    <string name="api_status_fetching">We are fetching your data</string>
+    <string name="api_status_almost">Almost there...</string>
+    <string name="api_status_error">Something went wrong, check your internet connection and try again!</string>
+    <string name="runtime">| %1$s h %2$s min</string>
+    <string name="refresh">pull to refresh</string>
+    <string name="api_image">Api image</string>
 
     <string-array name="include_states">
         <item>Include genres</item>

@@ -94,7 +94,7 @@ fun bindMinutes(view: TextView, time: Int?) {
     time?.let {
         val hours = it / 60
         val min = it % 60
-        view.text = "| $hours h $min min"
+        view.text = view.resources.getString(R.string.runtime, hours.toString(), min.toString())
     }
 }
 
@@ -104,18 +104,17 @@ fun bindApiState(view: View, status: APIStatus?) {
         APIStatus.LOADING -> {
             view.visibility = VISIBLE
             view.api_state_image.setImageResource(R.drawable.loading_animation)
-            view.api_state_text.text = "We are fetching your data"
+            view.api_state_text.text = view.resources.getString(R.string.api_status_fetching)
         }
         APIStatus.INTERMEDIATE -> {
             view.visibility = VISIBLE
             view.api_state_image.setImageResource(R.drawable.loading_animation)
-            view.api_state_text.text = "Almost there..."
+            view.api_state_text.text = view.resources.getString(R.string.api_status_almost)
         }
         APIStatus.ERROR -> {
             view.visibility = VISIBLE
             view.api_state_image.setImageResource(R.drawable.ic_connection_error)
-            view.api_state_text.text =
-                "Something went wrong, check your internet connection and try again!"
+            view.api_state_text.text = view.resources.getString(R.string.api_status_error)
         }
         APIStatus.DONE -> {
             view.visibility = GONE
