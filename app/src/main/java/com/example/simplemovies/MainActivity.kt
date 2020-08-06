@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
                     )
                 )
             }
-            intent.action = ""
+            intent.action = null
         }
     }
 
