@@ -5,9 +5,8 @@ import com.example.simplemovies.domain.MovieNetwork
 import com.example.simplemovies.domain.MoviesWrapper
 import com.example.simplemovies.network.APIStatus
 import com.example.simplemovies.network.Resource
-import com.example.simplemovies.network.invokeCall
-import com.example.simplemovies.network.invokeError
 import com.example.simplemovies.repositories.MovieRepository
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,7 +17,7 @@ class MoviePickerViewModel @Inject constructor(private val movieRepo: MovieRepos
 
     val randomMovie: LiveData<MovieNetwork> get() = _randomMovie
 
-    private val _navigationProperty = MutableLiveData<Int>()
+    private var _navigationProperty: Int? = null
 
     val navigationProperty get() = _navigationProperty
 
@@ -32,29 +31,24 @@ class MoviePickerViewModel @Inject constructor(private val movieRepo: MovieRepos
 
     private fun fetchRandomMovie() {
         viewModelScope.launch {
-            try {
-                manageMovieResource(Resource.Loading(null, APIStatus.LOADING))
-                manageMovieResource(Resource.Success(movieRepo.getRandomMovie(), APIStatus.DONE))
-            } catch (e: Exception) {
-                manageMovieResource(Resource.Error(null, APIStatus.ERROR))
+            movieRepo.getRandomMovie().collect {
+                manageMovieResource(it)
             }
         }
     }
 
     private fun manageMovieResource(resource: Resource<MoviesWrapper>) {
         resource.data?.let {
-            _randomMovie.value = it.results.random()
+            val randomMovie = it.results.random()
+            _navigationProperty = randomMovie.id
+            _randomMovie.value = randomMovie
         }
         resource.status?.let {
             _apiStatus.value = it
         }
     }
 
-    fun navigateToDetail(movieId: Int) {
-        _navigationProperty.value = movieId
-    }
-
     fun navigationCompleted() {
-        _navigationProperty.value = null
+        _navigationProperty = null
     }
 }

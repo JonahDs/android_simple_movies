@@ -6,6 +6,7 @@ import com.example.simplemovies.database.SimpleMovieDatabase
 import com.example.simplemovies.network.TmdbApiService
 import com.example.simplemovies.repositories.GenreRepository
 import com.example.simplemovies.repositories.MovieRepository
+import com.example.simplemovies.utils.DataManager
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -17,15 +18,15 @@ object ApplicationModule {
     @Singleton
     @JvmStatic
     @Provides
-    fun provideMovieRepo(service: TmdbApiService, database: SimpleMovieDatabase): MovieRepository {
-        return MovieRepository(service, database.movieDao)
+    fun provideMovieRepo(service: TmdbApiService, database: SimpleMovieDatabase, dataManager: DataManager): MovieRepository {
+        return MovieRepository(service, database.movieDao, dataManager)
     }
 
     @Singleton
     @JvmStatic
     @Provides
-    fun provideGenreRepo(service: TmdbApiService, database: SimpleMovieDatabase): GenreRepository {
-        return GenreRepository(service, database.genreDao)
+    fun provideGenreRepo(service: TmdbApiService, database: SimpleMovieDatabase, dataManager: DataManager): GenreRepository {
+        return GenreRepository(service, database.genreDao, dataManager)
     }
 
     //Provide our database

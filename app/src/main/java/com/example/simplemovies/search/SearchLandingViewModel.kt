@@ -1,18 +1,19 @@
 package com.example.simplemovies.search
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.simplemovies.domain.MoviesWrapper
 import com.example.simplemovies.network.APIStatus
 import com.example.simplemovies.network.Resource
-import com.example.simplemovies.network.invokeCall
-import com.example.simplemovies.network.invokeError
-import com.example.simplemovies.repositories.GenreRepository
 import com.example.simplemovies.repositories.MovieRepository
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SearchLandingViewModel @Inject constructor(
-    private val movierepo: MovieRepository,
-    private val genreRepo: GenreRepository
+    private val movierepo: MovieRepository
 ) :
     ViewModel() {
 
@@ -28,16 +29,24 @@ class SearchLandingViewModel @Inject constructor(
 
     val navigation: LiveData<Int> get() = _navigation
 
-    fun fetchFromQuery(query: String): LiveData<Resource<MoviesWrapper>> =
-        liveData(viewModelScope.coroutineContext) {
-            try {
-                emitSource(invokeCall(movierepo.getMoviesOfQuery(query)))
-            } catch (e: Exception) {
-                emitSource((invokeError()))
+    private var query: String = ""
+
+    fun setQuery(query: String) {
+        if (this.query == "") {
+            this.query = query
+            fetchFromQuery(query)
+        }
+    }
+
+    private fun fetchFromQuery(query: String) {
+        viewModelScope.launch {
+            movierepo.getMoviesOfQuery(query).collect {
+                manageMovieResource(it)
             }
         }
+    }
 
-    fun manageMovieResource(resource: Resource<MoviesWrapper>) {
+    private fun manageMovieResource(resource: Resource<MoviesWrapper>) {
         resource.status?.let { _apiStatus.value = it }
         resource.data?.let { _searchRes.value = it }
     }

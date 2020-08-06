@@ -5,6 +5,23 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 
+abstract class SimpleBounding<T> {
+
+    private val flow = flow<Resource<T>> {
+        emit(Resource.Loading(null, APIStatus.LOADING))
+        try {
+            val data = makeApiCall()
+            emit(Resource.Success(data, APIStatus.DONE))
+        }catch (e: Exception) {
+            emit(Resource.Error(null, APIStatus.ERROR))
+        }
+    }
+
+    protected abstract suspend fun makeApiCall(): T
+
+    fun asFlow() = flow
+}
+
 abstract class NetworkBoundingNew<T> {
 
     private val flow = flow<Resource<T>> {

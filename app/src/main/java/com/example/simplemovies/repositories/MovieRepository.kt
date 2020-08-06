@@ -9,6 +9,7 @@ import com.example.simplemovies.domain.MoviesWrapper
 import com.example.simplemovies.domain.asMovieDatabase
 import com.example.simplemovies.network.NetworkBoundingNew
 import com.example.simplemovies.network.Resource
+import com.example.simplemovies.network.SimpleBounding
 import com.example.simplemovies.network.TmdbApiService
 import com.example.simplemovies.utils.DataManager
 import kotlinx.coroutines.CoroutineScope
@@ -24,28 +25,21 @@ import javax.inject.Inject
 
 class MovieRepository @Inject constructor(
     private val tmdbApi: TmdbApiService,
-    private val movieDao: MovieDao
+    private val movieDao: MovieDao,
+    private val dataManager: DataManager
 ) {
-
-    private var repositoryJob = Job()
-
-    private val scope = CoroutineScope(repositoryJob + Main)
-
-    //Reload local movies with API results after 30 seconds
-    private val dataManager = DataManager(30, TimeUnit.SECONDS)
-
-
     /**
     return a Flow since Room call returns a flow
     networkbounding will trigger each time our database gets updated
      */
     fun getMoviesOfFlow(): Flow<Resource<MoviesWrapper>> {
+        dataManager.declareTimeout(1, TimeUnit.MINUTES)
         return object : NetworkBoundingNew<MoviesWrapper>() {
             override fun saveApiResToDb(item: MoviesWrapper)  {
                 movieDao.insert(item.results.asMovieDatabase())
             }
 
-            override fun shouldFetch(data: MoviesWrapper?) = data == null || data.results.isEmpty()
+            override fun shouldFetch(data: MoviesWrapper?) = data == null || data.results.isEmpty() || dataManager.shouldRefresh("movies")
 
             override fun fetchFromDb(): Flow<MoviesWrapper> =
                 movieDao.getAllFlowDistinct().map { MoviesWrapper(it.asMovieNetwork()) }
@@ -56,20 +50,36 @@ class MovieRepository @Inject constructor(
         }.asFlow().flowOn(IO)
     }
 
-    suspend fun getMovieDetails(type: String, id: Int): MovieResult = withContext(IO) {
-        tmdbApi.getMovieDetails(type, id)
+    suspend fun getMovieDetails(type: String, id: Int): Flow<Resource<MovieResult>>  {
+        return object: SimpleBounding<MovieResult>() {
+            override suspend fun makeApiCall() = withContext(IO) {
+                tmdbApi.getMovieDetails(type, id)
+            }
+        }.asFlow().flowOn(IO)
     }
 
-    suspend fun getMovieCast(type: String, id: Int): Cast = withContext(IO) {
-        tmdbApi.getMovieCredits(type, id)
+    suspend fun getMovieCast(type: String, id: Int): Flow<Resource<Cast>> {
+        return object: SimpleBounding<Cast>() {
+            override suspend fun makeApiCall() = withContext(IO) {
+                tmdbApi.getMovieCredits(type, id)
+            }
+        }.asFlow().flowOn(IO)
     }
 
-    suspend fun getRandomMovie() = withContext(IO) {
-        tmdbApi.getRandomMovies()
+    suspend fun getRandomMovie() : Flow<Resource<MoviesWrapper>> {
+        return object: SimpleBounding<MoviesWrapper>() {
+            override suspend fun makeApiCall() = withContext(IO) {
+                tmdbApi.getRandomMovies()
+            }
+        }.asFlow().flowOn(IO)
     }
 
-    suspend fun getMoviesOfQuery(query: String) = withContext(IO) {
-        tmdbApi.getMoviesOfQuery(query)
+    suspend fun getMoviesOfQuery(query: String) : Flow<Resource<MoviesWrapper>> {
+        return object: SimpleBounding<MoviesWrapper>() {
+            override suspend fun makeApiCall() = withContext(IO) {
+                tmdbApi.getMoviesOfQuery(query)
+            }
+        }.asFlow().flowOn(IO)
     }
 
     suspend fun getDiscover(
@@ -77,13 +87,17 @@ class MovieRepository @Inject constructor(
         genresInc: List<String>,
         genresExl: List<String>,
         score: Int = 0
-    ) = withContext(IO) {
-        tmdbApi.getDiscover(
-            type,
-            genresInc,
-            genresExl,
-            score,
-            if (score == 0) null else score + 1
-        )
+    ): Flow<Resource<MoviesWrapper>> {
+        return object: SimpleBounding<MoviesWrapper>() {
+            override suspend fun makeApiCall() = withContext(IO) {
+                tmdbApi.getDiscover(
+                    type,
+                    genresInc,
+                    genresExl,
+                    score,
+                    if (score == 0) null else score + 1
+                )
+            }
+        }.asFlow().flowOn(IO)
     }
 }
