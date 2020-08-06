@@ -29,7 +29,7 @@ class MoviePickerViewModel @Inject constructor(private val movieRepo: MovieRepos
         fetchRandomMovie()
     }
 
-    private fun fetchRandomMovie() {
+    fun fetchRandomMovie() {
         viewModelScope.launch {
             movieRepo.getRandomMovie().collect {
                 manageMovieResource(it)

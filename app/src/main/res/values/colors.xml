@@ -7,4 +7,5 @@
     <color name="darkGray">@android:color/darker_gray</color>
     <color name="detailBackground">#008577</color>
     <color name="detail_add_inf">#00665b</color>
+    <color name="whiteLight">#1AFFFFFF</color>
 </resources>
