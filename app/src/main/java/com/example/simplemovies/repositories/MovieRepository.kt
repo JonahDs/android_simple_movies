@@ -25,22 +25,15 @@ import javax.inject.Inject
 
 class MovieRepository @Inject constructor(
     private val tmdbApi: TmdbApiService,
-    private val movieDao: MovieDao
+    private val movieDao: MovieDao,
+    private val dataManager: DataManager
 ) {
-
-    private var repositoryJob = Job()
-
-    private val scope = CoroutineScope(repositoryJob + Main)
-
-    //Reload local movies with API results after 30 seconds
-    private val dataManager = DataManager(1, TimeUnit.MINUTES)
-
-
     /**
     return a Flow since Room call returns a flow
     networkbounding will trigger each time our database gets updated
      */
     fun getMoviesOfFlow(): Flow<Resource<MoviesWrapper>> {
+        dataManager.declareTimeout(1, TimeUnit.MINUTES)
         return object : NetworkBoundingNew<MoviesWrapper>() {
             override fun saveApiResToDb(item: MoviesWrapper)  {
                 movieDao.insert(item.results.asMovieDatabase())

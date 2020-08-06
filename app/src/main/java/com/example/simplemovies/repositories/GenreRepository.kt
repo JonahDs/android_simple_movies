@@ -18,18 +18,18 @@ import javax.inject.Inject
 
 class GenreRepository @Inject constructor(
     private val tmdbApiService: TmdbApiService,
-    private val genreDao: GenreDao
+    private val genreDao: GenreDao,
+    private val dataManager: DataManager
 ) {
-    private val dataManager = DataManager(30, TimeUnit.SECONDS)
-
     fun getGenres(): Flow<Resource<GenresWrapper>> {
+        dataManager.declareTimeout(1, TimeUnit.DAYS)
         return object : NetworkBoundingNew<GenresWrapper>() {
             override fun saveApiResToDb(item: GenresWrapper) {
                 genreDao.insert(item.genres.asGenreDatabase())
             }
 
             override fun shouldFetch(data: GenresWrapper?) =
-                data == null || data.genres.isEmpty()
+                data == null || data.genres.isEmpty() || dataManager.shouldRefresh("genres")
 
 
             override fun fetchFromDb(): Flow<GenresWrapper> =

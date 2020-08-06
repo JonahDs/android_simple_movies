@@ -26,17 +26,32 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <ImageView
+                android:id="@+id/movie_poster"
+                android:layout_width="250dp"
+                android:layout_height="300dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:contentDescription="@string/movie_detail_poster"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:poster_avatar="@{viewmodel.randomMovie.poster_path}"
+                tools:src="@tools:sample/avatars" />
 
             <TextView
                 android:id="@+id/movie_title"
                 style="@style/H2White"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="16dp"
                 android:text="@{viewmodel.randomMovie.title}"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/movie_poster"
+                app:layout_constraintTop_toTopOf="@+id/movie_poster"
                 tools:text="Pack-man" />
 
             <TextView
@@ -48,54 +63,41 @@
                 android:text="@{viewmodel.randomMovie.release_date}"
                 app:layout_constraintEnd_toEndOf="@+id/movie_title"
                 app:layout_constraintStart_toStartOf="@+id/movie_title"
-                app:layout_constraintTop_toBottomOf="@+id/movie_title" />
-
-            <ImageView
-                android:id="@+id/movie_poster"
-                android:layout_width="250dp"
-                android:layout_height="300dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="8dp"
-                android:contentDescription="@string/movie_detail_poster"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/movie_release_date"
-                app:layout_constraintVertical_bias="0.0"
-                app:poster_avatar="@{viewmodel.randomMovie.poster_path}"
-                tools:src="@tools:sample/avatars" />
+                app:layout_constraintTop_toBottomOf="@+id/movie_title"
+                tools:text="13/03/1998" />
 
             <TextView
                 android:id="@+id/movie_overview"
                 style="@style/RegularWhite"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:text="@{viewmodel.randomMovie.overview}"
-                app:layout_constraintBottom_toTopOf="@+id/find_out_more"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/movie_poster"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintStart_toEndOf="@+id/movie_poster"
+                app:layout_constraintTop_toBottomOf="@+id/movie_release_date" />
+
 
             <Button
                 android:id="@+id/find_out_more"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 android:drawableEnd="@drawable/ic_angle_right_solid"
                 android:text="@string/movie_picker_findout_button"
                 android:textColor="@android:color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.92"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="parent" />
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/movie_overview"
+                app:layout_constraintTop_toBottomOf="@+id/movie_overview"
+                app:layout_constraintVertical_bias="0.0" />
+
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -122,8 +124,6 @@
                     android:textAlignment="center"
                     tools:text="Something went wrong, check your connection and try again!" />
             </LinearLayout>
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 

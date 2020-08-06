@@ -40,14 +40,12 @@ class MoviePickerFragment : Fragment() {
 
         binding.viewmodel = moviePickerViewModel
 
-        moviePickerViewModel.navigationProperty.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                this.findNavController()
-                    .navigate(MoviePickerFragmentDirections.actionPickAMovieToMovieDetails(it))
-                moviePickerViewModel.navigationCompleted()
-
-            }
-        })
+        binding.findOutMore.setOnClickListener {
+           moviePickerViewModel.navigationProperty?.let {
+               findNavController().navigate(MoviePickerFragmentDirections.actionPickAMovieToMovieDetails(it))
+               moviePickerViewModel.navigationCompleted()
+           }
+        }
 
         binding.lifecycleOwner = this
 

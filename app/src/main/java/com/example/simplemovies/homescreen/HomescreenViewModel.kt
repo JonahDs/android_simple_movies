@@ -33,8 +33,6 @@ class HomescreenViewModel @Inject constructor(private val movieRepo: MovieReposi
         getMoviesStatic()
     }
 
-
-
     fun getMoviesStatic() {
         viewModelScope.launch {
             movieRepo.getMoviesOfFlow().collect {

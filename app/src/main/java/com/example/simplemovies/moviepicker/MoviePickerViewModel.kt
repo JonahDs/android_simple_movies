@@ -17,7 +17,7 @@ class MoviePickerViewModel @Inject constructor(private val movieRepo: MovieRepos
 
     val randomMovie: LiveData<MovieNetwork> get() = _randomMovie
 
-    private val _navigationProperty = MutableLiveData<Int>()
+    private var _navigationProperty: Int? = null
 
     val navigationProperty get() = _navigationProperty
 
@@ -39,18 +39,16 @@ class MoviePickerViewModel @Inject constructor(private val movieRepo: MovieRepos
 
     private fun manageMovieResource(resource: Resource<MoviesWrapper>) {
         resource.data?.let {
-            _randomMovie.value = it.results.random()
+            val randomMovie = it.results.random()
+            _navigationProperty = randomMovie.id
+            _randomMovie.value = randomMovie
         }
         resource.status?.let {
             _apiStatus.value = it
         }
     }
 
-    fun navigateToDetail(movieId: Int) {
-        _navigationProperty.value = movieId
-    }
-
     fun navigationCompleted() {
-        _navigationProperty.value = null
+        _navigationProperty = null
     }
 }
