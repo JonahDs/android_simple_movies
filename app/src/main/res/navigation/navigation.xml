@@ -72,7 +72,7 @@
     <fragment
         android:id="@+id/castFragment"
         android:name="com.example.simplemovies.cast.CastFragment"
-        android:label="CastFragment" >
+        android:label="Movie Cast">
         <argument
             android:name="id"
             app:argType="integer" />

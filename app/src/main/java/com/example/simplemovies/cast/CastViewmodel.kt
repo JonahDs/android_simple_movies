@@ -20,7 +20,7 @@ class CastViewmodel @Inject constructor(private val movierepo: MovieRepository) 
 
     private val _cast = MutableLiveData<Cast>()
 
-    private val cast: LiveData<Cast> get() = _cast
+    val cast: LiveData<Cast> get() = _cast
 
     private val _apiStatus = MutableLiveData<APIStatus>()
 

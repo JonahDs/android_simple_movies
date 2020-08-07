@@ -58,12 +58,12 @@ class DetailscreenFragment : Fragment() {
 
         binding.movieCast.adapter = CastAdapter()
 
-        binding.root.setBackgroundColor(
-            ContextCompat.getColor(
-                this.requireContext(),
-                detailBackground
-            )
-        )
+//        binding.root.setBackgroundColor(
+//            ContextCompat.getColor(
+//                this.requireContext(),
+//                detailBackground
+//            )
+//        )
 
         binding.showCast.setOnClickListener {
             detailViewModel.displayCastDetails()

@@ -39,6 +39,9 @@ class CastFragment : Fragment() {
 
         castViewmodel.setMovieId(args.id, args.type)
 
+        binding.movieCast.adapter = CastAdapter()
+
+        binding.movieCrew.adapter = CrewAdapter()
 
         binding.lifecycleOwner = this
 

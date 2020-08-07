@@ -18,7 +18,7 @@ data class GenresWrapper(
 
 data class Cast(
     val cast: List<CastMember>,
-    val crew: List<CrewMemeber>
+    val crew: List<CrewMember>
 )
 //endregion
 
@@ -33,6 +33,7 @@ data class MovieNetwork(
     val vote_count: Int,
     val genres: List<GenreNetwork>?,
     val runtime: Int?
+
 )
 
 data class MovieResult(
@@ -48,8 +49,11 @@ data class MovieResult(
     val tagline: String?,
     val name: String?,
     val number_of_episodes: Int?,
-    val number_of_seasons: Int?
-
+    val number_of_seasons: Int?,
+    val budget: Int,
+    val original_language: String,
+    val revenue: Int,
+    val status: String
 )
 
 data class GenreNetwork(
@@ -65,7 +69,7 @@ data class CastMember(
     val profile_path: String?
 )
 
-data class CrewMemeber(
+data class CrewMember(
     val credit_id: String,
     val name: String,
     val profile_path: String?,

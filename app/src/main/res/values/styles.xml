@@ -33,6 +33,13 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="RegularBlackPrimary">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginBottom">4dp</item>
+    </style>
+
 
     <style name="spinner_style">
         <item name="android:layout_width">match_parent</item>
