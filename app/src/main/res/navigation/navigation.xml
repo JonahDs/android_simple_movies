@@ -27,6 +27,9 @@
             android:name="type"
             app:argType="string"
             android:defaultValue="movie" />
+        <action
+            android:id="@+id/action_MovieDetails_to_castFragment"
+            app:destination="@id/castFragment" />
     </fragment>
     <fragment
         android:id="@+id/PickAMovie"
@@ -66,4 +69,19 @@
                 />
         </action>
     </fragment>
+    <fragment
+        android:id="@+id/castFragment"
+        android:name="com.example.simplemovies.cast.CastFragment"
+        android:label="Movie Cast">
+        <argument
+            android:name="id"
+            app:argType="integer" />
+        <argument
+            android:name="type"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.example.simplemovies.amount.AboutFragment"
+        android:label="About" />
 </navigation>

@@ -1,5 +1,6 @@
 package com.example.simplemovies.detailscreen
 
+import android.util.ArrayMap
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.simplemovies.domain.Cast
@@ -22,9 +23,9 @@ class DetailscreenViewModel @Inject constructor(private val movieRepo: MovieRepo
 
     val movieCast: LiveData<Cast> get() = _movieCast
 
-    private val _navSelected = MutableLiveData<Int>()
+    private val _navSelected = MutableLiveData<Boolean>()
 
-    val navSelected: LiveData<Int> get() = _navSelected
+    val navSelected: LiveData<Boolean> get() = _navSelected
 
     private val _apiStatus = MutableLiveData<APIStatus>()
 
@@ -68,8 +69,8 @@ class DetailscreenViewModel @Inject constructor(private val movieRepo: MovieRepo
         resource.data?.let { _movieCast.value = it }
     }
 
-    fun displayCastDetails(castId: Int) {
-        _navSelected.value = castId
+    fun displayCastDetails() {
+        _navSelected.value = true
     }
 
     fun displayCastDetailsCompleted() {

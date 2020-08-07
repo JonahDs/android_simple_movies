@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simplemovies.MovieApplication
@@ -55,16 +56,25 @@ class DetailscreenFragment : Fragment() {
         binding.movieCast.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-        binding.movieCast.adapter = CastAdapter(OnClickListener {
-            detailViewModel.displayCastDetails(it)
-        })
+        binding.movieCast.adapter = CastAdapter()
 
         binding.root.setBackgroundColor(
             ContextCompat.getColor(
-                this!!.requireContext()!!,
+                this.requireContext(),
                 detailBackground
             )
         )
+
+        binding.showCast.setOnClickListener {
+            detailViewModel.displayCastDetails()
+        }
+
+        detailViewModel.navSelected.observe(viewLifecycleOwner, Observer {
+            if(it != null){
+                findNavController().navigate(DetailscreenFragmentDirections.actionMovieDetailsToCastFragment(args.id, args.type))
+                detailViewModel.displayCastDetailsCompleted()
+            }
+        })
 
         detailViewModel.setState(args.type.toLowerCase(Locale.ROOT), args.id)
 

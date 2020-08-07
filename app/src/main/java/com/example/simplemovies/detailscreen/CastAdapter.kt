@@ -10,7 +10,7 @@ import com.example.simplemovies.databinding.CastViewItemBinding
 import com.example.simplemovies.domain.CastMember
 import com.example.simplemovies.homescreen.OnClickListener
 
-class CastAdapter(val click: OnClickListener) : ListAdapter<CastMember, CastAdapter.CastViewHolder>(DiffCallback) {
+class CastAdapter() : ListAdapter<CastMember, CastAdapter.CastViewHolder>(DiffCallback) {
     class CastViewHolder(private var binding: CastViewItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(castMember: CastMember) {
             binding.cast = castMember
@@ -36,8 +36,5 @@ class CastAdapter(val click: OnClickListener) : ListAdapter<CastMember, CastAdap
 
     override fun onBindViewHolder(holder: CastViewHolder, position: Int) {
         holder.bind(getItem(position))
-        holder.itemView.setOnClickListener {
-            click.onClick(getItem(position).id)
-        }
     }
 }

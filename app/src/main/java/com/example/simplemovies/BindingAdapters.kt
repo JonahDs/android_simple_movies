@@ -11,23 +11,27 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.example.simplemovies.cast.CrewAdapter
 import com.example.simplemovies.detailscreen.CastAdapter
-import com.example.simplemovies.domain.Cast
-import com.example.simplemovies.domain.GenreNetwork
-import com.example.simplemovies.domain.MovieNetwork
+import com.example.simplemovies.domain.*
 import com.example.simplemovies.homescreen.PhotoGridAdapter
 import com.example.simplemovies.network.APIStatus
 import kotlinx.android.synthetic.main.fragment_homescreen.view.*
+import java.text.NumberFormat
 
 private val IMAGEBASE: String = "https://image.tmdb.org/t/p/w500"
 
 @BindingAdapter("poster_path")
 fun bindImage(imgView: ImageView, poster_path: String?) {
     val stringBuilder = StringBuilder(IMAGEBASE)
-    poster_path?.let {
-        val imgUri = stringBuilder.append(it).toString().toUri().buildUpon().scheme("https").build()
-        Glide.with(imgView.context).load(imgUri).into(imgView)
+    var loadingContext: Int? = null
+    if (poster_path == null) {
+        loadingContext = R.drawable.ic_no_movies_available
     }
+
+    val imgUri = stringBuilder.append(poster_path).toString().toUri().buildUpon().scheme("https").build()
+    Glide.with(imgView.context).load(loadingContext ?: imgUri).into(imgView)
+
 }
 
 @BindingAdapter("backdrop_path")
@@ -42,24 +46,33 @@ fun bindBackdrop(imgView: ImageView, backdrop_path: String?) {
 @BindingAdapter("poster_avatar")
 fun bindAvatar(imgView: ImageView, poster_avatar: String?) {
     val stringBuilder = StringBuilder(IMAGEBASE)
-    poster_avatar?.let {
-        val imgUri = stringBuilder.append(it).toString().toUri().buildUpon().scheme("https").build()
-        Glide.with(imgView.context).load(imgUri)
-            .apply(RequestOptions.bitmapTransform(RoundedCorners(50))).into(imgView)
+    var loadingContext: Int? = null
+    if (poster_avatar == null) {
+        loadingContext = R.drawable.ic_no_movies_available
     }
+
+        val imgUri = stringBuilder.append(poster_avatar).toString().toUri().buildUpon().scheme("https").build()
+        Glide.with(imgView.context).load(loadingContext?: imgUri)
+            .apply(RequestOptions.bitmapTransform(RoundedCorners(50))).into(imgView)
+
 }
 
-@BindingAdapter("cast_profile")
-fun BindCastPicture(imgView: ImageView, cast_profile: String?) {
+
+@BindingAdapter(value = ["castProfile", "rounded"], requireAll = false)
+fun BindCastPicture(imgView: ImageView, cast_profile: String?, rounded: Boolean?) {
     val stringBuilder = StringBuilder(IMAGEBASE)
     var loadingContext: Int? = null
     if (cast_profile == null) {
-        loadingContext = R.drawable.ic_connection_error
+        loadingContext = R.drawable.ic_no_image_avatar
     }
-
     val imgUri =
         stringBuilder.append(cast_profile).toString().toUri().buildUpon().scheme("https").build()
-    Glide.with(imgView.context).load(loadingContext ?: imgUri).centerCrop().into(imgView)
+    if (rounded == true) {
+        Glide.with(imgView.context).load(loadingContext ?: imgUri).centerCrop()
+            .apply(RequestOptions.bitmapTransform(RoundedCorners(50))).into(imgView)
+    } else {
+        Glide.with(imgView.context).load(loadingContext ?: imgUri).centerCrop().into(imgView)
+    }
 }
 
 @BindingAdapter("listData")
@@ -72,6 +85,18 @@ fun bindRecyclerView(recyclerView: RecyclerView, data: List<MovieNetwork>?) {
 fun bindCastRecycleView(recyclerView: RecyclerView, data: Cast?) {
     val adapter = recyclerView.adapter as CastAdapter
     adapter.submitList(data?.cast?.take(8))
+}
+
+@BindingAdapter("castExtendedData")
+fun bindCastExtended(recyclerView: RecyclerView, data: List<CastMember>?) {
+    val adapter = recyclerView.adapter as com.example.simplemovies.cast.CastAdapter
+    adapter.submitList(data)
+}
+
+@BindingAdapter("crewExtendedData")
+fun bindCrewExtended(recyclerView: RecyclerView, data: List<CrewMember>?) {
+    val adapter = recyclerView.adapter as CrewAdapter
+    adapter.submitList(data)
 }
 
 @BindingAdapter("listGenres")
@@ -87,6 +112,17 @@ fun bindGenres(view: TextView, list: List<GenreNetwork>?) {
         }
         view.text = builder.toString()
     }
+}
+
+@BindingAdapter("numberFormatter")
+fun bindNumber(view: TextView, number: Int?) {
+    val formatted = NumberFormat.getIntegerInstance().format(number)
+    view.text = "$ $formatted"
+}
+
+@BindingAdapter("castType", "castAmount")
+fun bindAmount(view: TextView, type: String, amount: Int?) {
+    view.text = view.resources.getString(R.string.cast, type, amount)
 }
 
 @BindingAdapter("minute_converter")
