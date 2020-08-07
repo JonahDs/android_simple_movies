@@ -23,6 +23,7 @@
     <string name="refresh">pull to refresh</string>
     <string name="api_image">Api image</string>
     <string name="cast">%1$s (%2$d)</string>
+    <string name="about">Simple movies is an informative app where you can find every movie and Tv series in existence. The app comes with various movie related features such as advanced searching and a random movie picker.</string>
 
     <string-array name="include_states">
         <item>Include genres</item>

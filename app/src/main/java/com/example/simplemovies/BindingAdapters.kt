@@ -24,10 +24,14 @@ private val IMAGEBASE: String = "https://image.tmdb.org/t/p/w500"
 @BindingAdapter("poster_path")
 fun bindImage(imgView: ImageView, poster_path: String?) {
     val stringBuilder = StringBuilder(IMAGEBASE)
-    poster_path?.let {
-        val imgUri = stringBuilder.append(it).toString().toUri().buildUpon().scheme("https").build()
-        Glide.with(imgView.context).load(imgUri).into(imgView)
+    var loadingContext: Int? = null
+    if (poster_path == null) {
+        loadingContext = R.drawable.ic_no_movies_available
     }
+
+    val imgUri = stringBuilder.append(poster_path).toString().toUri().buildUpon().scheme("https").build()
+    Glide.with(imgView.context).load(loadingContext ?: imgUri).into(imgView)
+
 }
 
 @BindingAdapter("backdrop_path")
@@ -42,11 +46,15 @@ fun bindBackdrop(imgView: ImageView, backdrop_path: String?) {
 @BindingAdapter("poster_avatar")
 fun bindAvatar(imgView: ImageView, poster_avatar: String?) {
     val stringBuilder = StringBuilder(IMAGEBASE)
-    poster_avatar?.let {
-        val imgUri = stringBuilder.append(it).toString().toUri().buildUpon().scheme("https").build()
-        Glide.with(imgView.context).load(imgUri)
-            .apply(RequestOptions.bitmapTransform(RoundedCorners(50))).into(imgView)
+    var loadingContext: Int? = null
+    if (poster_avatar == null) {
+        loadingContext = R.drawable.ic_no_movies_available
     }
+
+        val imgUri = stringBuilder.append(poster_avatar).toString().toUri().buildUpon().scheme("https").build()
+        Glide.with(imgView.context).load(loadingContext?: imgUri)
+            .apply(RequestOptions.bitmapTransform(RoundedCorners(50))).into(imgView)
+
 }
 
 

@@ -12,7 +12,7 @@ abstract class SimpleBounding<T> {
         try {
             val data = makeApiCall()
             emit(Resource.Success(data, APIStatus.DONE))
-        }catch (e: Exception) {
+        } catch (e: Exception) {
             emit(Resource.Error(null, APIStatus.ERROR))
         }
     }
@@ -37,7 +37,14 @@ abstract class NetworkBoundingNew<T> {
                     emit(Resource.Success(dbRes, APIStatus.DONE))
                 }
             } catch (e: Exception) {
-                emit(Resource.Error(null, APIStatus.ERROR))
+                val buffered = fetchFromDb().first()
+                if (buffered != null) {
+                    fetchFromDb().collect { dbRes ->
+                        emit(Resource.Success(dbRes, APIStatus.DONE))
+                    }
+                } else {
+                    emit(Resource.Error(null, APIStatus.ERROR))
+                }
             }
         } else {
             emit(Resource.Success(local, APIStatus.DONE))
