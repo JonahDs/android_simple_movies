@@ -50,15 +50,14 @@ class HomescreenFragment : Fragment() {
             viewmodel = homescreenViewModel
         }
 
-        binding.refreshLayout.setOnRefreshListener {
-            binding.refreshLayout.isRefreshing = true
+        binding.swiperefreshlayoutHomescreen.setOnRefreshListener {
             homescreenViewModel.clearMovies()
             homescreenViewModel.getMoviesStatic()
-            binding.refreshLayout.isRefreshing = false
+            binding.swiperefreshlayoutHomescreen.isRefreshing = false
         }
 
         //Set recyclerview adapter
-        binding.photoGrid.adapter = PhotoGridAdapter(OnClickListener {
+        binding.recyclerviewHomeMovies.adapter = PhotoGridAdapter(OnClickListener {
             //Set the movie id inside of viewmodel
             homescreenViewModel.displayMovieDetails(it)
         })

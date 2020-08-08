@@ -45,7 +45,7 @@ class SearchLanding : Fragment() {
         val binding: FragmentSearchLandingBinding =
             FragmentSearchLandingBinding.inflate(inflater).apply {
                 viewmodel = searchLandingViewModel
-                photoGrid.adapter = PhotoGridAdapter(OnClickListener {
+                recyclerviewSearchMovies.adapter = PhotoGridAdapter(OnClickListener {
                     searchLandingViewModel.navigateToDetail(it)
                 })
             }

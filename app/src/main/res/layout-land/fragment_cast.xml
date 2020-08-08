@@ -12,12 +12,13 @@
     </data>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedscrollview_cast_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/crew_layout"
+            android:id="@+id/constraintlayout_cast_fragmentconstainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -25,7 +26,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/textview_cast_castsize"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -40,7 +41,7 @@
                 tools:text="Cast (60)" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/movie_cast"
+                android:id="@+id/recyclerview_cast_castmembers"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -48,12 +49,13 @@
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView2"
+                app:layout_constraintTop_toBottomOf="@+id/textview_cast_castsize"
                 app:spanCount="2"
                 tools:itemCount="10"
-                tools:listitem="@layout/cast_view_extended_item" />
+                tools:listitem="@layout/item_cast_extended" />
 
             <TextView
+                android:id="@+id/textview_cast_crewsize"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -62,14 +64,14 @@
                 android:textStyle="bold"
                 app:castAmount="@{viewmodel.cast.crew.size()}"
                 app:castType="@{`Crew`}"
-                app:layout_constraintBottom_toTopOf="@+id/movie_crew"
+                app:layout_constraintBottom_toTopOf="@+id/recyclerview_cast_crewmembers"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/movie_cast"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerview_cast_castmembers"
                 tools:text="Crew (120)" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/movie_crew"
+                android:id="@+id/recyclerview_cast_crewmembers"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -78,12 +80,13 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/movie_cast"
+                app:layout_constraintTop_toBottomOf="@+id/textview_cast_crewsize"
                 app:spanCount="2"
                 tools:itemCount="10"
-                tools:listitem="@layout/crew_view_extended_item" />
+                tools:listitem="@layout/item_crew_extended" />
 
             <LinearLayout
+                android:id="@+id/linearlayout_apistatus_container"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="@color/white"
@@ -97,17 +100,19 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:id="@+id/api_state_image"
+                    android:id="@+id/imageview_apistatus"
+                    android:contentDescription="@string/apistatus_imagedescr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
                 <TextView
-                    android:id="@+id/api_state_text"
+                    android:id="@+id/textview_apistatus_status"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
                     tools:text="Something went wrong, check your connection and try again!" />
             </LinearLayout>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

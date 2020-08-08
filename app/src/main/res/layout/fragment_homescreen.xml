@@ -11,16 +11,17 @@
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/refresh_layout"
+        android:id="@+id/swiperefreshlayout_homescreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintlayout_home_fragmentcontainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/photo_grid"
+                android:id="@+id/recyclerview_home_movies"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:clipToPadding="false"
@@ -33,13 +34,16 @@
                 app:listData="@{viewmodel.displayableMovies}"
                 app:spanCount="2"
                 tools:itemCount="16"
-                tools:listitem="@layout/grid_view_item" />
+                tools:listitem="@layout/item_movie" />
 
             <LinearLayout
+                android:id="@+id/linearlayout_apistatus_container"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:orientation="vertical"
+                android:background="@color/white"
                 android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone"
                 app:apiStatus="@{viewmodel.apiStatus}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -47,18 +51,19 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:id="@+id/api_state_image"
-                    android:contentDescription="@string/api_image"
+                    android:id="@+id/imageview_apistatus"
+                    android:contentDescription="@string/apistatus_imagedescr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
                 <TextView
-                    android:id="@+id/api_state_text"
+                    android:id="@+id/textview_apistatus_status"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
                     tools:text="Something went wrong, check your connection and try again!" />
             </LinearLayout>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -11,7 +11,7 @@
     </data>
 
     <ImageView
-        android:id="@+id/movie_poster"
+        android:id="@+id/imageview_grid_movieposter"
         android:layout_width="match_parent"
         android:layout_height="170dp"
         android:padding="2dp"

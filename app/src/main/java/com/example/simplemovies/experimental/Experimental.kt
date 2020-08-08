@@ -49,7 +49,7 @@ class Experimental : Fragment() {
 
         experimentalViewmodel.genres.observe(viewLifecycleOwner, Observer {
             if (it.genres.isNotEmpty()) {
-                val chipGroup = binding.chipsGroup
+                val chipGroup = binding.chipgroupExperimentalGenres
                 it.genres.forEach { genre ->
                     chipGroup.addView(chipFactory(genre))
                 }
@@ -60,7 +60,7 @@ class Experimental : Fragment() {
             if (it != null) {
                 findNavController().navigate(
                     ExperimentalDirections.actionExperimentalToMovieDetails(
-                        binding.type.selectedItem.toString(),
+                        binding.spinnerExperimentalType.selectedItem.toString(),
                         it
                     )
                 )
@@ -80,35 +80,35 @@ class Experimental : Fragment() {
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     private fun observerConfigChange(binding: FragmentExperimentalBinding) {
         if(experimentalViewmodel.discover.value != null) {
-            binding.toolbar.visibility = GONE
-            binding.retryButton.visibility = VISIBLE
+            binding.linearlayoutExperimentalToolbar.visibility = GONE
+            binding.buttonExperimentalRetry.visibility = VISIBLE
         }
     }
 
     private fun observerListeners(binding: FragmentExperimentalBinding) {
-        binding.retryButton.setOnClickListener {
-            binding.toolbar.visibility = VISIBLE
-            binding.retryButton.visibility = GONE
+        binding.buttonExperimentalRetry.setOnClickListener {
+            binding.linearlayoutExperimentalToolbar.visibility = VISIBLE
+            binding.buttonExperimentalRetry.visibility = GONE
         }
-        binding.searchButton.setOnClickListener {
+        binding.buttonExperimentalSearch.setOnClickListener {
             experimentalViewmodel.fetchDiscover(
-                binding.includeStates.selectedItem.toString(),
-                binding.type.selectedItem.toString(),
-                binding.userScore.selectedItem.toString(), requireContext().resources
+                binding.spinnerExperimentalStates.selectedItem.toString(),
+                binding.spinnerExperimentalType.selectedItem.toString(),
+                binding.spinnerExperimentalUserscore.selectedItem.toString(), requireContext().resources
             )
-            binding.toolbar.visibility = GONE
-            binding.retryButton.visibility = VISIBLE
+            binding.linearlayoutExperimentalToolbar.visibility = GONE
+            binding.buttonExperimentalRetry.visibility = VISIBLE
         }
 
     }
 
     private fun bindAdapters(binding: FragmentExperimentalBinding) {
-        binding.discoveredMovies.adapter = PhotoGridAdapter(OnClickListener {
+        binding.recyclerviewExperimentalMovies.adapter = PhotoGridAdapter(OnClickListener {
             experimentalViewmodel.navSelected(it)
         })
-        binding.includeStates.adapter = arrayAdapterFactory(R.array.include_states)
-        binding.userScore.adapter = arrayAdapterFactory(R.array.user_scores)
-        binding.type.adapter = arrayAdapterFactory(R.array.types)
+        binding.spinnerExperimentalStates.adapter = arrayAdapterFactory(R.array.include_states)
+        binding.spinnerExperimentalUserscore.adapter = arrayAdapterFactory(R.array.user_scores)
+        binding.spinnerExperimentalType.adapter = arrayAdapterFactory(R.array.types)
     }
 
     private fun arrayAdapterFactory(arrayRes: Int): ArrayAdapter<CharSequence> {
@@ -123,7 +123,7 @@ class Experimental : Fragment() {
 
     private fun chipFactory(genre: GenreNetwork): Chip {
         return (LayoutInflater.from(requireContext())
-            .inflate(R.layout.genre_chip, null) as Chip).also {
+            .inflate(R.layout.view_genre_chip, null) as Chip).also {
             it.setOnCheckedChangeListener { _, isChecked ->
                 experimentalViewmodel.manageChips(genre, isChecked)
             }

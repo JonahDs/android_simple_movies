@@ -26,10 +26,10 @@ class HomescreenFlow {
 
     @Test
     fun clickItem() {
-        onView(withId(R.id.photo_grid)).perform(
+        onView(withId(R.id.recyclerview_home_movies)).perform(
             RecyclerViewActions.actionOnItemAtPosition<PhotoGridAdapter.MovieViewHolder>(
                 0,
-                RecyclerAction.clickChildViewWithId(R.id.movie_poster)
+                RecyclerAction.clickChildViewWithId(R.id.imageview_moviepicker_movieposter)
             )
         )
     }

@@ -139,18 +139,18 @@ fun bindApiState(view: View, status: APIStatus?) {
     when (status) {
         APIStatus.LOADING -> {
             view.visibility = VISIBLE
-            view.api_state_image.setImageResource(R.drawable.loading_animation)
-            view.api_state_text.text = view.resources.getString(R.string.api_status_fetching)
+            view.imageview_apistatus.setImageResource(R.drawable.loading_animation)
+            view.textview_apistatus_status.text = view.resources.getString(R.string.api_status_fetching)
         }
         APIStatus.INTERMEDIATE -> {
             view.visibility = VISIBLE
-            view.api_state_image.setImageResource(R.drawable.loading_animation)
-            view.api_state_text.text = view.resources.getString(R.string.api_status_almost)
+            view.imageview_apistatus.setImageResource(R.drawable.loading_animation)
+            view.textview_apistatus_status.text = view.resources.getString(R.string.api_status_almost)
         }
         APIStatus.ERROR -> {
             view.visibility = VISIBLE
-            view.api_state_image.setImageResource(R.drawable.ic_connection_error)
-            view.api_state_text.text = view.resources.getString(R.string.api_status_error)
+            view.imageview_apistatus.setImageResource(R.drawable.ic_connection_error)
+            view.textview_apistatus_status.text = view.resources.getString(R.string.api_status_error)
         }
         APIStatus.DONE -> {
             view.visibility = GONE

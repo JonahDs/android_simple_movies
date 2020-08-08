@@ -5,13 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.simplemovies.databinding.CastViewExtendedItemBinding
-import com.example.simplemovies.databinding.CrewViewExtendedItemBinding
+import com.example.simplemovies.databinding.ItemCastExtendedBinding
+import com.example.simplemovies.databinding.ItemCrewExtendedBinding
 import com.example.simplemovies.domain.CastMember
 import com.example.simplemovies.domain.CrewMember
 
 class CastAdapter : ListAdapter<CastMember, CastAdapter.CastViewHolder>(DiffCallback) {
-    class CastViewHolder(private val binding: CastViewExtendedItemBinding) :
+    class CastViewHolder(private val binding: ItemCastExtendedBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(castMember: CastMember) {
             binding.cast = castMember
@@ -33,7 +33,7 @@ class CastAdapter : ListAdapter<CastMember, CastAdapter.CastViewHolder>(DiffCall
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CastViewHolder {
         return CastViewHolder(
-            CastViewExtendedItemBinding.inflate(
+            ItemCastExtendedBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -47,7 +47,7 @@ class CastAdapter : ListAdapter<CastMember, CastAdapter.CastViewHolder>(DiffCall
 }
 
 class CrewAdapter : ListAdapter<CrewMember, CrewAdapter.CrewViewHolder>(DiffCallback) {
-    class CrewViewHolder(private val binding: CrewViewExtendedItemBinding) :
+    class CrewViewHolder(private val binding: ItemCrewExtendedBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(crewMember: CrewMember) {
             binding.crewmember = crewMember
@@ -67,7 +67,7 @@ class CrewAdapter : ListAdapter<CrewMember, CrewAdapter.CrewViewHolder>(DiffCall
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CrewViewHolder {
         return CrewViewHolder(
-            CrewViewExtendedItemBinding.inflate(
+            ItemCrewExtendedBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false

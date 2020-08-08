@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
 
         drawerLayout = binding.drawerLayout
 
-        val navController = findNavController(R.id.navhostFragment)
+        val navController = findNavController(R.id.navhost_fragment)
 
         appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
 
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 
         if (Intent.ACTION_SEARCH === intent.action) {
             intent.getStringExtra(SearchManager.QUERY)?.also {
-                findNavController(R.id.navhostFragment).navigate(
+                findNavController(R.id.navhost_fragment).navigate(
                     HomescreenFragmentDirections.actionMoviesToSearchLanding(
                         it
                     )
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return findNavController(R.id.navhostFragment).navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+        return findNavController(R.id.navhost_fragment).navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -63,8 +63,8 @@ class MainActivity : AppCompatActivity() {
             setSearchableInfo(searchManager.getSearchableInfo(componentName))
             queryHint = "Search movies by title"
         }
-        menu.findItem(R.id.PickAMovie).isVisible = false
-        menu.findItem(R.id.Experimental).isVisible = false
+        menu.findItem(R.id.moviepicker_fragment).isVisible = false
+        menu.findItem(R.id.experimental_fragment).isVisible = false
         return true
     }
 }

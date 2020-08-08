@@ -42,14 +42,14 @@ class MoviePickerFragment : Fragment() {
 
         binding.viewmodel = moviePickerViewModel
 
-        binding.findOutMore.setOnClickListener {
+        binding.buttonMoviepickerFindout.setOnClickListener {
            moviePickerViewModel.navigationProperty?.let {
                findNavController().navigate(MoviePickerFragmentDirections.actionPickAMovieToMovieDetails(it))
                moviePickerViewModel.navigationCompleted()
            }
         }
 
-        binding.refreshLayout?.setOnRefreshListener {
+        binding.swiperefreshlayoutMoviepicker.setOnRefreshListener {
             val builder = AlertDialog.Builder(requireActivity())
             builder.setMessage("Sure you want to refresh?")
                 .setPositiveButton("Yes"
@@ -62,7 +62,7 @@ class MoviePickerFragment : Fragment() {
                 }
             // Create the AlertDialog object and return it
             builder.create().show()
-            binding.refreshLayout.isRefreshing = false
+            binding.swiperefreshlayoutMoviepicker.isRefreshing = false
         }
 
         binding.lifecycleOwner = this

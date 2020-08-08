@@ -3,21 +3,21 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/PickAMovie"
-        android:title="Movie Picker"
+        android:id="@+id/moviepicker_fragment"
+        android:title="@string/navigation_moviepicker"
         app:showAsAction="never" />
     <item
-        android:id="@+id/Experimental"
-        android:title="Discover"
+        android:id="@+id/experimental_fragment"
+        android:title="@string/navigation_discover"
         app:showAsAction="never" />
     <item
-        android:id="@+id/aboutFragment"
-        android:title="About"
+        android:id="@+id/about_fragment"
+        android:title="@string/navigation_about"
         app:showAsAction="never" />
     <item
         android:id="@+id/search"
         android:icon="@drawable/ic_search_black_24dp"
-        android:title="Search"
+        android:title="@string/navigation_search"
         app:actionViewClass="android.widget.SearchView"
         app:showAsAction="ifRoom" />
 </menu>

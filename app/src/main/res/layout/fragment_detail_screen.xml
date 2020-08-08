@@ -12,72 +12,73 @@
 
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedscrollview_detail_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/detail_constraint"
+            android:id="@+id/constraintlayout_detail_fragmentcontainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:visibility="visible">
 
 
             <ImageView
-                android:id="@+id/movie_backdrop"
+                android:id="@+id/imageview_detail_moviebackdrop"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginBottom="8dp"
                 android:contentDescription="@string/movie_detail_backdrop_contentdescription"
                 app:backdrop_path="@{viewmodel.result.backdrop_path}"
-                app:layout_constraintBottom_toTopOf="@+id/movie_title"
+                app:layout_constraintBottom_toTopOf="@+id/textview_detail_movietitle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageView
-                android:id="@+id/movie_poster"
+                android:id="@+id/imageview_detail_movieposter"
                 android:layout_width="150dp"
                 android:layout_height="250dp"
                 android:contentDescription="@string/movie_detail_poster"
-                app:layout_constraintBottom_toBottomOf="@+id/movie_backdrop"
+                app:layout_constraintBottom_toBottomOf="@+id/imageview_detail_moviebackdrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.08"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/movie_backdrop"
+                app:layout_constraintTop_toTopOf="@+id/imageview_detail_moviebackdrop"
                 app:poster_avatar="@{viewmodel.result.poster_path}"
                 tools:srcCompat="@tools:sample/avatars" />
 
 
             <TextView
-                android:id="@+id/movie_title"
+                android:id="@+id/textview_detail_movietitle"
                 style="@style/H2White"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:text="@{viewmodel.result.original_title}"
-                app:layout_constraintBottom_toTopOf="@+id/user_score_progressbar"
+                app:layout_constraintBottom_toTopOf="@+id/progressbar_detail_voteavg"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:text="Movie title" />
 
 
             <ProgressBar
-                android:id="@+id/user_score_progressbar"
+                android:id="@+id/progressbar_detail_voteavg"
                 style="?android:progressBarStyleHorizontal"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 android:layout_marginBottom="8dp"
                 android:progress="@{(int) (viewmodel.result.vote_average * 10)}"
-                android:progressDrawable="@drawable/score_circle"
-                app:layout_constraintBottom_toTopOf="@+id/additional_information"
+                android:progressDrawable="@drawable/progressbar_circular"
+                app:layout_constraintBottom_toTopOf="@+id/linearlayout_detail_informationcontainer"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.4"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
-                android:id="@+id/user_score"
+                android:id="@+id/spinner_experimental_userscore"
                 style="@style/RegularWhite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -86,46 +87,45 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:text="@{`` + (int)(viewmodel.result.vote_average * 10) + `%`}"
-                app:layout_constraintBottom_toBottomOf="@+id/user_score_progressbar"
-                app:layout_constraintEnd_toEndOf="@+id/user_score_progressbar"
-                app:layout_constraintStart_toStartOf="@+id/user_score_progressbar"
-                app:layout_constraintTop_toTopOf="@+id/user_score_progressbar"
+                app:layout_constraintBottom_toBottomOf="@+id/progressbar_detail_voteavg"
+                app:layout_constraintEnd_toEndOf="@+id/progressbar_detail_voteavg"
+                app:layout_constraintStart_toStartOf="@+id/progressbar_detail_voteavg"
+                app:layout_constraintTop_toTopOf="@+id/progressbar_detail_voteavg"
                 tools:text="55%" />
 
             <TextView
-                android:id="@+id/user_score_text"
+                android:id="@+id/textview_detail_userscoreinfo"
                 style="@style/RegularWhite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/user_score"
-                app:layout_constraintBottom_toTopOf="@+id/additional_information"
+                app:layout_constraintBottom_toTopOf="@+id/linearlayout_detail_informationcontainer"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.06"
-                app:layout_constraintStart_toEndOf="@+id/user_score_progressbar"
-                app:layout_constraintTop_toTopOf="@+id/user_score"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintStart_toEndOf="@+id/progressbar_detail_voteavg"
+                app:layout_constraintTop_toTopOf="@+id/progressbar_detail_voteavg" />
 
             <LinearLayout
-                android:id="@+id/additional_information"
+                android:id="@+id/linearlayout_detail_informationcontainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/border_set"
+                android:background="@drawable/border_top_bottom"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                app:layout_constraintBottom_toTopOf="@+id/movie_information_layout"
+                app:layout_constraintBottom_toTopOf="@+id/linearlayout_detail_reviewcontainer"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
                 <LinearLayout
-                    android:id="@+id/info_layout"
+                    android:id="@+id/linearlayout_detail_addinfcontainer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/movie_release_date"
+                        android:id="@+id/textview_detail_movierelease"
                         style="@style/RegularWhite"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -134,7 +134,7 @@
                         tools:text="13/03/2005" />
 
                     <TextView
-                        android:id="@+id/movie_playtime"
+                        android:id="@+id/textview_detail_movieplaytime"
                         style="@style/RegularWhite"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -146,7 +146,7 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/movie_genres"
+                    android:id="@+id/textview_detail_moviegenres"
                     style="@style/RegularWhite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -156,19 +156,19 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/movie_information_layout"
+                android:id="@+id/linearlayout_detail_reviewcontainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:orientation="vertical"
-                app:layout_constraintBottom_toTopOf="@+id/cast_layout"
+                app:layout_constraintBottom_toTopOf="@+id/linearlayout_detail_castcontainer"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
                 <TextView
-                    android:id="@+id/movie_tagline"
+                    android:id="@+id/textview_detail_movietagline"
                     style="@style/RegularWhite"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -180,7 +180,7 @@
                     tools:text="Movie tagline" />
 
                 <TextView
-                    android:id="@+id/movie_description_label"
+                    android:id="@+id/textview_detail_movieoverviewtext"
                     style="@style/H3White"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -189,7 +189,7 @@
                     tools:text="Overview" />
 
                 <TextView
-                    android:id="@+id/movie_description"
+                    android:id="@+id/textview_detaim_movieoverview"
                     style="@style/RegularWhite"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -199,17 +199,17 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/cast_layout"
+                android:id="@+id/linearlayout_detail_castcontainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
                 android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/linearlayout_detail_fillercontainer"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
                 <TextView
-                    android:id="@+id/protagonists_label"
+                    android:id="@+id/textview_detail_prottext"
                     style="@style/H3White"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -221,15 +221,15 @@
                     tools:text="Protagonists" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/movie_cast"
+                    android:id="@+id/recyclerview_detail_moviecast"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clipToPadding="false"
                     app:castData="@{viewmodel.movieCast}"
-                    tools:listitem="@layout/cast_view_item" />
+                    tools:listitem="@layout/item_cast" />
 
                 <Button
-                    android:id="@+id/show_cast"
+                    android:id="@+id/button_detail_showcast"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -239,6 +239,86 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linearlayout_detail_fillercontainer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingBottom="32dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <TextView
+                    android:id="@+id/textview_detail_statustext"
+                    style="@style/RegularBlackPrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/fragment_experimental_status" />
+
+                <TextView
+                    android:id="@+id/textview_detail_status"
+                    style="@style/RegularBlack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@{viewmodel.result.status}" />
+
+                <TextView
+                    android:id="@+id/textview_detail_languagetext"
+                    style="@style/RegularBlackPrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/fragment_experimental_language"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:id="@+id/textview_detail_language"
+                    style="@style/RegularBlack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@{viewmodel.result.original_language}" />
+
+                <TextView
+                    android:id="@+id/textview_detail_budgettext"
+                    style="@style/RegularBlackPrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/fragment_experimental_budget" />
+
+                <TextView
+                    android:id="@+id/textview_detail_budget"
+                    style="@style/RegularBlack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    app:numberFormatter="@{viewmodel.result.budget}" />
+
+                <TextView
+                    android:id="@+id/textview_detail_revenuetext"
+                    style="@style/RegularBlackPrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/fragment_experimental_revenue" />
+
+                <TextView
+                    android:id="@+id/textview_detail_revenue"
+                    style="@style/RegularBlack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    app:numberFormatter="@{viewmodel.result.revenue}" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearlayout_apistatus_container"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="@color/white"
@@ -248,16 +328,16 @@
                 app:apiStatus="@{viewmodel.apiStatus}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintRight_toRightOf="parent">
 
                 <ImageView
-                    android:id="@+id/api_state_image"
+                    android:id="@+id/imageview_apistatus"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/apistatus_imagedescr" />
 
                 <TextView
-                    android:id="@+id/api_state_text"
+                    android:id="@+id/textview_apistatus_status"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"

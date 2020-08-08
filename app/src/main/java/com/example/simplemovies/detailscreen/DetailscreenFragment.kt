@@ -53,10 +53,10 @@ class DetailscreenFragment : Fragment() {
 
         binding.lifecycleOwner = this
 
-        binding.movieCast.layoutManager =
+        binding.recyclerviewDetailMoviecast.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-        binding.movieCast.adapter = CastAdapter()
+        binding.recyclerviewDetailMoviecast.adapter = CastAdapter()
 
         binding.root.setBackgroundColor(
             ContextCompat.getColor(
@@ -65,7 +65,7 @@ class DetailscreenFragment : Fragment() {
             )
         )
 
-        binding.showCast.setOnClickListener {
+        binding.buttonDetailShowcast.setOnClickListener {
             detailViewModel.displayCastDetails()
         }
 
