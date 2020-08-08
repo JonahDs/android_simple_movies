@@ -1,5 +1,6 @@
 package com.example.simplemovies.network
 
+import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
@@ -34,7 +35,7 @@ abstract class NetworkBoundingNew<T> {
                 emit(Resource.Loading(null, APIStatus.INTERMEDIATE))
                 saveApiResToDb(data)
                 fetchFromDb().collect { dbRes ->
-                    emit(Resource.Success(dbRes, APIStatus.DONE))
+                    emit(Resource.Success(dbRes?: null, APIStatus.DONE))
                 }
             } catch (e: Exception) {
                 val buffered = fetchFromDb().first()
@@ -56,7 +57,7 @@ abstract class NetworkBoundingNew<T> {
 
     protected abstract fun shouldFetch(data: T?): Boolean
 
-    protected abstract fun fetchFromDb(): Flow<T>
+    protected abstract fun fetchFromDb(): Flow<T?>
 
     protected abstract suspend fun makeApiCall(): T
 
@@ -66,7 +67,7 @@ abstract class NetworkBoundingNew<T> {
 
 
 sealed class Resource<T>(val data: T? = null, val status: APIStatus? = null) {
-    class Success<T>(data: T, status: APIStatus) : Resource<T>(data, status)
+    class Success<T>(data: T?, status: APIStatus) : Resource<T>(data, status)
     class Loading<T>(data: T?, status: APIStatus) : Resource<T>(data, status)
     class Error<T>(data: T? = null, status: APIStatus) : Resource<T>(data, status)
 }
