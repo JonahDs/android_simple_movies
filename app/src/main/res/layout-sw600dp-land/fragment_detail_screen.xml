@@ -255,6 +255,7 @@
                 android:layout_height="0dp"
                 android:background="@color/white"
                 android:orientation="vertical"
+                android:paddingTop="16dp"
                 app:layout_constraintBottom_toBottomOf="@id/linearlayout_detail_castcontainer"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/linearlayout_detail_castcontainer"

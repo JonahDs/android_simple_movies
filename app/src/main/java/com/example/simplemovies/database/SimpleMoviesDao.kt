@@ -17,6 +17,9 @@ abstract class MovieDao {
     @Query("select * from movies")
     abstract fun getAll(): Flow<List<MovieDb>>
 
+    @Query("delete from movies")
+    abstract fun clearTable()
+
     fun getAllFlowDistinct() = getAll().distinctUntilChanged()
 
 }

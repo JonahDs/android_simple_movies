@@ -36,6 +36,7 @@ class MovieRepository @Inject constructor(
         dataManager.declareTimeout(1, TimeUnit.MINUTES)
         return object : NetworkBoundingNew<MoviesWrapper>() {
             override fun saveApiResToDb(item: MoviesWrapper)  {
+                movieDao.clearTable()
                 movieDao.insert(item.results.asMovieDatabase())
             }
 
