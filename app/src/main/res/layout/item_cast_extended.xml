@@ -31,7 +31,7 @@
 
         <TextView
             android:id="@+id/textview_castname"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:text="@{cast.name}"
@@ -50,13 +50,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
             android:text="@{cast.character}"
             app:layout_constraintBottom_toBottomOf="@+id/imageview_cast"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/imageview_cast"
-            app:layout_constraintTop_toBottomOf="@+id/imageview_cast"
-            app:layout_constraintVertical_bias="0.04"
+            app:layout_constraintTop_toBottomOf="@+id/textview_castname"
+            app:layout_constraintVertical_bias="0.0"
             tools:text="Harry Potter" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

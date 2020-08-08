@@ -32,8 +32,14 @@ class GenreRepository @Inject constructor(
                 data == null || data.genres.isEmpty() || dataManager.shouldRefresh("genres")
 
 
-            override fun fetchFromDb(): Flow<GenresWrapper> =
-                genreDao.getAllFlowDistinct().map { GenresWrapper(it.asGenreNetwork()) }
+            override fun fetchFromDb(): Flow<GenresWrapper?> =
+                genreDao.getAllFlowDistinct().map {
+                    if (it.isEmpty()) {
+                        null
+                    } else {
+                        GenresWrapper(it.asGenreNetwork())
+                    }
+                }
 
 
             override suspend fun makeApiCall(): GenresWrapper = withContext(IO) {

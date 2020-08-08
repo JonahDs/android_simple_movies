@@ -32,7 +32,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/contraintlayout_moviepicker_fragmentcontainer"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -132,9 +132,9 @@
 
                     <ImageView
                         android:id="@+id/imageview_apistatus"
-                        android:contentDescription="@string/apistatus_imagedescr"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/apistatus_imagedescr" />
 
                     <TextView
                         android:id="@+id/textview_apistatus_status"

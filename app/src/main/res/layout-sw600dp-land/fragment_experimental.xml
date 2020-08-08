@@ -15,6 +15,7 @@
         android:id="@+id/nestedscrollview_experimental"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
         android:scrollbars="vertical">
 
 
@@ -82,6 +83,7 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="16dp"
                             android:text="@string/experimental_type"
+                            android:textSize="18sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textview_experimental_scoretext"
@@ -167,12 +169,13 @@
 
 
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/linearlayout_apistatus_container"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="@color/white"
-                android:gravity="center|top"
+                android:gravity="center"
                 android:orientation="vertical"
                 app:apiStatus="@{viewmodel.apiStatus}"
                 app:layout_constraintBottom_toBottomOf="parent"

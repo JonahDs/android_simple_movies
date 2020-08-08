@@ -32,8 +32,6 @@ class MainActivity : AppCompatActivity() {
 
         appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
 
-        val navView = binding.navView.menu
-        navView.findItem(R.id.search).isVisible = false
 
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
         NavigationUI.setupWithNavController(binding.navView, navController)
@@ -56,15 +54,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.navdrawer_menu, menu)
+        menuInflater.inflate(R.menu.search_menu, menu)
 
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         (menu.findItem(R.id.search).actionView as SearchView).apply {
             setSearchableInfo(searchManager.getSearchableInfo(componentName))
             queryHint = "Search movies by title"
         }
-        menu.findItem(R.id.moviepicker_fragment).isVisible = false
-        menu.findItem(R.id.experimental_fragment).isVisible = false
         return true
     }
 }

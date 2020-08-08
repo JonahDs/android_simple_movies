@@ -15,6 +15,7 @@
         android:id="@+id/nestedscrollview_experimental"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
         android:scrollbars="vertical">
 
 
@@ -82,6 +83,7 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="16dp"
                             android:text="@string/experimental_type"
+                            android:textSize="18sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textview_experimental_scoretext"
@@ -96,6 +98,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toEndOf="@+id/textview_experimental_typetext"
                             app:layout_constraintStart_toStartOf="@+id/spinner_experimental_userscore"
                             app:layout_constraintTop_toBottomOf="@+id/spinner_experimental_userscore"
                             app:layout_constraintVertical_bias="0.0" />
@@ -105,10 +108,9 @@
                             style="@style/spinner_style"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintHorizontal_bias="0.01"
                             app:layout_constraintStart_toEndOf="@+id/textview_experimental_scoretext"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -163,7 +165,7 @@
                     android:layout_height="wrap_content"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:listData="@{viewmodel.discover.results}"
-                    app:spanCount="4" />
+                    app:spanCount="5" />
 
 
             </LinearLayout>
@@ -173,7 +175,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="@color/white"
-                android:gravity="center|top"
+                android:gravity="center"
                 android:orientation="vertical"
                 app:apiStatus="@{viewmodel.apiStatus}"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -195,7 +197,6 @@
                     android:textAlignment="center"
                     tools:text="Something went wrong, check your connection and try again!" />
             </LinearLayout>
-
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

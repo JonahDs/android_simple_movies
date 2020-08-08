@@ -6,9 +6,9 @@
             <item>
                 <shape>
                     <!-- Background color of spinner -->
-                    <solid android:color="@color/white"></solid>
+                    <solid android:color="@color/white"/>
                     <!--rounded edges-->
-                    <corners android:radius="3dp"></corners>
+                    <corners android:radius="3dp"/>
 
                     <padding
                         android:bottom="10dp"
