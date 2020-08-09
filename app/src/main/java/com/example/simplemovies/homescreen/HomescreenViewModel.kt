@@ -1,17 +1,19 @@
 package com.example.simplemovies.homescreen
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.example.simplemovies.domain.MoviesWrapper
+import android.util.Log
+import androidx.lifecycle.*
 import com.example.simplemovies.domain.MovieNetwork
+import com.example.simplemovies.domain.MoviesWrapper
 import com.example.simplemovies.network.APIStatus
 import com.example.simplemovies.network.Resource
 import com.example.simplemovies.repositories.MovieRepository
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 //constructor inject a movieRepository
-class HomescreenViewModel @Inject constructor(private val movieRepo: MovieRepository) : ViewModel() {
+class HomescreenViewModel @Inject constructor(private val movieRepo: MovieRepository) :
+    ViewModel() {
 
     private val _displayableMovies = MutableLiveData<List<MovieNetwork>>()
 
@@ -26,6 +28,27 @@ class HomescreenViewModel @Inject constructor(private val movieRepo: MovieReposi
 
     val navSelected: LiveData<Int> get() = _navSelected
 
+
+    init {
+        getMoviesStatic()
+    }
+
+    fun getMoviesStatic() {
+        viewModelScope.launch {
+            movieRepo.getMoviesOfFlow().collect {
+                it.data?.let { wrapper ->
+                    _displayableMovies.value = wrapper.results
+                }
+                it.status?.let { state ->
+                    Log.i("API_STATE", state.toString())
+                    _apiStatus.value = state
+                }
+
+            }
+        }
+    }
+
+
     //Set navigation property
     fun displayMovieDetails(movieId: Int) {
         _navSelected.value = movieId
@@ -36,28 +59,9 @@ class HomescreenViewModel @Inject constructor(private val movieRepo: MovieReposi
         _navSelected.value = null
     }
 
-    //Pass repo function to attach observer in fragment
-    fun fetchMovies(): LiveData<Resource<MoviesWrapper>> {
-        return movieRepo.getMovies()
+
+    fun clearMovies() {
+        _displayableMovies.value = listOf()
     }
 
-    //Manage fragment state
-    fun manageState(resource: Resource<MoviesWrapper>) {
-        if(resource.status != null) {
-            setState(resource.status)
-        }
-        if(resource.data != null) {
-            displayMovies(resource.data.results)
-        }
-    }
-
-    //Set movies
-    private fun displayMovies(movies: List<MovieNetwork>) {
-        _displayableMovies.value = movies
-    }
-
-    //Set API/App status
-    private fun setState(state: APIStatus) {
-        _apiStatus.value = state
-    }
 }

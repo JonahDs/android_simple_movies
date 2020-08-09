@@ -1,15 +1,17 @@
 package com.example.simplemovies.moviepicker
 
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import androidx.navigation.fragment.findNavController
 import com.example.simplemovies.MovieApplication
 import com.example.simplemovies.databinding.FragmentMoviePickerBinding
@@ -36,23 +38,35 @@ class MoviePickerFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentMoviePickerBinding.inflate(inflater).apply {
-            viewmodel = moviePickerViewModel
+        val binding = FragmentMoviePickerBinding.inflate(inflater)
+
+        binding.viewmodel = moviePickerViewModel
+
+        binding.buttonMoviepickerFindout.setOnClickListener {
+           moviePickerViewModel.navigationProperty?.let {
+               findNavController().navigate(MoviePickerFragmentDirections.actionPickAMovieToMovieDetails(it))
+               moviePickerViewModel.navigationCompleted()
+           }
         }
 
-        moviePickerViewModel.navigationProperty.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                this.findNavController()
-                    .navigate(MoviePickerFragmentDirections.actionPickAMovieToMovieDetails(it))
-                moviePickerViewModel.navigationCompleted()
+        binding.swiperefreshlayoutMoviepicker.setOnRefreshListener {
+            val builder = AlertDialog.Builder(requireActivity())
+            builder.setMessage("Sure you want to refresh?")
+                .setPositiveButton("Yes"
+                ) { _, _ ->
+                    moviePickerViewModel.fetchRandomMovie()
+                }
+                .setNegativeButton("Cancel"
+                ) { _, _ ->
 
-            }
-        })
+                }
+            // Create the AlertDialog object and return it
+            builder.create().show()
+            binding.swiperefreshlayoutMoviepicker.isRefreshing = false
+        }
 
         binding.lifecycleOwner = this
 
         return binding.root
     }
-
-
 }

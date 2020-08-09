@@ -10,30 +10,39 @@
     </data>
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cast_card"
-            android:layout_width="100dp"
-            android:layout_height="250dp"
-            android:layout_margin="5dp">
+            android:id="@+id/materialcard_container"
+            android:layout_width="125dp"
+            android:layout_height="225dp"
+            android:layout_margin="5dp"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true">
 
             <LinearLayout
+                android:id="@+id/linearlayout_cast_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:orientation="vertical">
 
                 <ImageView
+                    android:id="@+id/imageview_cast"
                     android:layout_width="match_parent"
+                    android:contentDescription="@string/cast_view_item_cast"
                     android:layout_height="170dp"
-                    app:cast_profile="@{cast.profile_path}" />
+                    app:castProfile="@{cast.profile_path}" />
 
                 <LinearLayout
+                    android:id="@+id/linearlayout_castname_container"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/textview_castname"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginTop="2dp"
                         android:text="@{cast.name}" />
 
                 </LinearLayout>

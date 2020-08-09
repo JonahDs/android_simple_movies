@@ -1,74 +1,73 @@
 package com.example.simplemovies.network
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 
-abstract class NetworkBounding<ResultType, RequestType> {
+abstract class SimpleBounding<T> {
 
-    private val results =
-        MediatorLiveData<Resource<ResultType>>()
-
-    init {
-        results.value = Resource.Loading(null, APIStatus.LOADING)
-        val source = fetchFromDb()
-        results.addSource(source) { data ->
-            Log.i("NETWORK", data.toString())
-            results.removeSource(source)
-            if (shouldFetch(data)) {
-                fetchFromNetwork(source)
-            } else {
-                results.addSource(source) { data ->
-                    setValue(
-                        Resource.Success(
-                            data,
-                            APIStatus.DONE
-                        )
-                    )
-                }
-            }
+    private val flow = flow<Resource<T>> {
+        emit(Resource.Loading(null, APIStatus.LOADING))
+        try {
+            val data = makeApiCall()
+            emit(Resource.Success(data, APIStatus.DONE))
+        } catch (e: Exception) {
+            emit(Resource.Error(null, APIStatus.ERROR))
         }
     }
 
-    private fun setValue(newValue: Resource<ResultType>) {
-        if (results.value != newValue) {
-            results.value = newValue
-        }
-    }
+    protected abstract suspend fun makeApiCall(): T
 
-    private fun fetchFromNetwork(source: LiveData<ResultType>) {
-        val response = makeApiCall()
-        results.addSource(source) { data ->
-            setValue(Resource.Loading(data, APIStatus.LOADING))
-        }
-        results.addSource(response) { data ->
-            results.removeSource(source)
-            results.removeSource(response)
-            when (data) {
-                null -> setValue(Resource.Error(data, APIStatus.ERROR))
-                is RequestType -> {
-                    saveApiResToDb(data)
-                    results.addSource(fetchFromDb()) {
-                        setValue(Resource.Success(it, APIStatus.DONE))
-                    }
-                }
-            }
-        }
-    }
-
-    protected abstract fun saveApiResToDb(item: RequestType)
-
-    protected abstract fun shouldFetch(data: ResultType?): Boolean
-
-    protected abstract fun fetchFromDb(): LiveData<ResultType>
-
-    protected abstract fun makeApiCall(): LiveData<RequestType>
-
-    fun asLiveData(): LiveData<Resource<ResultType>> = results
+    fun asFlow() = flow
 }
 
+abstract class NetworkBoundingNew<T> {
+
+    private val flow = flow<Resource<T>> {
+        val local = fetchFromDb().first()
+
+        emit(Resource.Loading(null, APIStatus.LOADING))
+        if (shouldFetch(local)) {
+            try {
+                val data = makeApiCall()
+                emit(Resource.Loading(null, APIStatus.INTERMEDIATE))
+                saveApiResToDb(data)
+                fetchFromDb().collect { dbRes ->
+                    emit(Resource.Success(dbRes?: null, APIStatus.DONE))
+                }
+            } catch (e: Exception) {
+                val buffered = fetchFromDb().first()
+                if (buffered != null) {
+                    fetchFromDb().collect { dbRes ->
+                        emit(Resource.Success(dbRes, APIStatus.DONE))
+                    }
+                } else {
+                    emit(Resource.Error(null, APIStatus.ERROR))
+                }
+            }
+        } else {
+            emit(Resource.Success(local, APIStatus.DONE))
+        }
+    }
+
+
+    protected abstract fun saveApiResToDb(item: T)
+
+    protected abstract fun shouldFetch(data: T?): Boolean
+
+    protected abstract fun fetchFromDb(): Flow<T?>
+
+    protected abstract suspend fun makeApiCall(): T
+
+    fun asFlow() = flow
+
+}
+
+
 sealed class Resource<T>(val data: T? = null, val status: APIStatus? = null) {
-    class Success<T>(data: T, status: APIStatus) : Resource<T>(data, status)
+    class Success<T>(data: T?, status: APIStatus) : Resource<T>(data, status)
     class Loading<T>(data: T?, status: APIStatus) : Resource<T>(data, status)
     class Error<T>(data: T? = null, status: APIStatus) : Resource<T>(data, status)
 }

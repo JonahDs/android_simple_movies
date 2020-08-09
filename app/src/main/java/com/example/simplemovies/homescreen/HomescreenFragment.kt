@@ -18,6 +18,7 @@ import com.example.simplemovies.database.MovieDao
 import com.example.simplemovies.database.SimpleMovieDatabase
 import com.example.simplemovies.databinding.FragmentHomescreenBinding
 import javax.inject.Inject
+import kotlin.math.log
 
 /**
  * A simple [Fragment] subclass.
@@ -49,34 +50,33 @@ class HomescreenFragment : Fragment() {
             viewmodel = homescreenViewModel
         }
 
+        binding.swiperefreshlayoutHomescreen.setOnRefreshListener {
+            homescreenViewModel.clearMovies()
+            homescreenViewModel.getMoviesStatic()
+            binding.swiperefreshlayoutHomescreen.isRefreshing = false
+        }
+
         //Set recyclerview adapter
-        binding.photoGrid.adapter = PhotoGridAdapter(OnClickListener {
+        binding.recyclerviewHomeMovies.adapter = PhotoGridAdapter(OnClickListener {
             //Set the movie id inside of viewmodel
-            this.homescreenViewModel.displayMovieDetails(it)
+            homescreenViewModel.displayMovieDetails(it)
         })
 
         //Observe nav property to start navigating when changed
         this.homescreenViewModel.navSelected.observe(viewLifecycleOwner, Observer {
             if (null != it) {
                 //Navigate with previously set movie id
-                this.findNavController()
+                findNavController()
                     .navigate(HomescreenFragmentDirections.actionHomescreenToDetailscreen(it))
                 //Reset to null to prevent unwanted navigation
-                this.homescreenViewModel.displayMovieCompleted()
+                homescreenViewModel.displayMovieCompleted()
             }
         })
-
-        //Observe movies and API state
-        this.homescreenViewModel.fetchMovies().observe(viewLifecycleOwner, Observer {
-            homescreenViewModel.manageState(it)
-        })
-
 
         //Enable live data updates
         binding.lifecycleOwner = this
 
         return binding.root
     }
-
 
 }

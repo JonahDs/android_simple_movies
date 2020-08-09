@@ -2,7 +2,6 @@ package com.example.simplemovies.experimental
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -11,7 +10,9 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
+import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.simplemovies.MovieApplication
@@ -46,54 +47,71 @@ class Experimental : Fragment() {
                 viewmodel = experimentalViewmodel
             }
 
-        //Setup genres chip
-        experimentalViewmodel.fetchedGenres.observe(viewLifecycleOwner, Observer {
-            if (it.data != null) {
-                val chipGroup = binding.chipsGroup
-                it.data.genres.forEach { genre ->
+        experimentalViewmodel.genres.observe(viewLifecycleOwner, Observer {
+            if (it.genres.isNotEmpty()) {
+                val chipGroup = binding.chipgroupExperimentalGenres
+                it.genres.forEach { genre ->
                     chipGroup.addView(chipFactory(genre))
                 }
             }
         })
 
-        binding.discoveredMovies.adapter = PhotoGridAdapter(OnClickListener {
-            experimentalViewmodel.navSelected(it)
-        })
-
         experimentalViewmodel.navProperty.observe(viewLifecycleOwner, Observer {
-            if(it != null) {
-                findNavController().navigate(ExperimentalDirections.actionExperimentalToMovieDetails(binding.type.selectedItem.toString(), it))
+            if (it != null) {
+                findNavController().navigate(
+                    ExperimentalDirections.actionExperimentalToMovieDetails(
+                        binding.spinnerExperimentalType.selectedItem.toString(),
+                        it
+                    )
+                )
                 experimentalViewmodel.navCompleted()
             }
         })
 
-        binding.includeStates.adapter = createArrayAdapter(R.array.include_states)
-
-        binding.userScore.adapter = createArrayAdapter(R.array.user_scores)
-
-        binding.type.adapter = createArrayAdapter(R.array.types)
-
-        binding.searchButton.setOnClickListener {
-            experimentalViewmodel.discover(
-                binding.includeStates.selectedItem.toString(),
-                binding.type.selectedItem.toString(),
-                binding.userScore.selectedItem.toString(),
-                requireContext().resources
-            )
-            binding.toolbar.visibility = GONE
-            binding.retryButton.visibility = VISIBLE
-        }
-
-        binding.retryButton.setOnClickListener {
-            binding.toolbar.visibility = VISIBLE
-            binding.retryButton.visibility = GONE
-        }
+        bindAdapters(binding)
+        observerConfigChange(binding)
+        observerListeners(binding)
 
         binding.lifecycleOwner = this
+
         return binding.root
     }
 
-    private fun createArrayAdapter(arrayRes: Int): ArrayAdapter<CharSequence> {
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    private fun observerConfigChange(binding: FragmentExperimentalBinding) {
+        if(experimentalViewmodel.discover.value != null) {
+            binding.linearlayoutExperimentalToolbar.visibility = GONE
+            binding.buttonExperimentalRetry.visibility = VISIBLE
+        }
+    }
+
+    private fun observerListeners(binding: FragmentExperimentalBinding) {
+        binding.buttonExperimentalRetry.setOnClickListener {
+            binding.linearlayoutExperimentalToolbar.visibility = VISIBLE
+            binding.buttonExperimentalRetry.visibility = GONE
+        }
+        binding.buttonExperimentalSearch.setOnClickListener {
+            experimentalViewmodel.fetchDiscover(
+                binding.spinnerExperimentalStates.selectedItem.toString(),
+                binding.spinnerExperimentalType.selectedItem.toString(),
+                binding.spinnerExperimentalUserscore.selectedItem.toString(), requireContext().resources
+            )
+            binding.linearlayoutExperimentalToolbar.visibility = GONE
+            binding.buttonExperimentalRetry.visibility = VISIBLE
+        }
+
+    }
+
+    private fun bindAdapters(binding: FragmentExperimentalBinding) {
+        binding.recyclerviewExperimentalMovies.adapter = PhotoGridAdapter(OnClickListener {
+            experimentalViewmodel.navSelected(it)
+        })
+        binding.spinnerExperimentalStates.adapter = arrayAdapterFactory(R.array.include_states)
+        binding.spinnerExperimentalUserscore.adapter = arrayAdapterFactory(R.array.user_scores)
+        binding.spinnerExperimentalType.adapter = arrayAdapterFactory(R.array.types)
+    }
+
+    private fun arrayAdapterFactory(arrayRes: Int): ArrayAdapter<CharSequence> {
         return ArrayAdapter.createFromResource(
             requireContext(),
             arrayRes,
@@ -105,7 +123,7 @@ class Experimental : Fragment() {
 
     private fun chipFactory(genre: GenreNetwork): Chip {
         return (LayoutInflater.from(requireContext())
-            .inflate(R.layout.genre_chip, null) as Chip).also {
+            .inflate(R.layout.view_genre_chip, null) as Chip).also {
             it.setOnCheckedChangeListener { _, isChecked ->
                 experimentalViewmodel.manageChips(genre, isChecked)
             }

@@ -10,7 +10,37 @@
     <string name="experimental_filter">Filters</string>
     <string name="experimental_score">Score</string>
     <string name="experimental_type">Type</string>
-
+    <string name="movie_detail_backdrop_contentdescription">Movie Backdrop</string>
+    <string name="movie_detail_poster">Movie Poster</string>
+    <string name="movie_detail_description">Overview</string>
+    <string name="movie_detail_protagonist">Protagonists</string>
+    <string name="detail_screen_cast_button">Show complete cast and crew</string>
+    <string name="movie_picker_findout_button">Find out more</string>
+    <string name="api_status_fetching">We are fetching your data</string>
+    <string name="api_status_almost">Almost there...</string>
+    <string name="api_status_error">Something went wrong, check your internet connection and try again!</string>
+    <string name="runtime">| %1$s h %2$s min | </string>
+    <string name="refresh">pull to refresh</string>
+    <string name="api_image">Api image</string>
+    <string name="cast">%1$s (%2$d)</string>
+    <string name="about">Simple movies is an informative app where you can find every movie and Tv series in existence. The app comes with various movie related features such as advanced searching and a random movie picker.</string>
+    <string name="cast_view_extended_imagedesc_castimage">Cast image description</string>
+    <string name="crew_view_extended_imagedesc_castprofile">Cast profile</string>
+    <string name="fragment_about_imagedesc_popcorn">Popcorn</string>
+    <string name="apistatus_imagedescr">API status</string>
+    <string name="fragment_experimental_button_retry">Retry</string>
+    <string name="fragment_experimental_status">Status</string>
+    <string name="fragment_experimental_language">Original language</string>
+    <string name="fragment_experimental_budget">Budget</string>
+    <string name="fragment_experimental_revenue">Revenue</string>
+    <string name="cast_view_item_cast">Cast</string>
+    <string name="navigation_moviepicker">Movie Picker</string>
+    <string name="navigation_discover">Discover</string>
+    <string name="navigation_about">About</string>
+    <string name="navigation_search">Search</string>
+    <string name="navigation_movies">Movies</string>
+    <string name="navigation_moviedetails">Movie Details</string>
+    <string name="navigation_moviecast">Movie Cast</string>
 
     <string-array name="include_states">
         <item>Include genres</item>

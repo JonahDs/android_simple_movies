@@ -5,11 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.simplemovies.databinding.GridViewItemBinding
+import com.example.simplemovies.databinding.ItemMovieBinding
 import com.example.simplemovies.domain.MovieNetwork
 
 class PhotoGridAdapter(val click: OnClickListener) : ListAdapter<MovieNetwork, PhotoGridAdapter.MovieViewHolder>(DiffCallback) {
-    class MovieViewHolder(private var binding: GridViewItemBinding) :
+    class MovieViewHolder(private var binding: ItemMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
             movieProp: MovieNetwork
@@ -33,7 +33,7 @@ class PhotoGridAdapter(val click: OnClickListener) : ListAdapter<MovieNetwork, P
         parent: ViewGroup,
         viewType: Int
     ): MovieViewHolder {
-        return MovieViewHolder(GridViewItemBinding.inflate(LayoutInflater.from(parent.context)))
+        return MovieViewHolder(ItemMovieBinding.inflate(LayoutInflater.from(parent.context)))
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {

@@ -1,6 +1,7 @@
 package com.example.simplemovies.di
 
 import android.content.Context
+import com.example.simplemovies.cast.di.CastComponent
 import com.example.simplemovies.detailscreen.di.DetailScreenComponent
 import com.example.simplemovies.experimental.di.ExperimentalComponent
 import com.example.simplemovies.homescreen.di.HomescreenComponent
@@ -26,7 +27,8 @@ interface ApplicationGraph {
     fun moviepickerComponent(): MoviePickerComponent.Factory
     fun searchscreenComponent(): SearchLandingComponent.Factory
     fun experimentalComponent(): ExperimentalComponent.Factory
+    fun castComponent(): CastComponent.Factory
 }
 
-@Module(subcomponents = [HomescreenComponent::class, DetailScreenComponent::class, MoviePickerComponent::class, SearchLandingComponent::class, ExperimentalComponent::class])
+@Module(subcomponents = [HomescreenComponent::class, DetailScreenComponent::class, MoviePickerComponent::class, SearchLandingComponent::class, ExperimentalComponent::class, CastComponent::class])
 object SubComponentModule
