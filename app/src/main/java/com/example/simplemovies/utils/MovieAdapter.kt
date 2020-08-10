@@ -23,11 +23,11 @@ class MovieAdapter(val click: OnClickListener) : ListAdapter<MovieNetwork, Movie
 
     companion object DiffCallback : DiffUtil.ItemCallback<MovieNetwork>() {
         override fun areItemsTheSame(oldItem: MovieNetwork, newItem: MovieNetwork): Boolean {
-            return oldItem === newItem
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: MovieNetwork, newItem: MovieNetwork): Boolean {
-            return oldItem.id === newItem.id
+            return oldItem == newItem
         }
     }
 
