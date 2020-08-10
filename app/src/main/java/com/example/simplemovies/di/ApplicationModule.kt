@@ -14,7 +14,12 @@ import javax.inject.Singleton
 @Module
 object ApplicationModule {
 
-    //Provide our movieRepo
+    /**
+     * Tell Dagger how to create the <returntype>
+     * @Singleton to only create one instance inside given scope
+     * @JvmStatic compile to a static function for performance increase
+     * @Provides tell Dagger that this method needs to be called when <returntype> is needed
+     * */
     @Singleton
     @JvmStatic
     @Provides
@@ -22,6 +27,12 @@ object ApplicationModule {
         return MovieRepository(service, database.movieDao, dataManager)
     }
 
+    /**
+     * Tell Dagger how to create the <returntype>
+     * @Singleton to only create one instance inside given scope
+     * @JvmStatic compile to a static function for performance increase
+     * @Provides tell Dagger that this method needs to be called when <returntype> is needed
+     * */
     @Singleton
     @JvmStatic
     @Provides
@@ -29,7 +40,12 @@ object ApplicationModule {
         return GenreRepository(service, database.genreDao, dataManager)
     }
 
-    //Provide our database
+    /**
+     * Tell Dagger how to create the <returntype>
+     * @Singleton to only create one instance inside given scope
+     * @JvmStatic compile to a static function for performance increase
+     * @Provides tell Dagger that this method needs to be called when <returntype> is needed
+     * */
     @JvmStatic
     @Provides
     @Singleton

@@ -10,6 +10,9 @@ import dagger.multibindings.IntoMap
 @Module
 abstract class SearchLandingModule {
 
+    /**
+     * Puts the viewmodel and its key inside the map of genericViewmodelFactory
+     * */
     @Binds
     @IntoMap
     @ViewModelKey(SearchLandingViewModel::class)

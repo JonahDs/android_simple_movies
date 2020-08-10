@@ -1,4 +1,4 @@
-package com.example.simplemovies.cast
+package com.example.simplemovies.utils
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,7 +10,9 @@ import com.example.simplemovies.databinding.ItemCrewExtendedBinding
 import com.example.simplemovies.domain.CastMember
 import com.example.simplemovies.domain.CrewMember
 
-class CastAdapter : ListAdapter<CastMember, CastAdapter.CastViewHolder>(DiffCallback) {
+class CastExtendedAdapter : ListAdapter<CastMember, CastExtendedAdapter.CastViewHolder>(
+    DiffCallback
+) {
     class CastViewHolder(private val binding: ItemCastExtendedBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(castMember: CastMember) {
@@ -46,7 +48,9 @@ class CastAdapter : ListAdapter<CastMember, CastAdapter.CastViewHolder>(DiffCall
     }
 }
 
-class CrewAdapter : ListAdapter<CrewMember, CrewAdapter.CrewViewHolder>(DiffCallback) {
+class CrewExtendedAdapter : ListAdapter<CrewMember, CrewExtendedAdapter.CrewViewHolder>(
+    DiffCallback
+) {
     class CrewViewHolder(private val binding: ItemCrewExtendedBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(crewMember: CrewMember) {

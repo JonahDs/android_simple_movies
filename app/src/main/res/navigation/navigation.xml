@@ -2,22 +2,17 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/navigation"
     app:startDestination="@id/movie_fragment">
 
     <fragment
         android:id="@+id/movie_fragment"
         android:name="com.example.simplemovies.homescreen.HomescreenFragment"
         android:label="@string/navigation_movies">
-        <action
-            android:id="@+id/action_homescreen_to_detailscreen"
-            app:destination="@+id/MovieDetails" />
-        <action
-            android:id="@+id/action_Movies_to_searchLanding"
-            app:destination="@id/SearchLanding" />
+        <action app:destination="@+id/moviedetail_fragment" android:id="@+id/action_homescreen_to_detailscreen"/>
+        <action app:destination="@id/searchlanding_fragment" android:id="@+id/action_Movies_to_searchLanding" />
     </fragment>
     <fragment
-        android:id="@+id/MovieDetails"
+        android:id="@+id/moviedetail_fragment"
         android:name="com.example.simplemovies.detailscreen.DetailscreenFragment"
         android:label="@string/navigation_moviedetails" >
         <argument
@@ -27,9 +22,7 @@
             android:name="type"
             app:argType="string"
             android:defaultValue="movie" />
-        <action
-            android:id="@+id/action_MovieDetails_to_castFragment"
-            app:destination="@id/castFragment" />
+        <action app:destination="@id/cast_fragment" android:id="@+id/action_MovieDetails_to_castFragment" />
     </fragment>
     <fragment
         android:id="@+id/moviepicker_fragment"
@@ -38,30 +31,28 @@
         tools:layout="@layout/fragment_movie_picker" >
         <action
             android:id="@+id/action_PickAMovie_to_MovieDetails"
-            app:destination="@id/MovieDetails"
+            app:destination="@id/moviedetail_fragment"
             app:popUpTo="@+id/movie_fragment" />
     </fragment>
     <fragment
-        android:id="@+id/SearchLanding"
-        android:name="com.example.simplemovies.search.SearchLanding"
+        android:id="@+id/searchlanding_fragment"
+        android:name="com.example.simplemovies.search.SearchLandingFragment"
         android:label="@string/navigation_search"
         tools:layout="@layout/fragment_search_landing">
         <argument
             android:name="query"
             app:argType="string"
             app:nullable="true" />
-        <action
-            android:id="@+id/action_SearchLanding_to_MovieDetails"
-            app:destination="@id/MovieDetails" />
+        <action app:destination="@id/moviedetail_fragment"  android:id="@+id/action_SearchLanding_to_MovieDetails" />
     </fragment>
     <fragment
         android:id="@+id/experimental_fragment"
-        android:name="com.example.simplemovies.experimental.Experimental"
+        android:name="com.example.simplemovies.experimental.ExperimentalFragment"
         android:label="@string/navigation_discover"
         tools:layout="@layout/fragment_experimental">
         <action
             android:id="@+id/action_experimental_to_MovieDetails"
-            app:destination="@id/MovieDetails"
+            app:destination="@id/moviedetail_fragment"
             app:popUpTo="@+id/movie_fragment">
             <argument
                 android:name="type"
@@ -70,7 +61,7 @@
         </action>
     </fragment>
     <fragment
-        android:id="@+id/castFragment"
+        android:id="@+id/cast_fragment"
         android:name="com.example.simplemovies.cast.CastFragment"
         android:label="@string/navigation_moviecast">
         <argument

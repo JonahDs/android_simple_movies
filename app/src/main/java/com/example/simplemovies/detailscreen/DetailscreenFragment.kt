@@ -17,9 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simplemovies.MovieApplication
 import com.example.simplemovies.R.color.detailBackground
 import com.example.simplemovies.databinding.FragmentDetailScreenBinding
-import com.example.simplemovies.homescreen.OnClickListener
+import com.example.simplemovies.utils.CastAdapter
 import java.util.*
-import java.util.Locale.GERMAN
 import javax.inject.Inject
 
 /**
@@ -34,6 +33,10 @@ class DetailscreenFragment : Fragment() {
 
     private val args: DetailscreenFragmentArgs by navArgs()
 
+    /**
+     * First method that gets called when a fragment is associated with its activity
+     * inside here we setup the dagger component that will handle this fragment and viewmodel
+     * */
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
@@ -51,13 +54,13 @@ class DetailscreenFragment : Fragment() {
                 viewmodel = detailViewModel
             }
 
-        binding.lifecycleOwner = this
-
         binding.recyclerviewDetailMoviecast.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-        binding.recyclerviewDetailMoviecast.adapter = CastAdapter()
+        binding.recyclerviewDetailMoviecast.adapter =
+            CastAdapter()
 
+        //Set the root color as detailBackground
         binding.root.setBackgroundColor(
             ContextCompat.getColor(
                 this.requireContext(),
@@ -77,6 +80,9 @@ class DetailscreenFragment : Fragment() {
         })
 
         detailViewModel.setState(args.type.toLowerCase(Locale.ROOT), args.id)
+
+        binding.lifecycleOwner = this
+
 
         return binding.root
     }

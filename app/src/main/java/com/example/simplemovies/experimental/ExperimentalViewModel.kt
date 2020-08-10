@@ -2,7 +2,10 @@ package com.example.simplemovies.experimental
 
 
 import android.content.res.Resources
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.simplemovies.R
 import com.example.simplemovies.domain.GenreNetwork
 import com.example.simplemovies.domain.GenresWrapper
@@ -38,10 +41,17 @@ class ExperimentalViewModel @Inject constructor(
     val navProperty: LiveData<Int> get() = _navProperty
 
 
+    /**
+     * Only on creation of the viewmodel fetch the genres, this prevents a configuration change
+     * to call the repository (or API)
+     * */
     init {
         fetchGenres()
     }
 
+    /**
+     * Subscribe to the repository call and catch it's values
+     * */
     private fun fetchGenres() {
         viewModelScope.launch {
             genreRepository.getGenres().collect {
@@ -50,6 +60,19 @@ class ExperimentalViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Subscribe to the repository call and catch it's values.
+     *
+     * Create a 'settings' or configuration object based on given parameters.
+     *
+     * genresInc = state is include? give checked chips, otherwise none
+     * genresExl = state is exclude? give checked chips, otherwise none
+     *
+     * @param type fetch type, movie or tv
+     * @param state include/exclude genres
+     * @param score wanted user score
+     * @param resource Android resources to check on types
+     * */
     fun fetchDiscover(
         state: String,
         type: String,
@@ -68,17 +91,37 @@ class ExperimentalViewModel @Inject constructor(
             }
         }
     }
-
-    fun manageGenreResources(resources: Resource<GenresWrapper>) {
+    /**
+     * Set the API status and data only if not null
+     * */
+    private fun manageGenreResources(resources: Resource<GenresWrapper>) {
         resources.data?.let { _genres.value = it }
         resources.status?.let { _apiStatus.value = it }
     }
 
-    fun manageDiscoverResource(resource: Resource<MoviesWrapper>) {
+    /**
+     * Set the API status and data only if not null
+     * */
+    private fun manageDiscoverResource(resource: Resource<MoviesWrapper>) {
         resource.status?.let { _apiStatus.value = it }
         resource.data?.let { _discover.value = it }
     }
 
+    /**
+     * Make a configuration object/ settings to make the API call
+     * */
+    private fun discoverManager(state: String, type: String, score: String, resource: Resources) =
+        object {
+            val state =
+                resource.getStringArray(R.array.include_states).firstOrNull { t -> t == state }
+            val type = resource.getStringArray(R.array.types).firstOrNull { t -> t == type }
+            val score = resource.getStringArray(R.array.user_scores).firstOrNull { t -> t == score }
+                ?.filter { it -> it.isDigit() }
+        }
+
+    /**
+     * Manage the chips, if checked is true then add it, else remove it
+     * */
     fun manageChips(genre: GenreNetwork, isChecked: Boolean) {
         if (isChecked) {
             _checkedChips.add(genre.id.toString())
@@ -95,14 +138,6 @@ class ExperimentalViewModel @Inject constructor(
         _navProperty.value = null
     }
 
-    private fun discoverManager(state: String, type: String, score: String, resource: Resources) =
-        object {
-            val state =
-                resource.getStringArray(R.array.include_states).firstOrNull { t -> t == state }
-            val type = resource.getStringArray(R.array.types).firstOrNull { t -> t == type }
-            val score = resource.getStringArray(R.array.user_scores).firstOrNull { t -> t == score }
-                ?.filter { it -> it.isDigit() }
-        }
 
 
 }

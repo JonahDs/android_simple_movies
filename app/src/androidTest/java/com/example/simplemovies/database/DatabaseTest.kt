@@ -9,12 +9,9 @@ import com.example.simplemovies.domain.MoviesWrapper
 import com.example.simplemovies.domain.asGenreDatabase
 import com.example.simplemovies.domain.asMovieDatabase
 import com.google.gson.Gson
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import org.junit.After
 import org.junit.Assert
 import org.junit.Before

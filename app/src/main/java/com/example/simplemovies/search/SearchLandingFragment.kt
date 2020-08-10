@@ -14,22 +14,26 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.simplemovies.MovieApplication
 import com.example.simplemovies.databinding.FragmentSearchLandingBinding
-import com.example.simplemovies.homescreen.OnClickListener
-import com.example.simplemovies.homescreen.PhotoGridAdapter
+import com.example.simplemovies.utils.OnClickListener
+import com.example.simplemovies.utils.MovieAdapter
 import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass.
  */
-class SearchLanding : Fragment() {
+class SearchLandingFragment : Fragment() {
 
     @Inject
     lateinit var viewmodelFactory: ViewModelProvider.Factory
 
     private val searchLandingViewModel by viewModels<SearchLandingViewModel> { viewmodelFactory }
 
-    private val args: SearchLandingArgs by navArgs()
+    private val args: SearchLandingFragmentArgs by navArgs()
 
+    /**
+     * First method that gets called when a fragment is associated with its activity
+     * inside here we setup the dagger component that will handle this fragment and viewmodel
+     * */
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
@@ -45,14 +49,16 @@ class SearchLanding : Fragment() {
         val binding: FragmentSearchLandingBinding =
             FragmentSearchLandingBinding.inflate(inflater).apply {
                 viewmodel = searchLandingViewModel
-                recyclerviewSearchMovies.adapter = PhotoGridAdapter(OnClickListener {
-                    searchLandingViewModel.navigateToDetail(it)
-                })
+                recyclerviewSearchMovies.adapter =
+                    MovieAdapter(
+                        OnClickListener {
+                            searchLandingViewModel.navigateToDetail(it)
+                        })
             }
 
         searchLandingViewModel.navigation.observe(viewLifecycleOwner, Observer {
             if(it != null) {
-                findNavController().navigate(SearchLandingDirections.actionSearchLandingToMovieDetails(it))
+                findNavController().navigate(SearchLandingFragmentDirections.actionSearchLandingToMovieDetails(it))
                 searchLandingViewModel.navigationCompleted()
             }
         })

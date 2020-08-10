@@ -13,10 +13,19 @@ import dagger.Component
 import dagger.Module
 import javax.inject.Singleton
 
+/**
+ * Dagger component
+ * */
 @Singleton
 @Component(modules = [ViewModelBuilderModule::class, SubComponentModule::class, ApplicationModule::class, NetworkModule::class])
 interface ApplicationGraph {
 
+    /**
+     * A factory for a component.
+     * A factory is a type with a single method that returns a new component instance each time it is called.
+     * The parameters of that method allow the caller to provide the modules, dependencies
+     * and bound instances required by the component.
+     * */
     @Component.Factory
     interface Factory {
         fun create(@BindsInstance applicationContext: Context): ApplicationGraph
@@ -30,5 +39,8 @@ interface ApplicationGraph {
     fun castComponent(): CastComponent.Factory
 }
 
+/**
+ * Application subcomponents
+ * */
 @Module(subcomponents = [HomescreenComponent::class, DetailScreenComponent::class, MoviePickerComponent::class, SearchLandingComponent::class, ExperimentalComponent::class, CastComponent::class])
 object SubComponentModule
