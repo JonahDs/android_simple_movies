@@ -1,6 +1,5 @@
 package com.example.simplemovies.network
 
-import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
@@ -35,7 +34,7 @@ abstract class NetworkBoundingNew<T> {
                 emit(Resource.Loading(null, APIStatus.INTERMEDIATE))
                 saveApiResToDb(data)
                 fetchFromDb().collect { dbRes ->
-                    emit(Resource.Success(dbRes?: null, APIStatus.DONE))
+                    emit(Resource.Success(dbRes ?: null, APIStatus.DONE))
                 }
             } catch (e: Exception) {
                 val buffered = fetchFromDb().first()

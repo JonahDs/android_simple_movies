@@ -72,6 +72,7 @@ dependencies {
     //Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$livedataKtx_version"
 
 
@@ -116,5 +117,6 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation "androidx.test.espresso:espresso-contrib:3.3.0-rc02"
+    androidTestImplementation 'androidx.test:rules:1.2.0-beta01'
 
 }

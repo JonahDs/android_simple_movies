@@ -14,7 +14,7 @@ abstract class MovieDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     abstract fun update(movie: MovieDb)
 
-    @Query("select * from movies")
+    @Query("select * from movies order by id ASC")
     abstract fun getAll(): Flow<List<MovieDb>>
 
     @Query("delete from movies")
