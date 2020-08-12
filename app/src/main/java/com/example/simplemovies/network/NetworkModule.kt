@@ -15,21 +15,25 @@ private const val BASE_URL = "https://api.themoviedb.org/"
 @Module
 class NetworkModule {
 
+    @Singleton
     @Provides
     fun provideService(retrofit: Retrofit): TmdbApiService {
         return retrofit.create(TmdbApiService::class.java)
     }
 
+    @Singleton
     @Provides
     fun provideMoshi(): Moshi {
         return Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
     }
 
+    @Singleton
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient, moshi: Moshi): Retrofit {
         return Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(MoshiConverterFactory.create(moshi)).client(okHttpClient).build()
     }
 
+    @Singleton
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder().addInterceptor {

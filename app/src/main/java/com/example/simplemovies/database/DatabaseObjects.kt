@@ -27,7 +27,9 @@ data class GenreDb(
 
 //region helper function
 
-
+/**
+ * Simple converter, converts a list of movieDb objects to movieNetwork
+ * */
 fun List<MovieDb>.asMovieNetwork(): List<MovieNetwork> {
     return map {
         MovieNetwork(
@@ -45,6 +47,9 @@ fun List<MovieDb>.asMovieNetwork(): List<MovieNetwork> {
     }
 }
 
+/**
+ * Simple converter, converts a list of genreDb objects to genreNetwork
+ * */
 fun List<GenreDb>.asGenreNetwork(): List<GenreNetwork> {
     return map {
         GenreNetwork(

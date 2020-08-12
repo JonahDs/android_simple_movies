@@ -11,6 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.example.simplemovies.MovieApplication
 import com.example.simplemovies.databinding.FragmentCastBinding
+import com.example.simplemovies.utils.CastExtendedAdapter
+import com.example.simplemovies.utils.CrewExtendedAdapter
 import javax.inject.Inject
 
 
@@ -23,6 +25,10 @@ class CastFragment : Fragment() {
 
     private val args: CastFragmentArgs by navArgs()
 
+    /**
+     * First method that gets called when a fragment is associated with its activity
+     * inside here we setup the dagger component that will handle this fragment and viewmodel
+     * */
     override fun onAttach(context: Context) {
         super.onAttach(context)
         (requireActivity().application as MovieApplication).graph.castComponent().create()
@@ -39,9 +45,11 @@ class CastFragment : Fragment() {
 
         castViewmodel.setMovieId(args.id, args.type)
 
-        binding.recyclerviewCastCastmembers.adapter = CastAdapter()
+        binding.recyclerviewCastCastmembers.adapter =
+            CastExtendedAdapter()
 
-        binding.recyclerviewCastCrewmembers.adapter = CrewAdapter()
+        binding.recyclerviewCastCrewmembers.adapter =
+            CrewExtendedAdapter()
 
         binding.lifecycleOwner = this
 

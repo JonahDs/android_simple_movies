@@ -9,7 +9,10 @@ import dagger.multibindings.IntoMap
 
 @Module
 abstract class HomesceenModule {
-    //Sets the map with the provided map key
+
+    /**
+     * Puts the viewmodel and its key inside the map of genericViewmodelFactory
+     * */
     @Binds
     @IntoMap
     @ViewModelKey(HomescreenViewModel::class)

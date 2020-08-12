@@ -9,6 +9,10 @@ import dagger.multibindings.IntoMap
 
 @Module
 abstract class DetailScreenModule {
+
+    /**
+     * Puts the viewmodel and its key inside the map of genericViewmodelFactory
+     * */
     @Binds
     @IntoMap
     @ViewModelKey(DetailscreenViewModel::class)

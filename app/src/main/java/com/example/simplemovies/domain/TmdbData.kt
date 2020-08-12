@@ -16,7 +16,7 @@ data class GenresWrapper(
 )
 
 
-data class Cast(
+data class CastWrapper(
     val cast: List<CastMember>,
     val crew: List<CrewMember>
 )
@@ -78,6 +78,10 @@ data class CrewMember(
 
 //region helper methods
 
+
+/**
+ * Simple converter, converts a list of movieNetwork objects to movieDb
+ * */
 fun List<MovieNetwork>.asMovieDatabase(): List<MovieDb> {
     return map {
         MovieDb(
@@ -93,6 +97,9 @@ fun List<MovieNetwork>.asMovieDatabase(): List<MovieDb> {
     }
 }
 
+/**
+ * Simple converter, converts a list of genreNetwork objects to genreDb
+ * */
 fun List<GenreNetwork>.asGenreDatabase(): List<GenreDb> {
     return map {
         GenreDb(

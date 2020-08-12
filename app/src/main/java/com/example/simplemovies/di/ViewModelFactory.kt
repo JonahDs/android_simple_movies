@@ -10,8 +10,14 @@ import javax.inject.Provider
 import kotlin.reflect.KClass
 
 
-//Generic viewmodel factory that will be used to create our viewmodels
-//@JvmSuprressWildcards needed for the application to compile
+/**
+ * Generic viewmodel factory
+ * Dagger 2 allows multibinding, this makes it possible create a map of objects
+ * with key a class that extends ViewModel and value the actual instance of the custom viewmodel
+ *
+ * On compile time Dagger creates the map and passes it to the viewmodelFactory as an argument.
+ * In the override function we simply pick the correct instance from inside the map.
+ * */
 class GenericViewModelFactory @Inject constructor(private val creators:  @JvmSuppressWildcards  Map<Class<out ViewModel>, Provider<ViewModel>>) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -35,6 +41,9 @@ class GenericViewModelFactory @Inject constructor(private val creators:  @JvmSup
     }
 }
 
+/**
+ * Module to provide a viewmodel factory, note the returntype
+ * */
 @Module
 abstract class ViewModelBuilderModule {
     //Return a factory based on our own implemented code
@@ -42,7 +51,13 @@ abstract class ViewModelBuilderModule {
     abstract fun bindViewModelFactory(factory: GenericViewModelFactory): ViewModelProvider.Factory
 }
 
-//Only allow functions, getters and setters and set the key of the map as an KClass which implemented viewmodel()
+/**
+ * In order to create the map (inside genericviewmodel) we create an annotation class that will
+ * set the key as a KClass of our viewmodel
+ * @Target only specified targets can use the annotation
+ * @Retention Annotation is stored in binary output and visible for reflection
+ * @MapKey multibinding
+ * */
 @Target(
     AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER, AnnotationTarget.PROPERTY_SETTER
 )

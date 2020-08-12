@@ -1,6 +1,9 @@
 package com.example.simplemovies.moviepicker
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.simplemovies.domain.MovieNetwork
 import com.example.simplemovies.domain.MoviesWrapper
 import com.example.simplemovies.network.APIStatus
@@ -25,10 +28,18 @@ class MoviePickerViewModel @Inject constructor(private val movieRepo: MovieRepos
 
     val apiStatus: LiveData<APIStatus> get() = _apiStatus
 
+
+    /**
+     * Only on creation of the viewmodel fetch the genres, this prevents a configuration change
+     * to call the repository (or API)
+     * */
     init {
         fetchRandomMovie()
     }
 
+    /**
+     * Subscribe to the repository call and catch it's values
+     * */
     fun fetchRandomMovie() {
         viewModelScope.launch {
             movieRepo.getRandomMovie().collect {
@@ -37,6 +48,9 @@ class MoviePickerViewModel @Inject constructor(private val movieRepo: MovieRepos
         }
     }
 
+    /**
+     * Set the API status and data only if not null
+     * */
     private fun manageMovieResource(resource: Resource<MoviesWrapper>) {
         resource.data?.let {
             val randomMovie = it.results.random()

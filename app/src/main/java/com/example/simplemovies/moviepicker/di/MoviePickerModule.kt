@@ -9,7 +9,10 @@ import dagger.multibindings.IntoMap
 
 @Module
 abstract class MoviePickerModule {
-    //Sets the map with the provided map key
+
+    /**
+     * Puts the viewmodel and its key inside the map of genericViewmodelFactory
+     * */
     @Binds
     @IntoMap
     @ViewModelKey(MoviePickerViewModel::class)

@@ -19,19 +19,23 @@ import com.example.simplemovies.MovieApplication
 import com.example.simplemovies.R
 import com.example.simplemovies.databinding.FragmentExperimentalBinding
 import com.example.simplemovies.domain.GenreNetwork
-import com.example.simplemovies.homescreen.OnClickListener
-import com.example.simplemovies.homescreen.PhotoGridAdapter
+import com.example.simplemovies.utils.OnClickListener
+import com.example.simplemovies.utils.MovieAdapter
 import com.google.android.material.chip.Chip
 import javax.inject.Inject
 
 
-class Experimental : Fragment() {
+class ExperimentalFragment : Fragment() {
 
     @Inject
     lateinit var viewmodelFactory: ViewModelProvider.Factory
 
     private val experimentalViewmodel by viewModels<ExperimentalViewModel> { viewmodelFactory }
 
+    /**
+     * First method that gets called when a fragment is associated with its activity
+     * inside here we setup the dagger component that will handle this fragment and viewmodel
+     * */
     override fun onAttach(context: Context) {
         super.onAttach(context)
         (requireActivity().application as MovieApplication).graph.experimentalComponent().create()
@@ -59,7 +63,7 @@ class Experimental : Fragment() {
         experimentalViewmodel.navProperty.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 findNavController().navigate(
-                    ExperimentalDirections.actionExperimentalToMovieDetails(
+                    ExperimentalFragmentDirections.actionExperimentalToMovieDetails(
                         binding.spinnerExperimentalType.selectedItem.toString(),
                         it
                     )
@@ -77,6 +81,11 @@ class Experimental : Fragment() {
         return binding.root
     }
 
+    /**
+     * If a configuration change occurs and the user already searched for movies then set
+     * his UI back. Since linearlayoutExperimentalToolbar is visible by default it will become visible
+     * again when it should'nt
+     * */
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     private fun observerConfigChange(binding: FragmentExperimentalBinding) {
         if(experimentalViewmodel.discover.value != null) {
@@ -85,6 +94,11 @@ class Experimental : Fragment() {
         }
     }
 
+    /**
+     * Set listeners
+     *
+     * @param binding fragmentBinding
+     * */
     private fun observerListeners(binding: FragmentExperimentalBinding) {
         binding.buttonExperimentalRetry.setOnClickListener {
             binding.linearlayoutExperimentalToolbar.visibility = VISIBLE
@@ -102,15 +116,27 @@ class Experimental : Fragment() {
 
     }
 
+    /**
+     * Bind various adapters
+     *
+     * @param binding fragmentBinding
+     * */
     private fun bindAdapters(binding: FragmentExperimentalBinding) {
-        binding.recyclerviewExperimentalMovies.adapter = PhotoGridAdapter(OnClickListener {
-            experimentalViewmodel.navSelected(it)
-        })
+        binding.recyclerviewExperimentalMovies.adapter =
+            MovieAdapter(OnClickListener {
+                experimentalViewmodel.navSelected(it)
+            })
         binding.spinnerExperimentalStates.adapter = arrayAdapterFactory(R.array.include_states)
         binding.spinnerExperimentalUserscore.adapter = arrayAdapterFactory(R.array.user_scores)
         binding.spinnerExperimentalType.adapter = arrayAdapterFactory(R.array.types)
     }
 
+    /**
+     * Factory method that creates array adapters based of a given array of possible selections
+     *
+     * @param arrayRes reference to string array
+     * @return ArrayAdapter<CharSequence>
+     * */
     private fun arrayAdapterFactory(arrayRes: Int): ArrayAdapter<CharSequence> {
         return ArrayAdapter.createFromResource(
             requireContext(),
@@ -121,6 +147,12 @@ class Experimental : Fragment() {
         }
     }
 
+    /**
+     * Factory method that creates chips based on the genre
+     *
+     * @param genre GenreNetwork
+     * @return Chip
+     * */
     private fun chipFactory(genre: GenreNetwork): Chip {
         return (LayoutInflater.from(requireContext())
             .inflate(R.layout.view_genre_chip, null) as Chip).also {

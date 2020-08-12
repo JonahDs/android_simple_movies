@@ -3,7 +3,6 @@ package com.example.simplemovies.homescreen
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,13 +11,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.example.simplemovies.MovieApplication
-import com.example.simplemovies.database.MovieDao
-import com.example.simplemovies.database.SimpleMovieDatabase
 import com.example.simplemovies.databinding.FragmentHomescreenBinding
+import com.example.simplemovies.utils.OnClickListener
+import com.example.simplemovies.utils.MovieAdapter
 import javax.inject.Inject
-import kotlin.math.log
 
 /**
  * A simple [Fragment] subclass.
@@ -33,6 +30,10 @@ class HomescreenFragment : Fragment() {
     private val homescreenViewModel by viewModels<HomescreenViewModel> { viewModelfactory }
 
 
+    /**
+     * First method that gets called when a fragment is associated with its activity
+     * inside here we setup the dagger component that will handle this fragment and viewmodel
+     * */
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
@@ -50,17 +51,19 @@ class HomescreenFragment : Fragment() {
             viewmodel = homescreenViewModel
         }
 
+        //Onrefresh listener
         binding.swiperefreshlayoutHomescreen.setOnRefreshListener {
             homescreenViewModel.clearMovies()
-            homescreenViewModel.getMoviesStatic()
+            homescreenViewModel.fetchMovies()
             binding.swiperefreshlayoutHomescreen.isRefreshing = false
         }
 
         //Set recyclerview adapter
-        binding.recyclerviewHomeMovies.adapter = PhotoGridAdapter(OnClickListener {
-            //Set the movie id inside of viewmodel
-            homescreenViewModel.displayMovieDetails(it)
-        })
+        binding.recyclerviewHomeMovies.adapter =
+            MovieAdapter(OnClickListener {
+                //Set the movie id inside of viewmodel
+                homescreenViewModel.displayMovieDetails(it)
+            })
 
         //Observe nav property to start navigating when changed
         this.homescreenViewModel.navSelected.observe(viewLifecycleOwner, Observer {

@@ -37,6 +37,11 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupWithNavController(binding.navView, navController)
 
 
+        //If the user wants to search this code will trigger
+        //every navigation will happen from homescreen so the backstack will always return to homescreen
+        //
+        //if intent.action is not set to null after a search this code will trigger again if the user rotates
+        //the screen on any other fragment
         if (Intent.ACTION_SEARCH === intent.action) {
             intent.getStringExtra(SearchManager.QUERY)?.also {
                 findNavController(R.id.navhost_fragment).navigate(
@@ -53,6 +58,12 @@ class MainActivity : AppCompatActivity() {
         return findNavController(R.id.navhost_fragment).navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
+    /**
+     * Setup the search
+     *
+     * @param menu Menu
+     * @return true to append search to the appbar
+     * */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.search_menu, menu)
 

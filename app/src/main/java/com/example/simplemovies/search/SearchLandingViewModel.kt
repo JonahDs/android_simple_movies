@@ -29,8 +29,16 @@ class SearchLandingViewModel @Inject constructor(
 
     val navigation: LiveData<Int> get() = _navigation
 
+    //properties
     private var query: String = ""
 
+    /**
+     * Set the <properties> only if parameters are not equal or untouched (null, "").
+     * This check prevents a configuration change to call the repository (and possibly the API)
+     * again while in no usecase this should happen.
+     *
+     * @param query search query
+     * */
     fun setQuery(query: String) {
         if (this.query == "") {
             this.query = query
@@ -38,6 +46,9 @@ class SearchLandingViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Subscribe to the repository call and catch it's values
+     * */
     private fun fetchFromQuery(query: String) {
         viewModelScope.launch {
             movierepo.getMoviesOfQuery(query).collect {
@@ -46,6 +57,9 @@ class SearchLandingViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Set the API status and data only if not null
+     * */
     private fun manageMovieResource(resource: Resource<MoviesWrapper>) {
         resource.status?.let { _apiStatus.value = it }
         resource.data?.let { _searchRes.value = it }

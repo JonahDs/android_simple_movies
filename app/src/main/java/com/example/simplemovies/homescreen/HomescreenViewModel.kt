@@ -1,7 +1,9 @@
 package com.example.simplemovies.homescreen
 
-import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.simplemovies.domain.MovieNetwork
 import com.example.simplemovies.domain.MoviesWrapper
 import com.example.simplemovies.network.APIStatus
@@ -29,25 +31,32 @@ class HomescreenViewModel @Inject constructor(private val movieRepo: MovieReposi
     val navSelected: LiveData<Int> get() = _navSelected
 
 
+    /**
+     * Only on creation of the viewmodel fetch the genres, this prevents a configuration change
+     * to call the repository (or API)
+     * */
     init {
-        getMoviesStatic()
+        fetchMovies()
     }
 
-    fun getMoviesStatic() {
+    /**
+     * Subscribe to the repository call and catch it's values
+     * */
+    fun fetchMovies() {
         viewModelScope.launch {
             movieRepo.getMoviesOfFlow().collect {
-                it.data?.let { wrapper ->
-                    _displayableMovies.value = wrapper.results
-                }
-                it.status?.let { state ->
-                    Log.i("API_STATE", state.toString())
-                    _apiStatus.value = state
-                }
-
+               manageMovieResource(it)
             }
         }
     }
 
+    /**
+     * Set the API status and data only if not null
+     * */
+    fun manageMovieResource(resources: Resource<MoviesWrapper>) {
+        resources.status?.let { _apiStatus.value = it }
+        resources.data?.let { _displayableMovies.value = it.results }
+    }
 
     //Set navigation property
     fun displayMovieDetails(movieId: Int) {

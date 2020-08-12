@@ -12,7 +12,7 @@
 
         <variable
             name="clickListener"
-            type="com.example.simplemovies.homescreen.OnClickListener" />
+            type="com.example.simplemovies.utils.OnClickListener" />
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

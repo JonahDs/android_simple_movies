@@ -2,20 +2,15 @@ package com.example.simplemovies.mockdata
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.liveData
-import com.example.simplemovies.domain.Cast
+import com.example.simplemovies.domain.CastWrapper
 import com.example.simplemovies.domain.MoviesWrapper
-import com.example.simplemovies.network.APIStatus
-import com.example.simplemovies.network.NetworkBoundingNew
 import com.example.simplemovies.network.Resource
 import com.example.simplemovies.network.SimpleBounding
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import java.lang.IllegalArgumentException
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
@@ -41,10 +36,10 @@ object MockedService {
         }.asFlow().flowOn(IO)
     }
 
-    fun getCastSuccess(): Flow<Resource<Cast>> {
-        return object: SimpleBounding<Cast>() {
-            override suspend fun makeApiCall(): Cast = withContext(IO){
-                Gson().fromJson(jsonCast, Cast::class.java)
+    fun getCastSuccess(): Flow<Resource<CastWrapper>> {
+        return object: SimpleBounding<CastWrapper>() {
+            override suspend fun makeApiCall(): CastWrapper = withContext(IO){
+                Gson().fromJson(jsonCast, CastWrapper::class.java)
             }
         }.asFlow().flowOn(IO)
     }

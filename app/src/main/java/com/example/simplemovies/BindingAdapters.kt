@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.example.simplemovies.cast.CrewAdapter
-import com.example.simplemovies.detailscreen.CastAdapter
+import com.example.simplemovies.utils.CrewExtendedAdapter
+import com.example.simplemovies.utils.CastAdapter
 import com.example.simplemovies.domain.*
-import com.example.simplemovies.homescreen.PhotoGridAdapter
+import com.example.simplemovies.utils.MovieAdapter
 import com.example.simplemovies.network.APIStatus
 import kotlinx.android.synthetic.main.fragment_homescreen.view.*
 import java.text.NumberFormat
@@ -77,25 +77,25 @@ fun BindCastPicture(imgView: ImageView, cast_profile: String?, rounded: Boolean?
 
 @BindingAdapter("listData")
 fun bindRecyclerView(recyclerView: RecyclerView, data: List<MovieNetwork>?) {
-    val adapter = recyclerView.adapter as PhotoGridAdapter
+    val adapter = recyclerView.adapter as MovieAdapter
     adapter.submitList(data)
 }
 
 @BindingAdapter("castData")
-fun bindCastRecycleView(recyclerView: RecyclerView, data: Cast?) {
+fun bindCastRecycleView(recyclerView: RecyclerView, data: CastWrapper?) {
     val adapter = recyclerView.adapter as CastAdapter
     adapter.submitList(data?.cast?.take(8))
 }
 
 @BindingAdapter("castExtendedData")
 fun bindCastExtended(recyclerView: RecyclerView, data: List<CastMember>?) {
-    val adapter = recyclerView.adapter as com.example.simplemovies.cast.CastAdapter
+    val adapter = recyclerView.adapter as com.example.simplemovies.utils.CastExtendedAdapter
     adapter.submitList(data)
 }
 
 @BindingAdapter("crewExtendedData")
 fun bindCrewExtended(recyclerView: RecyclerView, data: List<CrewMember>?) {
-    val adapter = recyclerView.adapter as CrewAdapter
+    val adapter = recyclerView.adapter as CrewExtendedAdapter
     adapter.submitList(data)
 }
 

@@ -1,4 +1,4 @@
-package com.example.simplemovies.detailscreen
+package com.example.simplemovies.utils
 
 
 import android.view.LayoutInflater
@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.simplemovies.databinding.ItemCastBinding
 import com.example.simplemovies.domain.CastMember
 
-class CastAdapter() : ListAdapter<CastMember, CastAdapter.CastViewHolder>(DiffCallback) {
+class CastAdapter() : ListAdapter<CastMember, CastAdapter.CastViewHolder>(
+    DiffCallback
+) {
     class CastViewHolder(private var binding: ItemCastBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(castMember: CastMember) {

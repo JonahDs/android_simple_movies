@@ -1,4 +1,4 @@
-package com.example.simplemovies.homescreen
+package com.example.simplemovies.utils
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.simplemovies.databinding.ItemMovieBinding
 import com.example.simplemovies.domain.MovieNetwork
 
-class PhotoGridAdapter(val click: OnClickListener) : ListAdapter<MovieNetwork, PhotoGridAdapter.MovieViewHolder>(DiffCallback) {
+class MovieAdapter(val click: OnClickListener) : ListAdapter<MovieNetwork, MovieAdapter.MovieViewHolder>(
+    DiffCallback
+) {
     class MovieViewHolder(private var binding: ItemMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
@@ -21,11 +23,11 @@ class PhotoGridAdapter(val click: OnClickListener) : ListAdapter<MovieNetwork, P
 
     companion object DiffCallback : DiffUtil.ItemCallback<MovieNetwork>() {
         override fun areItemsTheSame(oldItem: MovieNetwork, newItem: MovieNetwork): Boolean {
-            return oldItem === newItem
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: MovieNetwork, newItem: MovieNetwork): Boolean {
-            return oldItem.id === newItem.id
+            return oldItem == newItem
         }
     }
 
@@ -33,7 +35,9 @@ class PhotoGridAdapter(val click: OnClickListener) : ListAdapter<MovieNetwork, P
         parent: ViewGroup,
         viewType: Int
     ): MovieViewHolder {
-        return MovieViewHolder(ItemMovieBinding.inflate(LayoutInflater.from(parent.context)))
+        return MovieViewHolder(
+            ItemMovieBinding.inflate(LayoutInflater.from(parent.context))
+        )
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
