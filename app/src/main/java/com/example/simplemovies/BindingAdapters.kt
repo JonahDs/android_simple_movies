@@ -116,8 +116,21 @@ fun bindGenres(view: TextView, list: List<GenreNetwork>?) {
 
 @BindingAdapter("numberFormatter")
 fun bindNumber(view: TextView, number: Int?) {
-    val formatted = NumberFormat.getIntegerInstance().format(number)
-    view.text = "$ $formatted"
+    if(number == null) {
+        view.text = "Unknown"
+    } else {
+        val formatted = NumberFormat.getIntegerInstance().format(number)
+        view.text = "$ $formatted"
+    }
+}
+
+@BindingAdapter(value = ["movieTitle", "tvTitle"], requireAll = false)
+fun bindTitle(view: TextView, movie: String?, tv: String?) {
+    if(movie == null) {
+        view.text = tv
+    } else {
+        view.text = movie
+    }
 }
 
 @BindingAdapter("castType", "castAmount")
@@ -127,6 +140,9 @@ fun bindAmount(view: TextView, type: String, amount: Int?) {
 
 @BindingAdapter("minute_converter")
 fun bindMinutes(view: TextView, time: Int?) {
+    if(time == null) {
+        view.text = "Unknown Runtime"
+    }
     time?.let {
         val hours = it / 60
         val min = it % 60

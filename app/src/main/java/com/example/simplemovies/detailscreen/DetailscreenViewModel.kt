@@ -46,11 +46,15 @@ class DetailscreenViewModel @Inject constructor(private val movieRepo: MovieRepo
      * @param id movie or tv id
      * */
     fun setState(type: String, id: Int) {
-        if(this.state == "" && this.id == 0) {
+        if (this.state == "" && this.id == 0) {
             this.state = type
             this.id = id
-            fetchMovieDetails(type, id)
-            fetchMovieCredits(type, id)
+            if (this.state == "tv") {
+                fetchMovieDetails(type, id)
+            } else {
+                fetchMovieDetails(type, id)
+                fetchMovieCredits(type, id)
+            }
         }
     }
 
