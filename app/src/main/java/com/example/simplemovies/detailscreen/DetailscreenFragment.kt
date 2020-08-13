@@ -83,7 +83,6 @@ class DetailscreenFragment : Fragment() {
 
         binding.lifecycleOwner = this
 
-
         return binding.root
     }
 

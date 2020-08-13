@@ -9,9 +9,6 @@ abstract class MovieDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insert(movies: List<MovieDb>)
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun update(movie: MovieDb)
-
     @Query("select * from movies order by id ASC")
     abstract fun getAll(): Flow<List<MovieDb>>
 

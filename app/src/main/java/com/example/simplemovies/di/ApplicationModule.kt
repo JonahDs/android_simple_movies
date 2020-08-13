@@ -49,7 +49,7 @@ object ApplicationModule {
     @JvmStatic
     @Provides
     @Singleton
-    fun provideDatabas(context: Context): SimpleMovieDatabase {
+    fun provideDatabase(context: Context): SimpleMovieDatabase {
         return Room.databaseBuilder(
             context.applicationContext,
             SimpleMovieDatabase::class.java,

@@ -14,8 +14,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.simplemovies.MovieApplication
 import com.example.simplemovies.databinding.FragmentSearchLandingBinding
-import com.example.simplemovies.utils.OnClickListener
 import com.example.simplemovies.utils.MovieAdapter
+import com.example.simplemovies.utils.OnClickListener
 import javax.inject.Inject
 
 /**
@@ -49,21 +49,25 @@ class SearchLandingFragment : Fragment() {
         val binding: FragmentSearchLandingBinding =
             FragmentSearchLandingBinding.inflate(inflater).apply {
                 viewmodel = searchLandingViewModel
-                recyclerviewSearchMovies.adapter =
-                    MovieAdapter(
-                        OnClickListener {
-                            searchLandingViewModel.navigateToDetail(it)
-                        })
             }
 
+        binding.recyclerviewSearchMovies.adapter = MovieAdapter(
+                OnClickListener {
+                    searchLandingViewModel.navigateToDetail(it)
+                })
+
         searchLandingViewModel.navigation.observe(viewLifecycleOwner, Observer {
-            if(it != null) {
-                findNavController().navigate(SearchLandingFragmentDirections.actionSearchLandingToMovieDetails(it))
+            if (it != null) {
+                findNavController().navigate(
+                    SearchLandingFragmentDirections.actionSearchLandingToMovieDetails(
+                        it
+                    )
+                )
                 searchLandingViewModel.navigationCompleted()
             }
         })
 
-        searchLandingViewModel.setQuery(args.query?: "undefined")
+        searchLandingViewModel.setQuery(args.query ?: "undefined")
 
         binding.lifecycleOwner = this
         return binding.root
