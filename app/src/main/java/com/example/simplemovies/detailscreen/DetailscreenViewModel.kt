@@ -1,64 +1,99 @@
 package com.example.simplemovies.detailscreen
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.simplemovies.domain.Cast
+import androidx.lifecycle.viewModelScope
+import com.example.simplemovies.domain.CastWrapper
 import com.example.simplemovies.domain.MovieResult
-import com.example.simplemovies.network.TmdbApi
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import com.example.simplemovies.network.APIStatus
+import com.example.simplemovies.network.Resource
+import com.example.simplemovies.repositories.MovieRepository
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class DetailscreenViewModel(private val movieId: Int) : ViewModel() {
-
-    private var viewModelJob = Job()
-
-    private val scope = CoroutineScope(viewModelJob + Dispatchers.Main)
+class DetailscreenViewModel @Inject constructor(private val movieRepo: MovieRepository) :
+    ViewModel() {
 
     private val _result = MutableLiveData<MovieResult>()
 
     val result: LiveData<MovieResult> get() = _result
 
-    private val _movieCast = MutableLiveData<Cast>()
+    private val _movieCast = MutableLiveData<CastWrapper>()
 
-    val movieCast: LiveData<Cast> get() = _movieCast
+    val movieCast: LiveData<CastWrapper> get() = _movieCast
 
-    private val _navSelected = MutableLiveData<Int>()
+    private val _navSelected = MutableLiveData<Boolean>()
 
-    val navSelected: LiveData<Int> get() = _navSelected
+    val navSelected: LiveData<Boolean> get() = _navSelected
 
-    init {
-        getMovieDetails(movieId)
+    private val _apiStatus = MutableLiveData<APIStatus>()
+
+    val apiStatus: LiveData<APIStatus> get() = _apiStatus
+
+    // region properties
+    private var state: String = ""
+    private var id: Int = 0
+    //endregion
+
+    /**
+     * Set the <properties> only if parameters are not equal or untouched (null, "").
+     * This check prevents a configuration change to call the repository (and possibly the API)
+     * again while in no usecase this should happen.
+     *
+     * @param type fetch type, movie or tv
+     * @param id movie or tv id
+     * */
+    fun setState(type: String, id: Int) {
+        if(this.state == "" && this.id == 0) {
+            this.state = type
+            this.id = id
+            fetchMovieDetails(type, id)
+            fetchMovieCredits(type, id)
+        }
     }
 
-    private fun getMovieDetails(movieId: Int) {
-        scope.launch {
-            try {
-                _result.value = TmdbApi.retrofitService.getMovieDetails(
-                    movieId,
-                    "eebddf3c28edf2691214c6ece5688e32"
-                )
-            } catch (e: Exception) {
-                Log.i("API_ERROR", e.message)
-            }
-        }
-        scope.launch {
-            try {
-                _movieCast.value = TmdbApi.retrofitService.getMovieCredits(
-                    movieId,
-                    "eebddf3c28edf2691214c6ece5688e32"
-                )
-            } catch (e: Exception) {
-
+    /**
+     * Subscribe to the repository call and catch it's values
+     * */
+    private fun fetchMovieDetails(type: String, id: Int) {
+        viewModelScope.launch {
+            movieRepo.getMovieDetails(type, id).collect {
+                manageDetailResource(it)
             }
         }
     }
 
-    fun displayCastDetails(castId: Int) {
-        _navSelected.value = castId
+    /**
+     * Subscribe to the repository call and catch it's values
+     * */
+    private fun fetchMovieCredits(type: String, id: Int) {
+        viewModelScope.launch {
+            movieRepo.getMovieCast(type, id).collect {
+                manageCastResource(it)
+            }
+        }
+    }
+
+    /**
+     * Set the API status and data only if not null
+     * */
+    private fun manageDetailResource(resource: Resource<MovieResult>) {
+        resource.status?.let { _apiStatus.value = it }
+        resource.data?.let { _result.value = it }
+    }
+
+    /**
+     * Set the data only if not null
+     * */
+    private fun manageCastResource(resource: Resource<CastWrapper>) {
+        resource.data?.let { _movieCast.value = it }
+    }
+
+
+    fun displayCastDetails() {
+        _navSelected.value = true
     }
 
     fun displayCastDetailsCompleted() {

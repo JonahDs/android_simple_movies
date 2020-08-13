@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".moviepicker.MoviePickerFragment">
+
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="com.example.simplemovies.moviepicker.MoviePickerViewModel" />
+
+        <variable
+            name="clickListener"
+            type="com.example.simplemovies.utils.OnClickListener" />
+    </data>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swiperefreshlayout_moviepicker"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedscrollview_moviepicker"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/detailBackground"
+            android:fillViewport="true"
+            android:scrollbars="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/contraintlayout_moviepicker_fragmentcontainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imageview_moviepicker_refresh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:contentDescription="@string/refresh"
+                    android:src="@drawable/ic_angle_double_down_solid"
+                    app:layout_constraintBottom_toTopOf="@+id/textview_moviepicker_movietitle"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageview_moviepicker_movieposter"
+                    android:layout_width="450dp"
+                    android:layout_height="650dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:contentDescription="@string/movie_detail_poster"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:poster_avatar="@{viewmodel.randomMovie.poster_path}"
+                    tools:src="@tools:sample/avatars" />
+
+                <TextView
+                    android:id="@+id/textview_moviepicker_movietitle"
+                    style="@style/H2White"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@{viewmodel.randomMovie.title}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageview_moviepicker_movieposter"
+                    app:layout_constraintTop_toTopOf="@+id/imageview_moviepicker_movieposter"
+                    tools:text="Pack-man" />
+
+                <TextView
+                    android:id="@+id/textview_moviepicker_movierelease"
+                    style="@style/RegularWhite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@{viewmodel.randomMovie.release_date}"
+                    app:layout_constraintEnd_toEndOf="@+id/textview_moviepicker_movietitle"
+                    app:layout_constraintStart_toStartOf="@+id/textview_moviepicker_movietitle"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_moviepicker_movietitle"
+                    tools:text="13/03/1998" />
+
+                <TextView
+                    android:id="@+id/textview_moviepicker_movieoverview"
+                    style="@style/RegularWhite"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@{viewmodel.randomMovie.overview}"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageview_moviepicker_movieposter"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_moviepicker_movierelease" />
+
+
+                <Button
+                    android:id="@+id/button_moviepicker_findout"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:drawableEnd="@drawable/ic_angle_right_solid"
+                    android:text="@string/movie_picker_findout_button"
+                    android:textColor="@android:color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="@+id/textview_moviepicker_movieoverview"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_moviepicker_movieoverview"
+                    app:layout_constraintVertical_bias="0.0" />
+
+
+                <LinearLayout
+                    android:id="@+id/linearlayout_apistatus_container"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    app:apiStatus="@{viewmodel.apiStatus}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/imageview_apistatus"
+                        android:contentDescription="@string/apistatus_imagedescr"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/textview_apistatus_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        tools:text="Something went wrong, check your connection and try again!" />
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</layout>

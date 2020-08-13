@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/moviepicker_fragment"
+        android:title="@string/navigation_moviepicker"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/experimental_fragment"
+        android:title="@string/navigation_discover"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/about_fragment"
+        android:title="@string/navigation_about"
+        app:showAsAction="never" />
+</menu>

@@ -3,24 +3,23 @@ package com.example.simplemovies.homescreen
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.simplemovies.domain.PopularMovies
+import androidx.lifecycle.viewModelScope
+import com.example.simplemovies.domain.MovieNetwork
+import com.example.simplemovies.domain.MoviesWrapper
 import com.example.simplemovies.network.APIStatus
-import com.example.simplemovies.network.TmdbApi
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import com.example.simplemovies.network.Resource
+import com.example.simplemovies.repositories.MovieRepository
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.lang.Exception
+import javax.inject.Inject
 
-class HomescreenViewModel : ViewModel() {
+//constructor inject a movieRepository
+class HomescreenViewModel @Inject constructor(private val movieRepo: MovieRepository) :
+    ViewModel() {
 
-    private var viewModelJob = Job()
+    private val _displayableMovies = MutableLiveData<List<MovieNetwork>>()
 
-    private val scope = CoroutineScope(viewModelJob + Dispatchers.Main)
-
-    private val _response = MutableLiveData<PopularMovies>()
-
-    val response: LiveData<PopularMovies> get() = _response
+    val displayableMovies: LiveData<List<MovieNetwork>> get() = _displayableMovies
 
     private val _apiStatus = MutableLiveData<APIStatus>()
 
@@ -31,29 +30,47 @@ class HomescreenViewModel : ViewModel() {
 
     val navSelected: LiveData<Int> get() = _navSelected
 
+
+    /**
+     * Only on creation of the viewmodel fetch the genres, this prevents a configuration change
+     * to call the repository (or API)
+     * */
     init {
-        getPopularMovies()
+        fetchMovies()
     }
 
-    private fun getPopularMovies() {
-        scope.launch {
-            try {
-                _apiStatus.value = APIStatus.LOADING
-                _response.value = TmdbApi.retrofitService.getPopularMovies("eebddf3c28edf2691214c6ece5688e32")
-                _apiStatus.value = APIStatus.DONE
-            }catch (e: Exception) {
-                _apiStatus.value = APIStatus.ERROR
-                _response.value = PopularMovies(ArrayList())
+    /**
+     * Subscribe to the repository call and catch it's values
+     * */
+    fun fetchMovies() {
+        viewModelScope.launch {
+            movieRepo.getMoviesOfFlow().collect {
+               manageMovieResource(it)
             }
         }
     }
 
+    /**
+     * Set the API status and data only if not null
+     * */
+    fun manageMovieResource(resources: Resource<MoviesWrapper>) {
+        resources.status?.let { _apiStatus.value = it }
+        resources.data?.let { _displayableMovies.value = it.results }
+    }
+
+    //Set navigation property
     fun displayMovieDetails(movieId: Int) {
         _navSelected.value = movieId
     }
 
+    //Clear navigation to make 'random' navigation impossible
     fun displayMovieCompleted() {
         _navSelected.value = null
+    }
+
+
+    fun clearMovies() {
+        _displayableMovies.value = listOf()
     }
 
 }

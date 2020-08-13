@@ -1,42 +1,58 @@
 package com.example.simplemovies.network
 
-import com.example.simplemovies.domain.Cast
+import com.example.simplemovies.domain.CastWrapper
+import com.example.simplemovies.domain.GenresWrapper
 import com.example.simplemovies.domain.MovieResult
-import com.example.simplemovies.domain.PopularMovies
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import okhttp3.OkHttpClient
-import org.json.JSONObject
-import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+import com.example.simplemovies.domain.MoviesWrapper
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
-import java.util.*
-
-
-private const val BASE_URL = "https://api.themoviedb.org/"
-private val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
-
-private val retrofit =
-    Retrofit.Builder().addConverterFactory(MoshiConverterFactory.create(moshi))
-        .baseUrl(BASE_URL)
-        .client(OkHttpClient.Builder().build())
-        .build()
 
 interface TmdbApiService {
+    //Get popular movies of today
     @GET("/3/movie/popular")
-    suspend fun getPopularMovies(@Query("api_key") key: String): PopularMovies
+    suspend fun getPopularMovies(): MoviesWrapper
 
-    @GET("/3/movie/{movie_id}")
-    suspend fun getMovieDetails(@Path("movie_id") movie_id: Int, @Query("api_key") key: String): MovieResult
+    //Get details of type and ID
+    @GET("/3/{type}/{movie_id}")
+    suspend fun getMovieDetails(
+        @Path("type") type: String = "movies",
+        @Path("movie_id") movie_id: Int
+    ): MovieResult
 
-    @GET("/3/movie/{movie_id}/credits")
-    suspend fun getMovieCredits(@Path("movie_id") movie_id: Int, @Query("api_key") key: String): Cast
+    //Get the cast and crew of type and ID
+    @GET("/3/{type}/{id}/credits")
+    suspend fun getMovieCredits(
+        @Path("type") type: String,
+        @Path("id") id: Int
+    ): CastWrapper
+
+    //Get all existing genres
+    @GET("/3/genre/movie/list")
+    suspend fun getAllMovieGenres(): GenresWrapper
+
+    //Get 200 movies with a score >= 0 to then pick a random one
+    @GET("3/discover/movie")
+    suspend fun getRandomMovies(
+        @Query("vote_average.gte") seed: Int = 0,
+        @Query("page") pager: Int = 10,
+        @Query("include_adult") adult: Boolean = false
+    ): MoviesWrapper
+
+    //Get movies based on a search query
+    @GET("3/search/movie")
+    suspend fun getMoviesOfQuery(@Query("query") query: String): MoviesWrapper
+
+    //Get movies based on genres, type and vote averages
+    @GET("3/discover/{type}")
+    suspend fun getDiscover(
+        @Path("type") type: String? = "movie",
+        @Query("with_genres") genreInc: List<String>? = listOf(),
+        @Query("without_genres") genreExcl: List<String>? = listOf(),
+        @Query("vote_average.gte") score: Int? = 0,
+        @Query("vote_average.lte") cielScore: Int? = 0
+    ): MoviesWrapper
+
 }
 
-object TmdbApi {
-    val retrofitService: TmdbApiService by lazy { retrofit.create(TmdbApiService::class.java) }
-}
-
-enum class APIStatus { LOADING, ERROR, DONE}
+enum class APIStatus { LOADING, ERROR, INTERMEDIATE, DONE }
