@@ -109,7 +109,7 @@ class MoviePickerFlow {
         )
         navigationMenuItemView.perform(click())
 
-        Thread.sleep(3000)
+        Thread.sleep(4000)
 
         val materialButton = onView(
             allOf(
