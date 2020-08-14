@@ -12,7 +12,7 @@
 
 
     <ScrollView
-        android:id="@+id/nestedscrollview_detail_fragment"
+        android:id="@+id/scrollview_detail_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical">

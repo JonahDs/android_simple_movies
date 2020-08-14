@@ -118,7 +118,7 @@ class MoviePickerFlow {
                     allOf(
                         withId(R.id.contraintlayout_moviepicker_fragmentcontainer),
                         childAtPosition(
-                            withId(R.id.nestedscrollview_moviepicker),
+                            withId(R.id.scrollview_moviepicker),
                             0
                         )
                     ),

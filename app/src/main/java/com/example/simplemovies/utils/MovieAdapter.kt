@@ -8,6 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.simplemovies.databinding.ItemMovieBinding
 import com.example.simplemovies.domain.MovieNetwork
 
+/**
+ * Movie adapter
+ * */
 class MovieAdapter(val click: OnClickListener) : ListAdapter<MovieNetwork, MovieAdapter.MovieViewHolder>(
     DiffCallback
 ) {

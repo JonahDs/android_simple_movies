@@ -11,8 +11,8 @@
             type="com.example.simplemovies.cast.CastViewmodel" />
     </data>
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nestedscrollview_cast_fragment"
+    <ScrollView
+        android:id="@+id/scrollview_cast_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
@@ -113,6 +113,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 
 </layout>

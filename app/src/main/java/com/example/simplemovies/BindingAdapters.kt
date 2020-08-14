@@ -21,6 +21,9 @@ import java.text.NumberFormat
 
 private val IMAGEBASE: String = "https://image.tmdb.org/t/p/w500"
 
+/**
+ * Binds imageview with a movie poster, if available
+ * */
 @BindingAdapter("poster_path")
 fun bindImage(imgView: ImageView, poster_path: String?) {
     val stringBuilder = StringBuilder(IMAGEBASE)
@@ -34,6 +37,9 @@ fun bindImage(imgView: ImageView, poster_path: String?) {
 
 }
 
+/**
+ * Binds imageview with backdrop and centre crops it
+ * */
 @BindingAdapter("backdrop_path")
 fun bindBackdrop(imgView: ImageView, backdrop_path: String?) {
     val stringBuilder = StringBuilder(IMAGEBASE)
@@ -43,6 +49,9 @@ fun bindBackdrop(imgView: ImageView, backdrop_path: String?) {
     }
 }
 
+/**
+ * Binds imageview with movie poster but give it rounded edges, if available
+ * */
 @BindingAdapter("poster_avatar")
 fun bindAvatar(imgView: ImageView, poster_avatar: String?) {
     val stringBuilder = StringBuilder(IMAGEBASE)
@@ -57,9 +66,11 @@ fun bindAvatar(imgView: ImageView, poster_avatar: String?) {
 
 }
 
-
+/**
+ * Multi bind castprofile, rounded = false means no rounded edges, else add rounded edges
+ * */
 @BindingAdapter(value = ["castProfile", "rounded"], requireAll = false)
-fun BindCastPicture(imgView: ImageView, cast_profile: String?, rounded: Boolean?) {
+fun bindCastPicture(imgView: ImageView, cast_profile: String?, rounded: Boolean?) {
     val stringBuilder = StringBuilder(IMAGEBASE)
     var loadingContext: Int? = null
     if (cast_profile == null) {
@@ -75,30 +86,46 @@ fun BindCastPicture(imgView: ImageView, cast_profile: String?, rounded: Boolean?
     }
 }
 
+/**
+ * Binds a list of movies to the recyclerview
+ * */
 @BindingAdapter("listData")
 fun bindRecyclerView(recyclerView: RecyclerView, data: List<MovieNetwork>?) {
     val adapter = recyclerView.adapter as MovieAdapter
     adapter.submitList(data)
 }
 
+/**
+ * Binds the first 8 castmembers to the recycerview
+ * */
 @BindingAdapter("castData")
 fun bindCastRecycleView(recyclerView: RecyclerView, data: CastWrapper?) {
     val adapter = recyclerView.adapter as CastAdapter
     adapter.submitList(data?.cast?.take(8))
 }
 
+/**
+ * Binds the full cast list to the recyclerview
+ * */
 @BindingAdapter("castExtendedData")
 fun bindCastExtended(recyclerView: RecyclerView, data: List<CastMember>?) {
     val adapter = recyclerView.adapter as com.example.simplemovies.utils.CastExtendedAdapter
     adapter.submitList(data)
 }
 
+
+/**
+ * Binds the full crew list to the recyclerview
+ * */
 @BindingAdapter("crewExtendedData")
 fun bindCrewExtended(recyclerView: RecyclerView, data: List<CrewMember>?) {
     val adapter = recyclerView.adapter as CrewExtendedAdapter
     adapter.submitList(data)
 }
 
+/**
+ * Binds a list of genres to a textview, added ',' between all except the last
+ * */
 @BindingAdapter("listGenres")
 fun bindGenres(view: TextView, list: List<GenreNetwork>?) {
     val builder = StringBuilder()
@@ -114,16 +141,22 @@ fun bindGenres(view: TextView, list: List<GenreNetwork>?) {
     }
 }
 
+/**
+ * Format a string of 'ints' into x.xxx.xxx, if available
+ * */
 @BindingAdapter("numberFormatter")
 fun bindNumber(view: TextView, number: Int?) {
     if(number == null) {
-        view.text = "Unknown"
+        view.text = view.resources.getString(R.string.unknown)
     } else {
         val formatted = NumberFormat.getIntegerInstance().format(number)
         view.text = "$ $formatted"
     }
 }
 
+/**
+ * Multi bind movie title or tv title, check which one is available
+ * */
 @BindingAdapter(value = ["movieTitle", "tvTitle"], requireAll = false)
 fun bindTitle(view: TextView, movie: String?, tv: String?) {
     if(movie == null) {
@@ -133,15 +166,21 @@ fun bindTitle(view: TextView, movie: String?, tv: String?) {
     }
 }
 
+/**
+ * Multi bind the <type> together with the amount
+ * */
 @BindingAdapter("castType", "castAmount")
 fun bindAmount(view: TextView, type: String, amount: Int?) {
     view.text = view.resources.getString(R.string.cast, type, amount)
 }
 
+/**
+ * Converts minutes into a readable format 120 -> 2h 0m
+ * */
 @BindingAdapter("minute_converter")
 fun bindMinutes(view: TextView, time: Int?) {
     if(time == null) {
-        view.text = "Unknown Runtime"
+        view.text = view.resources.getString(R.string.unknown_runtime)
     }
     time?.let {
         val hours = it / 60
@@ -150,6 +189,9 @@ fun bindMinutes(view: TextView, time: Int?) {
     }
 }
 
+/**
+ * Display and API status
+ * */
 @BindingAdapter("apiStatus")
 fun bindApiState(view: View, status: APIStatus?) {
     when (status) {

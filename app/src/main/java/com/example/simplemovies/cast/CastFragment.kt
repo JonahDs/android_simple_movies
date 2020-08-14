@@ -43,11 +43,14 @@ class CastFragment : Fragment() {
             viewmodel = castViewmodel
         }
 
+        //sets the details so the viewmodel can start fetching
         castViewmodel.setMovieId(args.id, args.type)
 
+        //bind the recyclerview adapters
         binding.recyclerviewCastCastmembers.adapter =
             CastExtendedAdapter()
 
+        //bind the recyclerview adapters
         binding.recyclerviewCastCrewmembers.adapter =
             CrewExtendedAdapter()
 

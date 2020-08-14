@@ -11,7 +11,7 @@
     </data>
 
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:fadingEdge="none"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -360,5 +360,5 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 </layout>

@@ -20,8 +20,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/nestedscrollview_moviepicker"
+        <ScrollView
+            android:id="@+id/scrollview_moviepicker"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/detailBackground"
@@ -149,6 +149,6 @@
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.core.widget.NestedScrollView>
+        </ScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

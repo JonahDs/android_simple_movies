@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit
  * Class that holds a map and returns true or false if the timer is over
  *
  * Used to help decide if data should get refreshed, each repository method implementing
- * NetworkBounding get set a key and timer
+ * NetworkBounding sets a key and timer
  * */
 class DataManager {
     private val recordedMoments = ArrayMap<String, Long>()
