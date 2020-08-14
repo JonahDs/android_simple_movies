@@ -1,17 +1,17 @@
 # Simple movies
-Simple movies is a app build to provide you with all sort of movie information.
+Simple movies is an app built to provide you with all sorts of movie information.
 
-The app is build following the [MVVM pattern](https://developer.android.com/jetpack/guide) and following components:
+The app is built following the [MVVM pattern](https://developer.android.com/jetpack/guide) and following components:
 
 * [Retrofit](https://square.github.io/retrofit/) to connect the app to the internet.
-* [Moshi](https://github.com/square/moshi) to convert API results in to workable objects.
+* [Moshi](https://github.com/square/moshi) to convert API results into workable objects.
 * [Room](https://developer.android.com/training/data-storage/room) to store data locally.
 * [Glide](https://github.com/bumptech/glide) to cache and load images from URI's.
 * [Flow](https://codelabs.developers.google.com/codelabs/advanced-kotlin-coroutines/#7) to hande async data.
 * [Dagger2](https://dagger.dev/dev-guide/android.html) to manage dependency injection.
 
 # Why the MVVM pattern?
-To leverage the seperation of concerns. Views should only contain UI and OS related events, a lean view likely decreases lifecycle of configuration changes related buggs.
+To leverage the seperation of concerns. Views should only contain UI and OS related events, a lean view likely decreases lifecycle or configuration changes related buggs.
 
 # Why use Flow?
 The application gets its information from a single source of thruth. The object that manages this emits multiple values corrisponding to the API state.
@@ -25,7 +25,7 @@ You will need:
 - Android studio
 - Gradle
 
-Simple clone the repository using following command
+Simply clone the repository using following command
 ```bash
 git clone https://github.com/JonahDs/android_simple_movies.git
 ```
