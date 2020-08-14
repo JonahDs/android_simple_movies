@@ -1,5 +1,6 @@
 package com.example.simplemovies.network
 
+import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
@@ -38,6 +39,7 @@ abstract class SimpleBounding<T> {
             val data = makeApiCall()
             emit(Resource.Success(data, APIStatus.DONE))
         } catch (e: Exception) {
+            Log.i("ERROR", e.message.toString())
             emit(Resource.Error(null, APIStatus.ERROR))
         }
     }

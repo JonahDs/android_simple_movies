@@ -68,6 +68,9 @@ class DetailscreenFragment : Fragment() {
             )
         )
 
+        if(args.type.toLowerCase(Locale.ROOT) == "tv") {
+            binding.buttonDetailShowcast.visibility = View.GONE
+        }
         binding.buttonDetailShowcast.setOnClickListener {
             detailViewModel.displayCastDetails()
         }
@@ -82,7 +85,6 @@ class DetailscreenFragment : Fragment() {
         detailViewModel.setState(args.type.toLowerCase(Locale.ROOT), args.id)
 
         binding.lifecycleOwner = this
-
 
         return binding.root
     }

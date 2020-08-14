@@ -63,7 +63,7 @@ class viewmodelTests {
             `when`(movieRepository.getMoviesOfFlow()).thenReturn(MockedService.getMoviesSuccess())
             viewmodel = HomescreenViewModel(movieRepository)
             assertEquals(viewmodel.apiStatus.getOrAwait(), APIStatus.LOADING)
-            Thread.sleep(1000)
+            Thread.sleep(5000)
             assertEquals(viewmodel.apiStatus.getOrAwait(), APIStatus.DONE)
             assertTrue(viewmodel.displayableMovies.getOrAwait().isNotEmpty())
         }

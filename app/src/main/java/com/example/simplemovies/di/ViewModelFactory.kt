@@ -48,7 +48,7 @@ class GenericViewModelFactory @Inject constructor(private val creators:  @JvmSup
 abstract class ViewModelBuilderModule {
     //Return a factory based on our own implemented code
     @Binds
-    abstract fun bindViewModelFactory(factory: GenericViewModelFactory): ViewModelProvider.Factory
+    internal abstract fun bindViewModelFactory(factory: GenericViewModelFactory): ViewModelProvider.Factory
 }
 
 /**

@@ -13,26 +13,29 @@ import javax.inject.Singleton
 private const val BASE_URL = "https://api.themoviedb.org/"
 
 @Module
-class NetworkModule {
+object NetworkModule {
 
+    @JvmStatic
     @Singleton
     @Provides
     fun provideService(retrofit: Retrofit): TmdbApiService {
         return retrofit.create(TmdbApiService::class.java)
     }
 
+    @JvmStatic
     @Singleton
     @Provides
     fun provideMoshi(): Moshi {
         return Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
     }
-
+    @JvmStatic
     @Singleton
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient, moshi: Moshi): Retrofit {
         return Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(MoshiConverterFactory.create(moshi)).client(okHttpClient).build()
     }
 
+    @JvmStatic
     @Singleton
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
@@ -44,6 +47,7 @@ class NetworkModule {
         }.build()
     }
 
+    @JvmStatic
     @Provides
     @Singleton
     fun provideDataManager(): DataManager {

@@ -50,9 +50,9 @@ data class MovieResult(
     val name: String?,
     val number_of_episodes: Int?,
     val number_of_seasons: Int?,
-    val budget: Int,
+    val budget: Int?,
     val original_language: String,
-    val revenue: Int,
+    val revenue: Int?,
     val status: String
 )
 

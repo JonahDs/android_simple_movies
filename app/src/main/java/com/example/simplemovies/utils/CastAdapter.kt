@@ -9,7 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.simplemovies.databinding.ItemCastBinding
 import com.example.simplemovies.domain.CastMember
 
-class CastAdapter() : ListAdapter<CastMember, CastAdapter.CastViewHolder>(
+/**
+ * Cast recyclerview adapter
+ * */
+
+class CastAdapter : ListAdapter<CastMember, CastAdapter.CastViewHolder>(
     DiffCallback
 ) {
     class CastViewHolder(private var binding: ItemCastBinding) :

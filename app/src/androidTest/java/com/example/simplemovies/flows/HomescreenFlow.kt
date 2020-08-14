@@ -40,7 +40,7 @@ class HomescreenFlow {
                         withId(R.id.recyclerview_home_movies),
                         childAtPosition(
                             withId(R.id.constraintlayout_home_fragmentcontainer),
-                            0
+                            1
                         )
                     ),
                     0
@@ -63,7 +63,7 @@ class HomescreenFlow {
                         withId(R.id.recyclerview_home_movies),
                         childAtPosition(
                             withId(R.id.constraintlayout_home_fragmentcontainer),
-                            0
+                            1
                         )
                     ),
                     0
