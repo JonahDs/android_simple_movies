@@ -1,6 +1,5 @@
 package com.example.simplemovies.search
 
-
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -43,7 +42,8 @@ class SearchLandingFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
@@ -52,23 +52,27 @@ class SearchLandingFragment : Fragment() {
                 viewmodel = searchLandingViewModel
             }
 
-        //Bind the recyclerview adapter
+        // Bind the recyclerview adapter
         binding.recyclerviewSearchMovies.adapter = MovieAdapter(
-                OnClickListener {
-                    searchLandingViewModel.navigateToDetail(it)
-                })
+            OnClickListener {
+                searchLandingViewModel.navigateToDetail(it)
+            }
+        )
 
         // Trigger when navigation is set
-        searchLandingViewModel.navigation.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                findNavController().navigate(
-                    SearchLandingFragmentDirections.actionSearchLandingToMovieDetails(
-                        it
+        searchLandingViewModel.navigation.observe(
+            viewLifecycleOwner,
+            Observer {
+                if (it != null) {
+                    findNavController().navigate(
+                        SearchLandingFragmentDirections.actionSearchLandingToMovieDetails(
+                            it
+                        )
                     )
-                )
-                searchLandingViewModel.navigationCompleted()
+                    searchLandingViewModel.navigationCompleted()
+                }
             }
-        })
+        )
 
         // Give viewmodel the information so it can start fetching
         searchLandingViewModel.setQuery(args.query ?: "undefined")
@@ -76,5 +80,4 @@ class SearchLandingFragment : Fragment() {
         binding.lifecycleOwner = this
         return binding.root
     }
-
 }

@@ -22,7 +22,6 @@ class CastExtendedAdapter : ListAdapter<CastMember, CastExtendedAdapter.CastView
         }
     }
 
-
     companion object DiffCallback : DiffUtil.ItemCallback<CastMember>() {
         override fun areItemsTheSame(oldItem: CastMember, newItem: CastMember): Boolean {
             return oldItem.id == newItem.id
@@ -31,7 +30,6 @@ class CastExtendedAdapter : ListAdapter<CastMember, CastExtendedAdapter.CastView
         override fun areContentsTheSame(oldItem: CastMember, newItem: CastMember): Boolean {
             return oldItem == newItem
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CastViewHolder {

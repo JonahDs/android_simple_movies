@@ -1,6 +1,5 @@
 package com.example.simplemovies.moviepicker
 
-
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
@@ -38,34 +37,36 @@ class MoviePickerFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentMoviePickerBinding.inflate(inflater).apply {
             viewmodel = moviePickerViewModel
         }
 
-        //Findout more click listener (navigates)
+        // Findout more click listener (navigates)
         binding.buttonMoviepickerFindout.setOnClickListener {
-           moviePickerViewModel.navigationProperty?.let {
-               findNavController().navigate(MoviePickerFragmentDirections.actionPickAMovieToMovieDetails(it))
-               moviePickerViewModel.navigationCompleted()
-           }
+            moviePickerViewModel.navigationProperty?.let {
+                findNavController().navigate(MoviePickerFragmentDirections.actionPickAMovieToMovieDetails(it))
+                moviePickerViewModel.navigationCompleted()
+            }
         }
 
-        //Swipe refresh will display a dialog asking if the user wants a fetch a new movie
+        // Swipe refresh will display a dialog asking if the user wants a fetch a new movie
         binding.swiperefreshlayoutMoviepicker.setOnRefreshListener {
             val builder = AlertDialog.Builder(requireActivity())
             builder.setMessage("Sure you want to refresh?")
-                .setPositiveButton("Yes"
+                .setPositiveButton(
+                    "Yes"
                 ) { _, _ ->
                     moviePickerViewModel.fetchRandomMovie()
                 }
-                .setNegativeButton("Cancel"
+                .setNegativeButton(
+                    "Cancel"
                 ) { _, _ ->
-
                 }
-            //Create the AlertDialog object and return it
+            // Create the AlertDialog object and return it
             builder.create().show()
             binding.swiperefreshlayoutMoviepicker.isRefreshing = false
         }

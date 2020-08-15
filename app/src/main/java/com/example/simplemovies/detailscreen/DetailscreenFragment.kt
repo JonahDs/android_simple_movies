@@ -1,6 +1,5 @@
 package com.example.simplemovies.detailscreen
 
-
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,7 +17,7 @@ import com.example.simplemovies.MovieApplication
 import com.example.simplemovies.R.color.detailBackground
 import com.example.simplemovies.databinding.FragmentDetailScreenBinding
 import com.example.simplemovies.utils.CastAdapter
-import java.util.*
+import java.util.Locale
 import javax.inject.Inject
 
 /**
@@ -46,7 +45,8 @@ class DetailscreenFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
@@ -63,7 +63,7 @@ class DetailscreenFragment : Fragment() {
         binding.recyclerviewDetailMoviecast.adapter =
             CastAdapter()
 
-        //Set the root color as detailBackground
+        // Set the root color as detailBackground
         binding.root.setBackgroundColor(
             ContextCompat.getColor(
                 this.requireContext(),
@@ -73,21 +73,28 @@ class DetailscreenFragment : Fragment() {
 
         // If the detail screen needs to display a tv series instead of a movies then hide
         // the "show cast ..." button
-        if(args.type.toLowerCase(Locale.ROOT) == "tv") {
+        if (args.type.toLowerCase(Locale.ROOT) == "tv") {
             binding.buttonDetailShowcast.visibility = View.GONE
         }
-
 
         binding.buttonDetailShowcast.setOnClickListener {
             detailViewModel.displayCastDetails()
         }
 
-        detailViewModel.navSelected.observe(viewLifecycleOwner, Observer {
-            if(it != null){
-                findNavController().navigate(DetailscreenFragmentDirections.actionMovieDetailsToCastFragment(args.id, args.type))
-                detailViewModel.displayCastDetailsCompleted()
+        detailViewModel.navSelected.observe(
+            viewLifecycleOwner,
+            Observer {
+                if (it != null) {
+                    findNavController().navigate(
+                        DetailscreenFragmentDirections.actionMovieDetailsToCastFragment(
+                            args.id,
+                            args.type
+                        )
+                    )
+                    detailViewModel.displayCastDetailsCompleted()
+                }
             }
-        })
+        )
 
         // Set information in viewmodel so the viewmodel can start fetching
         detailViewModel.setState(args.type.toLowerCase(Locale.ROOT), args.id)
@@ -96,6 +103,4 @@ class DetailscreenFragment : Fragment() {
 
         return binding.root
     }
-
-
 }

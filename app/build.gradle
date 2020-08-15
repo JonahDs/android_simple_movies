@@ -9,6 +9,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs'
 
 
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -28,6 +29,10 @@ android {
         }
     }
 
+    configurations {
+        ktlint
+    }
+
     dataBinding {
         enabled = true
     }
@@ -44,6 +49,24 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
+
+    task ktlint(type: JavaExec, group: "verification") {
+        description = "Check Kotlin code style."
+        main = "com.pinterest.ktlint.Main"
+        classpath = configurations.ktlint
+        args "src/**/*.kt"
+        // to generate report in checkstyle format prepend following args:
+        // "--reporter=plain", "--reporter=checkstyle,output=${buildDir}/ktlint.xml"
+        // see https://github.com/pinterest/ktlint#usage for more
+    }
+    check.dependsOn ktlint
+
+    task ktlintFormat(type: JavaExec, group: "formatting") {
+        description = "Fix Kotlin code style deviations."
+        main = "com.pinterest.ktlint.Main"
+        classpath = configurations.ktlint
+        args "-F", "src/**/*.kt"
+    }
 }
 
 dependencies {
@@ -57,6 +80,8 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     testImplementation 'junit:junit:4.12'
 
+
+    ktlint "com.pinterest:ktlint:0.37.2"
 
     //Viewmodels
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"

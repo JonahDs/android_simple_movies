@@ -3,18 +3,15 @@ package com.example.simplemovies.domain
 import com.example.simplemovies.database.GenreDb
 import com.example.simplemovies.database.MovieDb
 
-
 //region Wrappers
 
 data class MoviesWrapper(
     val results: List<MovieNetwork>
 )
 
-
 data class GenresWrapper(
     val genres: List<GenreNetwork>
 )
-
 
 data class CastWrapper(
     val cast: List<CastMember>,
@@ -78,7 +75,6 @@ data class CrewMember(
 
 //region helper methods
 
-
 /**
  * Simple converter, converts a list of movieNetwork objects to movieDb
  * */
@@ -88,8 +84,8 @@ fun List<MovieNetwork>.asMovieDatabase(): List<MovieDb> {
             id = it.id,
             overview = it.overview,
             poster_path = it.poster_path ?: "",
-            release_date = it.release_date?: "",
-            title = it.title?: "",
+            release_date = it.release_date ?: "",
+            title = it.title ?: "",
             vote_average = it.vote_average,
             vote_count = it.vote_count,
             runtime = it.runtime

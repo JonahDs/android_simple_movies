@@ -29,7 +29,7 @@ class SearchLandingViewModel @Inject constructor(
 
     val navigation: LiveData<Int> get() = _navigation
 
-    //properties
+    // properties
     private var query: String = ""
 
     /**

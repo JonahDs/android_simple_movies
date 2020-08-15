@@ -55,7 +55,6 @@ class CastViewmodel @Inject constructor(private val movierepo: MovieRepository) 
                 manageCastResource(it)
             }
         }
-
     }
 
     /**
@@ -67,5 +66,4 @@ class CastViewmodel @Inject constructor(private val movierepo: MovieRepository) 
         resource.status?.let { _apiStatus.value = it }
         resource.data?.let { _cast.value = it }
     }
-
 }

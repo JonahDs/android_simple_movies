@@ -1,6 +1,5 @@
 package com.example.simplemovies.experimental
 
-
 import android.content.res.Resources
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -39,7 +38,6 @@ class ExperimentalViewModel @Inject constructor(
     private val _navProperty = MutableLiveData<Int>()
 
     val navProperty: LiveData<Int> get() = _navProperty
-
 
     /**
      * Only on creation of the viewmodel fetch the genres, this prevents a configuration change
@@ -142,7 +140,6 @@ class ExperimentalViewModel @Inject constructor(
         }
     }
 
-
     /**
      * Set navigation property to the clicked id
      * */
@@ -156,7 +153,4 @@ class ExperimentalViewModel @Inject constructor(
     fun navCompleted() {
         _navProperty.value = null
     }
-
-
-
 }

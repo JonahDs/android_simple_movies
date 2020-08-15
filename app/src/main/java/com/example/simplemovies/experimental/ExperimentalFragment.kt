@@ -19,11 +19,10 @@ import com.example.simplemovies.MovieApplication
 import com.example.simplemovies.R
 import com.example.simplemovies.databinding.FragmentExperimentalBinding
 import com.example.simplemovies.domain.GenreNetwork
-import com.example.simplemovies.utils.OnClickListener
 import com.example.simplemovies.utils.MovieAdapter
+import com.example.simplemovies.utils.OnClickListener
 import com.google.android.material.chip.Chip
 import javax.inject.Inject
-
 
 class ExperimentalFragment : Fragment() {
 
@@ -45,7 +44,8 @@ class ExperimentalFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val binding: FragmentExperimentalBinding =
@@ -54,27 +54,33 @@ class ExperimentalFragment : Fragment() {
             }
 
         // Setup the genre chips
-        experimentalViewmodel.genres.observe(viewLifecycleOwner, Observer {
-            if (it.genres.isNotEmpty()) {
-                val chipGroup = binding.chipgroupExperimentalGenres
-                it.genres.forEach { genre ->
-                    chipGroup.addView(chipFactory(genre))
+        experimentalViewmodel.genres.observe(
+            viewLifecycleOwner,
+            Observer {
+                if (it.genres.isNotEmpty()) {
+                    val chipGroup = binding.chipgroupExperimentalGenres
+                    it.genres.forEach { genre ->
+                        chipGroup.addView(chipFactory(genre))
+                    }
                 }
             }
-        })
+        )
 
         // Triggerd when navigation is set
-        experimentalViewmodel.navProperty.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                findNavController().navigate(
-                    ExperimentalFragmentDirections.actionExperimentalToMovieDetails(
-                        binding.spinnerExperimentalType.selectedItem.toString(),
-                        it
+        experimentalViewmodel.navProperty.observe(
+            viewLifecycleOwner,
+            Observer {
+                if (it != null) {
+                    findNavController().navigate(
+                        ExperimentalFragmentDirections.actionExperimentalToMovieDetails(
+                            binding.spinnerExperimentalType.selectedItem.toString(),
+                            it
+                        )
                     )
-                )
-                experimentalViewmodel.navCompleted()
+                    experimentalViewmodel.navCompleted()
+                }
             }
-        })
+        )
 
         bindAdapters(binding)
         observerConfigChange(binding)
@@ -92,7 +98,7 @@ class ExperimentalFragment : Fragment() {
      * */
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     private fun observerConfigChange(binding: FragmentExperimentalBinding) {
-        if(experimentalViewmodel.discover.value != null) {
+        if (experimentalViewmodel.discover.value != null) {
             binding.linearlayoutExperimentalToolbar.visibility = GONE
             binding.buttonExperimentalRetry.visibility = VISIBLE
         }
@@ -117,7 +123,6 @@ class ExperimentalFragment : Fragment() {
             binding.linearlayoutExperimentalToolbar.visibility = GONE
             binding.buttonExperimentalRetry.visibility = VISIBLE
         }
-
     }
 
     /**
@@ -127,9 +132,11 @@ class ExperimentalFragment : Fragment() {
      * */
     private fun bindAdapters(binding: FragmentExperimentalBinding) {
         binding.recyclerviewExperimentalMovies.adapter =
-            MovieAdapter(OnClickListener {
-                experimentalViewmodel.navSelected(it)
-            })
+            MovieAdapter(
+                OnClickListener {
+                    experimentalViewmodel.navSelected(it)
+                }
+            )
         binding.spinnerExperimentalStates.adapter = arrayAdapterFactory(R.array.include_states)
         binding.spinnerExperimentalUserscore.adapter = arrayAdapterFactory(R.array.user_scores)
         binding.spinnerExperimentalType.adapter = arrayAdapterFactory(R.array.types)
@@ -158,13 +165,14 @@ class ExperimentalFragment : Fragment() {
      * @return Chip
      * */
     private fun chipFactory(genre: GenreNetwork): Chip {
-        return (LayoutInflater.from(requireContext())
-            .inflate(R.layout.view_genre_chip, null) as Chip).also {
+        return (
+            LayoutInflater.from(requireContext())
+                .inflate(R.layout.view_genre_chip, null) as Chip
+            ).also {
             it.setOnCheckedChangeListener { _, isChecked ->
                 experimentalViewmodel.manageChips(genre, isChecked)
             }
             it.text = genre.name
         }
     }
-
 }

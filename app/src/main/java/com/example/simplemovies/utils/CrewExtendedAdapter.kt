@@ -45,5 +45,4 @@ class CrewExtendedAdapter : ListAdapter<CrewMember, CrewExtendedAdapter.CrewView
     override fun onBindViewHolder(holder: CrewViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
-
 }

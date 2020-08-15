@@ -40,7 +40,6 @@ class GenreRepository @Inject constructor(
             override fun shouldFetch(data: GenresWrapper?) =
                 data == null || data.genres.isEmpty() || dataManager.shouldRefresh("genres")
 
-
             override fun fetchFromDb(): Flow<GenresWrapper?> =
                 genreDao.getAllFlowDistinct().map {
                     if (it.isEmpty()) {
@@ -50,11 +49,9 @@ class GenreRepository @Inject constructor(
                     }
                 }
 
-
             override suspend fun makeApiCall(): GenresWrapper = withContext(IO) {
                 tmdbApiService.getAllMovieGenres()
             }
         }.asFlow().flowOn(IO)
     }
-
 }

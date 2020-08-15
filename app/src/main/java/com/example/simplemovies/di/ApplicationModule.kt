@@ -56,5 +56,4 @@ object ApplicationModule {
             "simple_movie_database"
         ).fallbackToDestructiveMigration().build()
     }
-
 }

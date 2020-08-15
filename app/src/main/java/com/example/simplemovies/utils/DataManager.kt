@@ -33,4 +33,3 @@ class DataManager {
         return false
     }
 }
-

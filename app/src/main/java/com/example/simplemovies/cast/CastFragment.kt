@@ -15,7 +15,6 @@ import com.example.simplemovies.utils.CastExtendedAdapter
 import com.example.simplemovies.utils.CrewExtendedAdapter
 import javax.inject.Inject
 
-
 class CastFragment : Fragment() {
 
     @Inject
@@ -38,21 +37,22 @@ class CastFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentCastBinding.inflate(inflater).apply {
             viewmodel = castViewmodel
         }
 
-        //sets the details so the viewmodel can start fetching
+        // sets the details so the viewmodel can start fetching
         castViewmodel.setMovieId(args.id, args.type)
 
-        //bind the recyclerview adapters
+        // bind the recyclerview adapters
         binding.recyclerviewCastCastmembers.adapter =
             CastExtendedAdapter()
 
-        //bind the recyclerview adapters
+        // bind the recyclerview adapters
         binding.recyclerviewCastCrewmembers.adapter =
             CrewExtendedAdapter()
 

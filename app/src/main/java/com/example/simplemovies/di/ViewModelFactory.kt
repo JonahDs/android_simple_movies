@@ -9,7 +9,6 @@ import javax.inject.Inject
 import javax.inject.Provider
 import kotlin.reflect.KClass
 
-
 /**
  * Generic viewmodel factory
  * Dagger 2 allows multibinding, this makes it possible create a map of objects
@@ -21,7 +20,7 @@ import kotlin.reflect.KClass
  * @JvmSuppressWildcards to properly compile
  * */
 @Suppress("UNCHECKED_CAST")
-class GenericViewModelFactory @Inject constructor(private val creators:  @JvmSuppressWildcards  Map<Class<out ViewModel>, Provider<ViewModel>>) :
+class GenericViewModelFactory @Inject constructor(private val creators: @JvmSuppressWildcards Map<Class<out ViewModel>, Provider<ViewModel>>) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         var creator: Provider<out ViewModel>? = creators[modelClass]
@@ -49,7 +48,7 @@ class GenericViewModelFactory @Inject constructor(private val creators:  @JvmSup
  * */
 @Module
 abstract class ViewModelBuilderModule {
-    //Return a factory based on our own implemented code
+    // Return a factory based on our own implemented code
     @Binds
     internal abstract fun bindViewModelFactory(factory: GenericViewModelFactory): ViewModelProvider.Factory
 }

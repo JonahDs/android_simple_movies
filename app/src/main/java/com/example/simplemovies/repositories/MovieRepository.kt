@@ -1,6 +1,5 @@
 package com.example.simplemovies.repositories
 
-
 import com.example.simplemovies.database.MovieDao
 import com.example.simplemovies.database.asMovieNetwork
 import com.example.simplemovies.domain.CastWrapper

@@ -51,7 +51,7 @@ class MovieAdapter(val click: OnClickListener) : ListAdapter<MovieNetwork, Movie
     }
 }
 
-//Listen for clicks on the movies
+// Listen for clicks on the movies
 class OnClickListener(val click: (movieId: Int) -> Unit) {
     fun onClick(movieId: Int) = click(movieId)
 }

@@ -1,12 +1,14 @@
 package com.example.simplemovies.flows
 
-
 import android.view.View
 import android.view.ViewGroup
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.scrollTo
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
@@ -28,7 +30,7 @@ class MoviePickerFlow {
     @JvmField
     var mActivityTestRule = ActivityTestRule(MainActivity::class.java)
 
-    //Navigate to the movie picker
+    // Navigate to the movie picker
     @Test
     fun moviePickerFlow() {
         Thread.sleep(3000)
@@ -69,7 +71,7 @@ class MoviePickerFlow {
         navigationMenuItemView.perform(click())
     }
 
-    //Navigate to movie picker and checkout the details
+    // Navigate to movie picker and checkout the details
     @Test
     fun moviePickerToDetail() {
         Thread.sleep(3000)
@@ -133,7 +135,8 @@ class MoviePickerFlow {
     }
 
     private fun childAtPosition(
-        parentMatcher: Matcher<View>, position: Int
+        parentMatcher: Matcher<View>,
+        position: Int
     ): Matcher<View> {
 
         return object : TypeSafeMatcher<View>() {
@@ -144,8 +147,8 @@ class MoviePickerFlow {
 
             public override fun matchesSafely(view: View): Boolean {
                 val parent = view.parent
-                return parent is ViewGroup && parentMatcher.matches(parent)
-                        && view == parent.getChildAt(position)
+                return parent is ViewGroup && parentMatcher.matches(parent) &&
+                    view == parent.getChildAt(position)
             }
         }
     }
