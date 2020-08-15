@@ -21,7 +21,7 @@ import java.util.concurrent.TimeoutException
  * */
 object MockedService {
     fun getMoviesSuccess(): Flow<Resource<MoviesWrapper>> {
-        return object: SimpleBounding<MoviesWrapper>() {
+        return object : SimpleBounding<MoviesWrapper>() {
             override suspend fun makeApiCall(): MoviesWrapper = withContext(IO) {
                 Gson().fromJson(jsonMovie, MoviesWrapper::class.java)
             }
@@ -29,22 +29,21 @@ object MockedService {
     }
 
     fun getMoviesFailure(): Flow<Resource<MoviesWrapper>> {
-        return object: SimpleBounding<MoviesWrapper>() {
-            override suspend fun makeApiCall(): MoviesWrapper = withContext(IO){
+        return object : SimpleBounding<MoviesWrapper>() {
+            override suspend fun makeApiCall(): MoviesWrapper = withContext(IO) {
                 throw IllegalArgumentException()
             }
         }.asFlow().flowOn(IO)
     }
 
     fun getCastSuccess(): Flow<Resource<CastWrapper>> {
-        return object: SimpleBounding<CastWrapper>() {
-            override suspend fun makeApiCall(): CastWrapper = withContext(IO){
+        return object : SimpleBounding<CastWrapper>() {
+            override suspend fun makeApiCall(): CastWrapper = withContext(IO) {
                 Gson().fromJson(jsonCast, CastWrapper::class.java)
             }
         }.asFlow().flowOn(IO)
     }
 }
-
 
 /**
  * Allow the observation of livedata 'without' a lifecycleowner, this is a simple extension function
@@ -65,7 +64,7 @@ fun <T> LiveData<T>.getOrAwait(
     }
     observeForever(observer)
 
-    if(!latch.await(time, timeUnit)) {
+    if (!latch.await(time, timeUnit)) {
         throw TimeoutException("Value never set")
     }
 

@@ -32,7 +32,8 @@ class DatabaseTest {
     fun createDatabase() {
         val context = ApplicationProvider.getApplicationContext<Context>()
 
-        database = Room.inMemoryDatabaseBuilder(context, SimpleMovieDatabase::class.java).allowMainThreadQueries().build()
+        database = Room.inMemoryDatabaseBuilder(context, SimpleMovieDatabase::class.java)
+            .allowMainThreadQueries().build()
 
         movies = Gson().fromJson(jsonMovie, MoviesWrapper::class.java)
         genres = Gson().fromJson(jsonGenres, GenresWrapper::class.java)
@@ -69,10 +70,10 @@ class DatabaseTest {
 
     @Test
     @Throws(IOException::class)
-    fun insertGenres(){
+    fun insertGenres() {
         genreDao.insert(genres.genres.asGenreDatabase())
         val res = runBlocking {
-            genreDao.getAll().map {it.asGenreNetwork()}.first().sortedBy { it.id }
+            genreDao.getAll().map { it.asGenreNetwork() }.first().sortedBy { it.id }
         }
         Assert.assertEquals(genres.genres.sortedBy { it.id }, res)
     }

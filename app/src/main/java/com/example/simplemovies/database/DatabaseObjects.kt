@@ -54,7 +54,7 @@ fun List<GenreDb>.asGenreNetwork(): List<GenreNetwork> {
     return map {
         GenreNetwork(
             id = it.id,
-            name =  it.name
+            name = it.name
         )
     }
 }

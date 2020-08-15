@@ -1,6 +1,7 @@
 package com.example.simplemovies.mockdata
 
-val jsonMovie = """
+val jsonMovie =
+    """
     {
   "page": 1,
   "total_results": 10000,
@@ -48,7 +49,8 @@ val jsonMovie = """
 }
 """
 
-val jsonCast = """
+val jsonCast =
+    """
    {
   "id": 583083,
   "cast": [

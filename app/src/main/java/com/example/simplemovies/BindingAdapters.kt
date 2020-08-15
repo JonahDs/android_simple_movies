@@ -11,11 +11,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.example.simplemovies.utils.CrewExtendedAdapter
-import com.example.simplemovies.utils.CastAdapter
-import com.example.simplemovies.domain.*
-import com.example.simplemovies.utils.MovieAdapter
+import com.example.simplemovies.domain.CastMember
+import com.example.simplemovies.domain.CastWrapper
+import com.example.simplemovies.domain.CrewMember
+import com.example.simplemovies.domain.GenreNetwork
+import com.example.simplemovies.domain.MovieNetwork
 import com.example.simplemovies.network.APIStatus
+import com.example.simplemovies.utils.CastAdapter
+import com.example.simplemovies.utils.CrewExtendedAdapter
+import com.example.simplemovies.utils.MovieAdapter
 import kotlinx.android.synthetic.main.fragment_homescreen.view.*
 import java.text.NumberFormat
 
@@ -34,7 +38,6 @@ fun bindImage(imgView: ImageView, poster_path: String?) {
 
     val imgUri = stringBuilder.append(poster_path).toString().toUri().buildUpon().scheme("https").build()
     Glide.with(imgView.context).load(loadingContext ?: imgUri).into(imgView)
-
 }
 
 /**
@@ -60,10 +63,9 @@ fun bindAvatar(imgView: ImageView, poster_avatar: String?) {
         loadingContext = R.drawable.ic_no_movies_available
     }
 
-        val imgUri = stringBuilder.append(poster_avatar).toString().toUri().buildUpon().scheme("https").build()
-        Glide.with(imgView.context).load(loadingContext?: imgUri)
-            .apply(RequestOptions.bitmapTransform(RoundedCorners(50))).into(imgView)
-
+    val imgUri = stringBuilder.append(poster_avatar).toString().toUri().buildUpon().scheme("https").build()
+    Glide.with(imgView.context).load(loadingContext ?: imgUri)
+        .apply(RequestOptions.bitmapTransform(RoundedCorners(50))).into(imgView)
 }
 
 /**
@@ -113,7 +115,6 @@ fun bindCastExtended(recyclerView: RecyclerView, data: List<CastMember>?) {
     adapter.submitList(data)
 }
 
-
 /**
  * Binds the full crew list to the recyclerview
  * */
@@ -146,7 +147,7 @@ fun bindGenres(view: TextView, list: List<GenreNetwork>?) {
  * */
 @BindingAdapter("numberFormatter")
 fun bindNumber(view: TextView, number: Int?) {
-    if(number == null) {
+    if (number == null) {
         view.text = view.resources.getString(R.string.unknown)
     } else {
         val formatted = NumberFormat.getIntegerInstance().format(number)
@@ -159,7 +160,7 @@ fun bindNumber(view: TextView, number: Int?) {
  * */
 @BindingAdapter(value = ["movieTitle", "tvTitle"], requireAll = false)
 fun bindTitle(view: TextView, movie: String?, tv: String?) {
-    if(movie == null) {
+    if (movie == null) {
         view.text = tv
     } else {
         view.text = movie
@@ -179,7 +180,7 @@ fun bindAmount(view: TextView, type: String, amount: Int?) {
  * */
 @BindingAdapter("minute_converter")
 fun bindMinutes(view: TextView, time: Int?) {
-    if(time == null) {
+    if (time == null) {
         view.text = view.resources.getString(R.string.unknown_runtime)
     }
     time?.let {

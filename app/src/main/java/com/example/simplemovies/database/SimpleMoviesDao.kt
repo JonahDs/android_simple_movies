@@ -1,6 +1,9 @@
 package com.example.simplemovies.database
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 
@@ -21,7 +24,6 @@ abstract class MovieDao {
      * get updated when the data actually changes
      * */
     fun getAllFlowDistinct() = getAll().distinctUntilChanged()
-
 }
 
 @Dao

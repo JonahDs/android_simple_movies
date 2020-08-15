@@ -14,7 +14,7 @@ interface DetailScreenComponent {
      * */
     @Subcomponent.Factory
     interface Factory {
-        fun create():DetailScreenComponent
+        fun create(): DetailScreenComponent
     }
 
     /**

@@ -28,7 +28,6 @@ class MoviePickerViewModel @Inject constructor(private val movieRepo: MovieRepos
 
     val apiStatus: LiveData<APIStatus> get() = _apiStatus
 
-
     /**
      * Only on creation of the viewmodel fetch the genres, this prevents a configuration change
      * to call the repository (or API)

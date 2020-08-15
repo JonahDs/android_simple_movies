@@ -1,6 +1,5 @@
 package com.example.simplemovies.homescreen
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,7 +13,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-//constructor inject a movieRepository
+// constructor inject a movieRepository
 class HomescreenViewModel @Inject constructor(private val movieRepo: MovieRepository) :
     ViewModel() {
 
@@ -26,11 +25,10 @@ class HomescreenViewModel @Inject constructor(private val movieRepo: MovieReposi
 
     val apiStatus: LiveData<APIStatus> get() = _apiStatus
 
-    //Navigation property
+    // Navigation property
     private val _navSelected = MutableLiveData<Int>()
 
     val navSelected: LiveData<Int> get() = _navSelected
-
 
     /**
      * Only on creation of the viewmodel fetch the genres, this prevents a configuration change
@@ -46,7 +44,7 @@ class HomescreenViewModel @Inject constructor(private val movieRepo: MovieReposi
     fun fetchMovies() {
         viewModelScope.launch {
             movieRepo.getMoviesOfFlow().collect {
-               manageMovieResource(it)
+                manageMovieResource(it)
             }
         }
     }
@@ -75,9 +73,7 @@ class HomescreenViewModel @Inject constructor(private val movieRepo: MovieReposi
         _navSelected.value = null
     }
 
-
     fun clearMovies() {
         _displayableMovies.value = listOf()
     }
-
 }

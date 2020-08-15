@@ -21,6 +21,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var appBarConfiguration: AppBarConfiguration
 
+    /**
+     * Init activity
+     *
+     * @param savedInstanceState saved from onSaveInstance
+     * */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding =
@@ -32,16 +37,14 @@ class MainActivity : AppCompatActivity() {
 
         appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
 
-
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
         NavigationUI.setupWithNavController(binding.navView, navController)
 
-
-        //If the user wants to search this code will trigger
-        //every navigation will happen from homescreen so the backstack will always return to homescreen
+        // If the user wants to search this code will trigger
+        // every navigation will happen from homescreen so the backstack will always return to homescreen
         //
-        //if intent.action is not set to null after a search this code will trigger again if the user rotates
-        //the screen on any other fragment
+        // if intent.action is not set to null after a search this code will trigger again if the user rotates
+        // the screen on any other fragment
         if (Intent.ACTION_SEARCH === intent.action) {
             intent.getStringExtra(SearchManager.QUERY)?.also {
                 findNavController(R.id.navhost_fragment).navigate(
@@ -54,12 +57,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Called when navigating up
+     *
+     * @return boolean if nav up success then true else false
+     * */
     override fun onSupportNavigateUp(): Boolean {
         return findNavController(R.id.navhost_fragment).navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
     /**
-     * Setup the search
+     * In this method, you can inflate your menu resource (defined in XML) into the Menu provided in the callback.
      *
      * @param menu Menu
      * @return true to append search to the appbar
@@ -67,7 +75,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.search_menu, menu)
 
-        //Setup the search functionality
+        // Setup the search functionality
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         (menu.findItem(R.id.search).actionView as SearchView).apply {
             setSearchableInfo(searchManager.getSearchableInfo(componentName))

@@ -1,6 +1,5 @@
 package com.example.simplemovies.network
 
-import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
@@ -34,18 +33,18 @@ import kotlinx.coroutines.flow.flow
 abstract class SimpleBounding<T> {
 
     private val flow = flow<Resource<T>> {
-        //Emit LOADING from the start
+        // Emit LOADING from the start
         emit(Resource.Loading(null, APIStatus.LOADING))
         try {
 
-            //Make the API call
+            // Make the API call
             val data = makeApiCall()
 
-            //If success emit DONE with the data
+            // If success emit DONE with the data
             emit(Resource.Success(data, APIStatus.DONE))
         } catch (e: Exception) {
 
-            //If the call failed emit ERROR
+            // If the call failed emit ERROR
             emit(Resource.Error(null, APIStatus.ERROR))
         }
     }
@@ -70,31 +69,31 @@ abstract class SimpleBounding<T> {
 abstract class NetworkBounding<T> {
 
     private val flow = flow<Resource<T>> {
-        //Get the data from database
+        // Get the data from database
         val local = fetchFromDb().first()
 
-        //Emit LOADING to repo
+        // Emit LOADING to repo
         emit(Resource.Loading(null, APIStatus.LOADING))
         if (shouldFetch(local)) {
             try {
-                //Make the API call
+                // Make the API call
                 val data = makeApiCall()
 
-                //Emit INTERMEDIATE to update the UI text (indicating to the user that something is happening)
+                // Emit INTERMEDIATE to update the UI text (indicating to the user that something is happening)
                 emit(Resource.Loading(null, APIStatus.INTERMEDIATE))
 
-                //Save the data to the database
+                // Save the data to the database
                 saveApiResToDb(data)
 
-                //Collect the data from database emit it with DONE
+                // Collect the data from database emit it with DONE
                 fetchFromDb().collect { dbRes ->
                     emit(Resource.Success(dbRes, APIStatus.DONE))
                 }
             } catch (e: Exception) {
-                //Something went wrong, try to see if there is data inside the database
+                // Something went wrong, try to see if there is data inside the database
                 val buffered = fetchFromDb().first()
 
-                //If there is data emit it with DONE else emit ERROR
+                // If there is data emit it with DONE else emit ERROR
                 if (buffered != null) {
                     fetchFromDb().collect { dbRes ->
                         emit(Resource.Success(dbRes, APIStatus.DONE))
@@ -104,11 +103,10 @@ abstract class NetworkBounding<T> {
                 }
             }
         } else {
-            //The data does'nt need to be refreshed so emit database result and DONE
+            // The data does'nt need to be refreshed so emit database result and DONE
             emit(Resource.Success(local, APIStatus.DONE))
         }
     }
-
 
     protected abstract fun saveApiResToDb(item: T)
 
@@ -119,12 +117,14 @@ abstract class NetworkBounding<T> {
     protected abstract suspend fun makeApiCall(): T
 
     fun asFlow() = flow
-
 }
 
 /**
  * Class to wrap our data in together with an API status, this way our viewmodels can easily
  * set everything
+ *
+ * @param data generic type for representing the data default null
+ * @param status APIStatus default null
  * */
 sealed class Resource<T>(val data: T? = null, val status: APIStatus? = null) {
     class Success<T>(data: T?, status: APIStatus) : Resource<T>(data, status)

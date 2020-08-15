@@ -1,6 +1,7 @@
 package com.example.simplemovies.database
 
-val jsonMovie = """
+val jsonMovie =
+    """
     {
   "page": 1,
   "total_results": 10000,
@@ -48,7 +49,8 @@ val jsonMovie = """
 }
 """
 
-val jsonGenres = """
+val jsonGenres =
+    """
    {
   "genres": [
     {

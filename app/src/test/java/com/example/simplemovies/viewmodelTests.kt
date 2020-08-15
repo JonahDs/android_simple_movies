@@ -1,6 +1,5 @@
 package com.example.simplemovies
 
-
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.simplemovies.cast.CastViewmodel
 import com.example.simplemovies.homescreen.HomescreenViewModel
@@ -8,7 +7,9 @@ import com.example.simplemovies.mockdata.MockedService
 import com.example.simplemovies.mockdata.getOrAwait
 import com.example.simplemovies.network.APIStatus
 import com.example.simplemovies.repositories.MovieRepository
-import junit.framework.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
@@ -16,7 +17,6 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
-
 
 /**
  * All viewmodels follow the same patterns
@@ -32,7 +32,6 @@ import org.mockito.junit.MockitoJUnitRunner
  */
 @RunWith(MockitoJUnitRunner::class)
 class viewmodelTests {
-
 
     /**
      * Custom made coroutine to tell our viewmodels which one to use
@@ -63,7 +62,7 @@ class viewmodelTests {
             `when`(movieRepository.getMoviesOfFlow()).thenReturn(MockedService.getMoviesSuccess())
             viewmodel = HomescreenViewModel(movieRepository)
             assertEquals(viewmodel.apiStatus.getOrAwait(), APIStatus.LOADING)
-            Thread.sleep(5000)
+            Thread.sleep(9000)
             assertEquals(viewmodel.apiStatus.getOrAwait(), APIStatus.DONE)
             assertTrue(viewmodel.displayableMovies.getOrAwait().isNotEmpty())
         }

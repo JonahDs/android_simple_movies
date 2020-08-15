@@ -24,5 +24,4 @@ interface CastComponent {
      * inject the fragment
      * */
     fun inject(fragment: CastFragment)
-
 }

@@ -1,6 +1,5 @@
 package com.example.simplemovies.utils
 
-
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -24,7 +23,6 @@ class CastAdapter : ListAdapter<CastMember, CastAdapter.CastViewHolder>(
         }
     }
 
-
     companion object DiffCallback : DiffUtil.ItemCallback<CastMember>() {
         override fun areItemsTheSame(oldItem: CastMember, newItem: CastMember): Boolean {
             return oldItem.id == newItem.id
@@ -33,7 +31,6 @@ class CastAdapter : ListAdapter<CastMember, CastAdapter.CastViewHolder>(
         override fun areContentsTheSame(oldItem: CastMember, newItem: CastMember): Boolean {
             return oldItem == newItem
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CastViewHolder {

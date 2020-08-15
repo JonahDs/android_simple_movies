@@ -105,7 +105,6 @@ class DetailscreenViewModel @Inject constructor(private val movieRepo: MovieRepo
         resource.data?.let { _movieCast.value = it }
     }
 
-
     /**
      * Sets the navigation property
      * */

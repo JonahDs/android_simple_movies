@@ -7,7 +7,7 @@ import com.example.simplemovies.di.DaggerApplicationGraph
 /**
  * Application that hosts a root scope component for dagger
  * */
-class MovieApplication : Application(){
+class MovieApplication : Application() {
     val graph: ApplicationGraph by lazy {
         initGraph()
     }
