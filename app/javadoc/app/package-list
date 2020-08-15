@@ -1,0 +1,26 @@
+$dokka.format:gfm
+$dokka.linkExtension:md
+$dokka.location:com.example.simplemovies.database$asGenreNetwork(kotlin.collections.List((com.example.simplemovies.database.GenreDb)))com.example.simplemovies.database/kotlin.collections.-list/as-genre-network.md
+$dokka.location:com.example.simplemovies.database$asMovieNetwork(kotlin.collections.List((com.example.simplemovies.database.MovieDb)))com.example.simplemovies.database/kotlin.collections.-list/as-movie-network.md
+$dokka.location:com.example.simplemovies.domain$asGenreDatabase(kotlin.collections.List((com.example.simplemovies.domain.GenreNetwork)))com.example.simplemovies.domain/kotlin.collections.-list/as-genre-database.md
+$dokka.location:com.example.simplemovies.domain$asMovieDatabase(kotlin.collections.List((com.example.simplemovies.domain.MovieNetwork)))com.example.simplemovies.domain/kotlin.collections.-list/as-movie-database.md
+com.example.simplemovies
+com.example.simplemovies.amount
+com.example.simplemovies.cast
+com.example.simplemovies.cast.di
+com.example.simplemovies.database
+com.example.simplemovies.detailscreen
+com.example.simplemovies.detailscreen.di
+com.example.simplemovies.di
+com.example.simplemovies.domain
+com.example.simplemovies.experimental
+com.example.simplemovies.experimental.di
+com.example.simplemovies.homescreen
+com.example.simplemovies.homescreen.di
+com.example.simplemovies.moviepicker
+com.example.simplemovies.moviepicker.di
+com.example.simplemovies.network
+com.example.simplemovies.repositories
+com.example.simplemovies.search
+com.example.simplemovies.search.di
+com.example.simplemovies.utils
