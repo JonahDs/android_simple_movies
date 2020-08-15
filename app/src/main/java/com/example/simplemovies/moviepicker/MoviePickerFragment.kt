@@ -31,6 +31,8 @@ class MoviePickerFragment : Fragment() {
      * */
     override fun onAttach(context: Context) {
         super.onAttach(context)
+
+        // Allow dagger to inject object annotated with @inject inside this fragment
         (requireActivity().application as MovieApplication).graph.moviepickerComponent().create()
             .inject(this)
     }

@@ -17,7 +17,10 @@ import kotlin.reflect.KClass
  *
  * On compile time Dagger creates the map and passes it to the viewmodelFactory as an argument.
  * In the override function we simply pick the correct instance from inside the map.
+ *
+ * @JvmSuppressWildcards to properly compile
  * */
+@Suppress("UNCHECKED_CAST")
 class GenericViewModelFactory @Inject constructor(private val creators:  @JvmSuppressWildcards  Map<Class<out ViewModel>, Provider<ViewModel>>) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

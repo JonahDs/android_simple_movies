@@ -40,6 +40,7 @@ class DetailscreenFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
+        // Allow dagger to inject object annotated with @inject inside this fragment
         (requireActivity().application as MovieApplication).graph.detailscreenComponent().create()
             .inject(this)
     }
@@ -54,9 +55,11 @@ class DetailscreenFragment : Fragment() {
                 viewmodel = detailViewModel
             }
 
+        // Set recyclerview layoutmanager to be horizontal
         binding.recyclerviewDetailMoviecast.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
+        // bind recycler view adapter
         binding.recyclerviewDetailMoviecast.adapter =
             CastAdapter()
 
@@ -68,9 +71,13 @@ class DetailscreenFragment : Fragment() {
             )
         )
 
+        // If the detail screen needs to display a tv series instead of a movies then hide
+        // the "show cast ..." button
         if(args.type.toLowerCase(Locale.ROOT) == "tv") {
             binding.buttonDetailShowcast.visibility = View.GONE
         }
+
+
         binding.buttonDetailShowcast.setOnClickListener {
             detailViewModel.displayCastDetails()
         }
@@ -82,6 +89,7 @@ class DetailscreenFragment : Fragment() {
             }
         })
 
+        // Set information in viewmodel so the viewmodel can start fetching
         detailViewModel.setState(args.type.toLowerCase(Locale.ROOT), args.id)
 
         binding.lifecycleOwner = this

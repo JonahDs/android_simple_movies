@@ -55,4 +55,5 @@ interface TmdbApiService {
 
 }
 
+//API states
 enum class APIStatus { LOADING, ERROR, INTERMEDIATE, DONE }

@@ -37,6 +37,7 @@ class SearchLandingFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
+        // Allow dagger to inject object annotated with @inject inside this fragment
         (requireActivity().application as MovieApplication).graph.searchscreenComponent().create()
             .inject(this)
     }
@@ -51,11 +52,13 @@ class SearchLandingFragment : Fragment() {
                 viewmodel = searchLandingViewModel
             }
 
+        //Bind the recyclerview adapter
         binding.recyclerviewSearchMovies.adapter = MovieAdapter(
                 OnClickListener {
                     searchLandingViewModel.navigateToDetail(it)
                 })
 
+        // Trigger when navigation is set
         searchLandingViewModel.navigation.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 findNavController().navigate(
@@ -67,6 +70,7 @@ class SearchLandingFragment : Fragment() {
             }
         })
 
+        // Give viewmodel the information so it can start fetching
         searchLandingViewModel.setQuery(args.query ?: "undefined")
 
         binding.lifecycleOwner = this

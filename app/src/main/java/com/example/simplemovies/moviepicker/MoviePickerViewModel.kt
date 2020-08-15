@@ -50,6 +50,8 @@ class MoviePickerViewModel @Inject constructor(private val movieRepo: MovieRepos
 
     /**
      * Set the API status and data only if not null
+     *
+     * @param resource wrapper for the API result
      * */
     private fun manageMovieResource(resource: Resource<MoviesWrapper>) {
         resource.data?.let {
@@ -62,6 +64,9 @@ class MoviePickerViewModel @Inject constructor(private val movieRepo: MovieRepos
         }
     }
 
+    /**
+     * Clear navigation poperty
+     * */
     fun navigationCompleted() {
         _navigationProperty = null
     }

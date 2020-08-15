@@ -38,6 +38,8 @@ class ExperimentalFragment : Fragment() {
      * */
     override fun onAttach(context: Context) {
         super.onAttach(context)
+
+        // Allow dagger to inject object annotated with @inject inside this fragment
         (requireActivity().application as MovieApplication).graph.experimentalComponent().create()
             .inject(this)
     }
@@ -51,6 +53,7 @@ class ExperimentalFragment : Fragment() {
                 viewmodel = experimentalViewmodel
             }
 
+        // Setup the genre chips
         experimentalViewmodel.genres.observe(viewLifecycleOwner, Observer {
             if (it.genres.isNotEmpty()) {
                 val chipGroup = binding.chipgroupExperimentalGenres
@@ -60,6 +63,7 @@ class ExperimentalFragment : Fragment() {
             }
         })
 
+        // Triggerd when navigation is set
         experimentalViewmodel.navProperty.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 findNavController().navigate(
@@ -84,7 +88,7 @@ class ExperimentalFragment : Fragment() {
     /**
      * If a configuration change occurs and the user already searched for movies then set
      * his UI back. Since linearlayoutExperimentalToolbar is visible by default it will become visible
-     * again when it should'nt
+     * again when it shouldn't
      * */
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     private fun observerConfigChange(binding: FragmentExperimentalBinding) {

@@ -34,12 +34,18 @@ import kotlinx.coroutines.flow.flow
 abstract class SimpleBounding<T> {
 
     private val flow = flow<Resource<T>> {
+        //Emit LOADING from the start
         emit(Resource.Loading(null, APIStatus.LOADING))
         try {
+
+            //Make the API call
             val data = makeApiCall()
+
+            //If success emit DONE with the data
             emit(Resource.Success(data, APIStatus.DONE))
         } catch (e: Exception) {
-            Log.i("ERROR", e.message.toString())
+
+            //If the call failed emit ERROR
             emit(Resource.Error(null, APIStatus.ERROR))
         }
     }
