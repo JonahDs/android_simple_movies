@@ -19,6 +19,10 @@ object ApplicationModule {
      * @Singleton to only create one instance inside given scope
      * @JvmStatic compile to a static function for performance increase
      * @Provides tell Dagger that this method needs to be called when <returntype> is needed
+     *
+     * @param service TmdbApiService instance
+     * @param dataManager SimpleMovieDatabase instance
+     * @param database DataManager instance
      * */
     @Singleton
     @JvmStatic
@@ -32,6 +36,10 @@ object ApplicationModule {
      * @Singleton to only create one instance inside given scope
      * @JvmStatic compile to a static function for performance increase
      * @Provides tell Dagger that this method needs to be called when <returntype> is needed
+     *
+     * @param service TmdbApiService instance
+     * @param dataManager SimpleMovieDatabase instance
+     * @param database DataManager instance
      * */
     @Singleton
     @JvmStatic
@@ -45,6 +53,8 @@ object ApplicationModule {
      * @Singleton to only create one instance inside given scope
      * @JvmStatic compile to a static function for performance increase
      * @Provides tell Dagger that this method needs to be called when <returntype> is needed
+     *
+     * @param context application context
      * */
     @JvmStatic
     @Provides

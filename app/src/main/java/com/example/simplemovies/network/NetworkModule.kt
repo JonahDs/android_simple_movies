@@ -19,6 +19,12 @@ private const val BASE_URL = "https://api.themoviedb.org/"
 @Module
 object NetworkModule {
 
+    /**
+     * Provides a TmdbApiService based on retrofit
+     *
+     * @param retrofit A retrofit instance
+     * @return an instance of TmdbApiService
+     * */
     @JvmStatic
     @Singleton
     @Provides
@@ -26,12 +32,24 @@ object NetworkModule {
         return retrofit.create(TmdbApiService::class.java)
     }
 
+    /**
+     * Provides a Moshi instance
+     *
+     * @return an instance of Moshi
+     * */
     @JvmStatic
     @Singleton
     @Provides
     fun provideMoshi(): Moshi {
         return Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
     }
+
+    /**
+     * Provides a Retrofit instance
+     *
+     * @param okHttpClient OkHttpClient instance
+     * @param moshi Moshi instance
+     * */
     @JvmStatic
     @Singleton
     @Provides
@@ -39,6 +57,11 @@ object NetworkModule {
         return Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(MoshiConverterFactory.create(moshi)).client(okHttpClient).build()
     }
 
+    /**
+     * Provides a OkHttpClient instance
+     *
+     * @return instance of OkHttpClient
+     * */
     @JvmStatic
     @Singleton
     @Provides
@@ -51,6 +74,9 @@ object NetworkModule {
         }.build()
     }
 
+    /**
+     * Provides a Datamanager instance
+     * */
     @JvmStatic
     @Provides
     @Singleton

@@ -21,6 +21,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var appBarConfiguration: AppBarConfiguration
 
+    /**
+     * Init activity
+     *
+     * @param savedInstanceState saved from onSaveInstance
+     * */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding =
@@ -52,12 +57,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Called when navigating up
+     *
+     * @return boolean if nav up success then true else false
+     * */
     override fun onSupportNavigateUp(): Boolean {
         return findNavController(R.id.navhost_fragment).navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
     /**
-     * Setup the search
+     * In this method, you can inflate your menu resource (defined in XML) into the Menu provided in the callback.
      *
      * @param menu Menu
      * @return true to append search to the appbar

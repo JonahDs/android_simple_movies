@@ -59,6 +59,8 @@ abstract class ViewModelBuilderModule {
  * @Target only specified targets can use the annotation
  * @Retention Annotation is stored in binary output and visible for reflection
  * @MapKey multibinding
+ *
+ * @param value KClass that extends viewmodel
  * */
 @Target(
     AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER, AnnotationTarget.PROPERTY_SETTER

@@ -122,6 +122,9 @@ abstract class NetworkBounding<T> {
 /**
  * Class to wrap our data in together with an API status, this way our viewmodels can easily
  * set everything
+ *
+ * @param data generic type for representing the data default null
+ * @param status APIStatus default null
  * */
 sealed class Resource<T>(val data: T? = null, val status: APIStatus? = null) {
     class Success<T>(data: T?, status: APIStatus) : Resource<T>(data, status)

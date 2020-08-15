@@ -51,7 +51,11 @@ class MovieAdapter(val click: OnClickListener) : ListAdapter<MovieNetwork, Movie
     }
 }
 
-// Listen for clicks on the movies
+/**
+ * Clicklistener for recyclerview
+ *
+ * @param click lambda that handles click
+ * */
 class OnClickListener(val click: (movieId: Int) -> Unit) {
     fun onClick(movieId: Int) = click(movieId)
 }
