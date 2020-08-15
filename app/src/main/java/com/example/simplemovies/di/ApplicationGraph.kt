@@ -31,6 +31,7 @@ interface ApplicationGraph {
         fun create(@BindsInstance applicationContext: Context): ApplicationGraph
     }
 
+    // Subcomponents factories
     fun homescreenComponent(): HomescreenComponent.Factory
     fun detailscreenComponent(): DetailScreenComponent.Factory
     fun moviepickerComponent(): MoviePickerComponent.Factory

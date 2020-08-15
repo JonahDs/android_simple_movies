@@ -93,6 +93,8 @@ class ExperimentalViewModel @Inject constructor(
     }
     /**
      * Set the API status and data only if not null
+     *
+     * @param resources wrapper for the API result
      * */
     private fun manageGenreResources(resources: Resource<GenresWrapper>) {
         resources.data?.let { _genres.value = it }
@@ -101,6 +103,8 @@ class ExperimentalViewModel @Inject constructor(
 
     /**
      * Set the API status and data only if not null
+     *
+     * @param resource wrapper for teh API result
      * */
     private fun manageDiscoverResource(resource: Resource<MoviesWrapper>) {
         resource.status?.let { _apiStatus.value = it }
@@ -109,6 +113,11 @@ class ExperimentalViewModel @Inject constructor(
 
     /**
      * Make a configuration object/ settings to make the API call
+     *
+     * @param type fetch type, movie or tv
+     * @param state include/exclude genres
+     * @param score wanted user score
+     * @param resource Android resources to check on types
      * */
     private fun discoverManager(state: String, type: String, score: String, resource: Resources) =
         object {
@@ -121,6 +130,9 @@ class ExperimentalViewModel @Inject constructor(
 
     /**
      * Manage the chips, if checked is true then add it, else remove it
+     *
+     * @param genre the genre object
+     * @param isChecked boolean if the chip is clicked or not
      * */
     fun manageChips(genre: GenreNetwork, isChecked: Boolean) {
         if (isChecked) {
@@ -130,10 +142,17 @@ class ExperimentalViewModel @Inject constructor(
         }
     }
 
+
+    /**
+     * Set navigation property to the clicked id
+     * */
     fun navSelected(id: Int) {
         _navProperty.value = id
     }
 
+    /**
+     * Clear the navigation property
+     * */
     fun navCompleted() {
         _navProperty.value = null
     }

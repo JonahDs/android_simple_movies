@@ -12,6 +12,10 @@ import javax.inject.Singleton
 
 private const val BASE_URL = "https://api.themoviedb.org/"
 
+/**
+ * A dagger modules provides information on how to construct components needed in the component
+ * or dependency graph.
+ * */
 @Module
 object NetworkModule {
 

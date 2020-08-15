@@ -60,6 +60,9 @@ class DetailscreenViewModel @Inject constructor(private val movieRepo: MovieRepo
 
     /**
      * Subscribe to the repository call and catch it's values
+     *
+     * @param type fetch type, movie or tv
+     * @param id movie or tv id
      * */
     private fun fetchMovieDetails(type: String, id: Int) {
         viewModelScope.launch {
@@ -71,6 +74,9 @@ class DetailscreenViewModel @Inject constructor(private val movieRepo: MovieRepo
 
     /**
      * Subscribe to the repository call and catch it's values
+     *
+     * @param type fetch type, movie or tv
+     * @param id movie or tv id
      * */
     private fun fetchMovieCredits(type: String, id: Int) {
         viewModelScope.launch {
@@ -82,6 +88,8 @@ class DetailscreenViewModel @Inject constructor(private val movieRepo: MovieRepo
 
     /**
      * Set the API status and data only if not null
+     *
+     * @param resource wrapper for the api return
      * */
     private fun manageDetailResource(resource: Resource<MovieResult>) {
         resource.status?.let { _apiStatus.value = it }
@@ -89,17 +97,25 @@ class DetailscreenViewModel @Inject constructor(private val movieRepo: MovieRepo
     }
 
     /**
-     * Set the data only if not null
+     * Set the API status and data only if not null
+     *
+     * @param resource wrapper for the api return
      * */
     private fun manageCastResource(resource: Resource<CastWrapper>) {
         resource.data?.let { _movieCast.value = it }
     }
 
 
+    /**
+     * Sets the navigation property
+     * */
     fun displayCastDetails() {
         _navSelected.value = true
     }
 
+    /**
+     * Clears the navigation property
+     * */
     fun displayCastDetailsCompleted() {
         _navSelected.value = null
     }

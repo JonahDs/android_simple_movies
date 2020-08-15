@@ -7,6 +7,10 @@ import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 
+/**
+ * A dagger modules provides information on how to construct components needed in the component
+ * or dependency graph.
+ * */
 @Module
 abstract class CastModule {
 

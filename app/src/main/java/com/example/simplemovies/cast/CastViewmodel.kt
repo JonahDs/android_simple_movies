@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class CastViewmodel @Inject constructor(private val movierepo: MovieRepository) : ViewModel(){
+class CastViewmodel @Inject constructor(private val movierepo: MovieRepository) : ViewModel() {
 
     // region properties
     private var movieId: Int? = null
@@ -36,7 +36,7 @@ class CastViewmodel @Inject constructor(private val movierepo: MovieRepository) 
      * @param type fetch type: movie, tv
      * */
     fun setMovieId(movieId: Int, type: String) {
-        if(this.movieId != movieId && this.type != type) {
+        if (this.movieId != movieId && this.type != type) {
             this.movieId = movieId
             this.type = type
             fetchCredits(movieId, type)
@@ -45,6 +45,9 @@ class CastViewmodel @Inject constructor(private val movierepo: MovieRepository) 
 
     /**
      * Subscribe to the repository call and catch it's values
+     *
+     * @param movieId the movie or tv id
+     * @param type fetch type: movie, tv
      * */
     private fun fetchCredits(movieId: Int, type: String) {
         viewModelScope.launch {
@@ -57,6 +60,8 @@ class CastViewmodel @Inject constructor(private val movierepo: MovieRepository) 
 
     /**
      * Set the API status and data only if not null
+     *
+     * @param resource wrapper for the api return
      * */
     private fun manageCastResource(resource: Resource<CastWrapper>) {
         resource.status?.let { _apiStatus.value = it }

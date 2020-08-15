@@ -48,6 +48,8 @@ class SearchLandingViewModel @Inject constructor(
 
     /**
      * Subscribe to the repository call and catch it's values
+     *
+     * @param query search string
      * */
     private fun fetchFromQuery(query: String) {
         viewModelScope.launch {
@@ -59,16 +61,24 @@ class SearchLandingViewModel @Inject constructor(
 
     /**
      * Set the API status and data only if not null
+     *
+     * @param resource wrapper for the API result
      * */
     private fun manageMovieResource(resource: Resource<MoviesWrapper>) {
         resource.status?.let { _apiStatus.value = it }
         resource.data?.let { _searchRes.value = it }
     }
 
+    /**
+     * Sets the navigation property to the clicked id
+     * */
     fun navigateToDetail(id: Int) {
         _navigation.value = id
     }
 
+    /**
+     * Clear the navigation
+     * */
     fun navigationCompleted() {
         _navigation.value = null
     }

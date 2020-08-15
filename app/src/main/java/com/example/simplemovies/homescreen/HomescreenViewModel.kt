@@ -53,18 +53,24 @@ class HomescreenViewModel @Inject constructor(private val movieRepo: MovieReposi
 
     /**
      * Set the API status and data only if not null
+     *
+     * @param resources wrapper for the API result
      * */
     fun manageMovieResource(resources: Resource<MoviesWrapper>) {
         resources.status?.let { _apiStatus.value = it }
         resources.data?.let { _displayableMovies.value = it.results }
     }
 
-    //Set navigation property
+    /**
+     * Sets the navigation property with the clicked id
+     * */
     fun displayMovieDetails(movieId: Int) {
         _navSelected.value = movieId
     }
 
-    //Clear navigation to make 'random' navigation impossible
+    /**
+     * Clear navigation
+     * */
     fun displayMovieCompleted() {
         _navSelected.value = null
     }
