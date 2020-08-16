@@ -16,7 +16,6 @@ import com.example.simplemovies.utils.MovieAdapter
 import com.example.simplemovies.utils.OnClickListener
 import javax.inject.Inject
 
-
 class HomescreenFragment : Fragment() {
 
     // Inject factory

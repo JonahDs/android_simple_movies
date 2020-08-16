@@ -20,7 +20,6 @@ import com.example.simplemovies.utils.CastAdapter
 import java.util.Locale
 import javax.inject.Inject
 
-
 class DetailscreenFragment : Fragment() {
 
     @Inject

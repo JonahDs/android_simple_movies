@@ -14,7 +14,6 @@ import com.example.simplemovies.MovieApplication
 import com.example.simplemovies.databinding.FragmentMoviePickerBinding
 import javax.inject.Inject
 
-
 class MoviePickerFragment : Fragment() {
 
     @Inject
