@@ -20,6 +20,9 @@ can achieve this, the only problem is that livedata needs an observer, which is 
 livedata *again* after a configuration change. This causes the refetch of data from either the API or database, which is an unwanted behaviour.
 Using flow we can subscribe in the viewmodel to the datastream and manage incoming emits without the view having to know about it.
 
+# Application Documentation
+[Dokka files](app/javadoc/app/index.md)
+
 # Installing the application
 You will need:
 - Android studio
